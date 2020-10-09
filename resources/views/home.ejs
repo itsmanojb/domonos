@@ -1,1 +1,10 @@
 <h1>Home</h1>
+<h4>Pizzas</h4>
+<% pizzas.map(pizza => { %>
+<div>
+  <%= pizza.name %> <br>
+  <%= pizza.image %> <br>
+  <%= pizza.size %> <br>
+  <%= pizza.price %>
+</div>
+<%}) %>
