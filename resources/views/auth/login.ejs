@@ -1,1 +1,23 @@
-<h1>Login</h1>
+<form method="POST" action="/login">
+  <div class="container">
+    <h1>Login</h1>
+    <p>Please enter login details.</p>
+    <hr>
+    <div>
+      <label for="email">Email</label> <br>
+      <input type="email" placeholder="Enter Email" name="email" required>
+    </div>
+    <div>
+      <label for="password">Password</label> <br>
+      <input type="password" placeholder="Enter Password" name="password" required>
+    </div>
+
+    <% if(messages.error) { %>
+    <span><%= messages.error %></span>
+    <% } %>
+    <div>
+      <button type="submit">Login</button>
+    </div>
+
+  </div>
+</form>

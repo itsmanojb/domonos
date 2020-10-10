@@ -1,1 +1,29 @@
-<h1>Register</h1>
+<form method="POST" action="register">
+  <div class="container">
+    <h1>Sign Up</h1>
+    <p>Please fill in this form to create an account.</p>
+    <hr>
+    <div>
+      <label for="name">Name</label> <br>
+      <input type="text" placeholder="Name" name="name" value="<%= messages.name %>">
+    </div>
+
+    <div>
+      <label for="email">Email</label> <br>
+      <input type="email" placeholder="Enter Email" name="email" value="<%= messages.email %>">
+    </div>
+
+    <div>
+      <label for="password">Password</label> <br>
+      <input type="password" placeholder="Enter Password" name="password" required>
+    </div>
+
+    <% if(messages.error) { %>
+    <span><%= messages.error %></span>
+    <% } %>
+    <div>
+      <button type="submit">Register</button>
+    </div>
+
+  </div>
+</form>
