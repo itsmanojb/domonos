@@ -16,7 +16,11 @@
     <ul>
       <li><a href="/">home</a></li>
       <% if(user) {%>
-      <li><a href="/">logout</a></li>
+      <li>
+        <form id="logout" action="/logout" method="POST">
+          <a href="#" onclick="document.getElementById('logout').submit()">Logout</a>
+        </form>
+      </li>
       <%} else { %>
       <li><a href="/login">login</a></li>
       <li><a href="/register">register</a></li>
