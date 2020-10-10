@@ -1,17 +1,7 @@
 @import "~noty/src/noty.scss";
 @import "~noty/src/themes/mint.scss";
 
-:root {
-  --page-background: #fff;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--page-background);
-}
+@import './variables';
+@import './core';
+@import './components';
+@import './pages';

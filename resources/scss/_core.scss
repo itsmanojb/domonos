@@ -1,0 +1,16 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--page-background);
+  font-family: "Lato", sans-serif;
+}
+
+.container {
+  width: 100%;
+  padding: 0 50px;
+}
