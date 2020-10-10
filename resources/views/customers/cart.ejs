@@ -1,1 +1,16 @@
 <h1>Cart</h1>
+<h4>Pizzas</h4>
+<% if(session.cart) { %>
+<% for(let pizza of Object.values(session.cart.items) ){ %>
+<div>
+  <%= pizza.item.name %> <br>
+  <%= pizza.item.image %> <br>
+  <%= pizza.item.size %> <br>
+  <%= pizza.qty %> <br>
+  <%= pizza.item.price * pizza.qty %>
+</div>
+<%} %>
+total <%= session.cart.totalPrice %>
+<% } else { %>
+No items
+<%} %>

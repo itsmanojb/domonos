@@ -1,28 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Domono's</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-      integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="/css/app.css" />
-  </head>
 
-  <body>
-    <nav>
-      <ul>
-        <li><a href="/">home</a></li>
-        <li><a href="/login">login</a></li>
-        <li><a href="/register">register</a></li>
-        <li><a href="/cart">cart</a></li>
-      </ul>
-    </nav>
-    <%- body %>
-    <script src="js/app.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Domono's</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+    integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+    crossorigin="anonymous" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+
+<body>
+  <nav>
+    <ul>
+      <li><a href="/">home</a></li>
+      <li><a href="/login">login</a></li>
+      <li><a href="/register">register</a></li>
+      <li><a href="/cart">cart <span id="cartCounter"><%= session.cart ? session.cart.totalQty : '' %></span> </a></li>
+    </ul>
+  </nav>
+  <%- body %>
+  <script src="js/app.js"></script>
+</body>
+
 </html>
