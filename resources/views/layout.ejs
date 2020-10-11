@@ -19,34 +19,34 @@
       <div class="brand">
         <a href="/">Brand</a>
       </div>
-      <nav>
-        <ul>
-          <% if(user) {%>
-          <li>
-            <form id="logout" action="/logout" method="POST">
-              <a href="#" onclick="document.getElementById('logout').submit()">Logout</a>
-            </form>
-          </li>
-          <%} else { %>
-          <li><a href="/login">login</a></li>
-          <li><a href="/register">register</a></li>
-          <% } %>
-          <li>
-            <a href="/cart">cart
-              <span id="cartCounter"><%= session.cart ? session.cart.totalQty : '' %></span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <div class="user-menu">
-        <div class="user-icon">
-          <span class="material-icons">
-            account_circle
-          </span>
+      <div class="header-menus">
+        <div class="cart-menu">
+          <a href="/cart">
+            <span class="material-icons">
+              shopping_cart
+            </span>
+            <span id="cartCounter"><%= session.cart ? session.cart.totalQty : '' %></span>
+          </a>
         </div>
-        <div class="user-info">
-          <p>My Account</p>
-          <small><span>Login</span><span>Signup</span></small>
+        <div class="user-menu">
+          <div class="user-icon">
+            <span class="material-icons">
+              account_circle
+            </span>
+          </div>
+          <% if(user) {%>
+          <form id="logout" action="/logout" method="POST">
+            <div class="user-info">
+              <p>My Account</p>
+              <small><span><a href="#" onclick="document.getElementById('logout').submit()">Logout</a></span></small>
+            </div>
+          </form>
+          <%} else { %>
+          <div class="user-info">
+            <p>Hello Guest!</p>
+            <small><span><a href="/login">Login</a></span><span><a href="/register">Register</a></span></small>
+          </div>
+          <% } %>
         </div>
       </div>
     </div>

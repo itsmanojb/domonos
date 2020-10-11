@@ -1,11 +1,50 @@
-<h1>Home</h1>
-<h4>Pizzas</h4>
-<% pizzas.map(pizza => { %>
-<div>
-  <%= pizza.name %> <br>
-  <%= pizza.image %> <br>
-  <%= pizza.size %> <br>
-  <%= pizza.price %>
-  <button class="addToCart" data-pizza=<%= JSON.stringify(pizza)%>>Add</button>
+<div class="page home-menu">
+  <div class="container">
+    <div class="home-menus-wrapper">
+      <div class="all-menus">
+        <section>
+          <div class="header">
+            <h4>Pizzas</h4>
+          </div>
+          <div class="menu-grid">
+
+            <% pizzas.map(pizza => { %>
+            <div class="menu-card">
+              <div class="menu-image">
+                <div class="overlay">
+                  <div class="menu-type non-veg"></div>
+                  <div class="menu-price"><%= pizza.price %></div>
+                </div>
+                <div class="image">
+                  <img
+                    src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80"
+                    alt="">
+                  <!-- <%= pizza.image %>  -->
+                </div>
+              </div>
+              <div class="menu-details">
+                <div class="menu-name">
+                  <p>
+                    <%= pizza.name %>
+                  </p>
+                  <span>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet sed odio ea cum. Ab, tenetur.
+                  </span>
+                </div>
+                <div class="menu-selector">
+                  <div class="size"><%= pizza.size %> </div>
+                  <div class="crust"></div>
+                </div>
+                <div class="menu-actions">
+                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(pizza)%>>Add to Cart</button>
+                </div>
+              </div>
+            </div>
+            <%}) %>
+          </div>
+        </section>
+      </div>
+      <div class="side-menu"></div>
+    </div>
+  </div>
 </div>
-<%}) %>

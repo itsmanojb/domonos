@@ -1,0 +1,33 @@
+.page.home-menu {
+  min-height: 90vh;
+  background-color: var(--page-background-alt);
+
+  .home-menus-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 50px;
+  }
+
+  .all-menus {
+    section {
+      margin-bottom: 4rem;
+      header {
+        h4 {
+          margin: 0;
+          padding: 0;
+        }
+      }
+
+      .menu-grid {
+        display: flex;
+        flex-wrap: wrap;
+
+        .menu-card {
+          width: 300px;
+          margin-right: 50px;
+          margin-bottom: 50px;
+        }
+      }
+    }
+  }
+}

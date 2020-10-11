@@ -1,9 +1,15 @@
 :root {
   --primary-color-rgb: 0, 102, 167;
   --page-background: #fff;
+  --page-background-alt: rgb(242, 242, 242);
 
   --navbar-link-color: #fff;
+  --text-color: #343434;
+  --text-color-muted: #777;
 
   --footer-background: rgb(26, 39, 53);
   --footer-background-alt: rgb(34, 46, 58);
+
+  --btn-border-radius: 3px;
+  --card-border-radius: 3px;
 }

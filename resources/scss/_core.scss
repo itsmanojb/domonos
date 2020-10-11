@@ -10,7 +10,36 @@ body {
   font-family: "Lato", sans-serif;
 }
 
+a {
+  text-decoration: none;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  &:focus {
+    outline: none;
+  }
+}
+
 .container {
   width: 100%;
   padding: 0 50px;
+}
+
+.btn {
+  border: none;
+  padding: 0.6rem 1rem;
+  line-height: 1;
+  border-radius: var(--btn-border-radius);
+  user-select: none;
+  cursor: pointer;
+  font-size: 15px;
+
+  &-sm {
+    padding: 0.4rem;
+    font-size: 12px;
+  }
 }
