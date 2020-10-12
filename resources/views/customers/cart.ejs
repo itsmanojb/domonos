@@ -1,16 +1,193 @@
-<h1>Cart</h1>
-<h4>Pizzas</h4>
-<% if(session.cart) { %>
-<% for(let pizza of Object.values(session.cart.items) ){ %>
-<div>
-  <%= pizza.item.name %> <br>
-  <%= pizza.item.image %> <br>
-  <%= pizza.item.size %> <br>
-  <%= pizza.qty %> <br>
-  <%= pizza.item.price * pizza.qty %>
+<div class="page checkout">
+  <div class="container">
+    <div class="cart-checkout-wrapper">
+      <div class="cart-menu">
+        <% if(session.cart) { %>
+        <div class="header">
+          <h3><%= session.cart.totalQty %> Items you have selected</h3>
+          <a class="explore" href="/">Expore Menus</a>
+        </div>
+        <div class="cart-items">
+          <% for(let pizza of Object.values(session.cart.items) ){ %>
+          <div class="cart-card item">
+            <figure>
+              <img src="" alt="">
+              <!-- <%= pizza.item.image %> -->
+            </figure>
+            <div>
+              <div class="info">
+                <div class="details">
+                  <h2> <%= pizza.item.name %> </h2>
+                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, similique.</p>
+                  <div class="more">
+                    <span><%= pizza.item.size %> </span>
+                    <!-- <span></span> -->
+                  </div>
+                </div>
+                <div class="price-q">
+                  <h5><%= pizza.item.price * pizza.qty %></h5>
+                  <p><%= pizza.qty %> </p>
+                </div>
+              </div>
+              <div class="custom">
+                <span>Your Customization</span>
+                <p> <strong>Added topping:</strong> askdjask</p>
+              </div>
+            </div>
+          </div>
+          <%} %>
+        </div>
+        <div class="additional-menu">
+          <div class="header">
+            <h3>Complete your meal</h3>
+          </div>
+          <div class="meals">
+            <div class="wrapper">
+              <div class="menu-grid">
+                <div class="additional-menu-item">
+                  <figure>
+                    <img src="" alt="">
+                  </figure>
+                  <div class="footer">
+                    <button class="btn btn-sm" type="button">
+                      Add
+                    </button>
+                  </div>
+                </div>
+                <div class="additional-menu-item">
+                  <figure>
+                    <img src="" alt="">
+                  </figure>
+                  <div class="footer">
+                    <button class="btn btn-sm" type="button">
+                      Add
+                    </button>
+                  </div>
+                </div>
+                <div class="additional-menu-item">
+                  <figure>
+                    <img src="" alt="">
+                  </figure>
+                  <div class="footer">
+                    <button class="btn btn-sm" type="button">
+                      Add
+                    </button>
+                  </div>
+                </div>
+                <div class="additional-menu-item">
+                  <figure>
+                    <img src="" alt="">
+                  </figure>
+                  <div class="footer">
+                    <button class="btn btn-sm" type="button">
+                      Add
+                    </button>
+                  </div>
+                </div>
+                <div class="additional-menu-item">
+                  <figure>
+                    <img src="" alt="">
+                  </figure>
+                  <div class="footer">
+                    <button class="btn btn-sm" type="button">
+                      Add
+                    </button>
+                  </div>
+                </div>
+                <div class="additional-menu-item">
+                  <figure>
+                    <img src="" alt="">
+                  </figure>
+                  <div class="footer">
+                    <button class="btn btn-sm" type="button">
+                      Add
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } else { %>
+        No items
+        <%} %>
+      </div>
+      <div class="side-menu">
+        <div class="header">
+          <h3>Choose a delivery address</h3>
+        </div>
+        <div class="cart-card">
+          <div class="location">
+            <div class="icon">
+              <span class="material-icons">
+                room
+              </span>
+            </div>
+            <div class="text">
+              <p><span>Select Location</span>
+                <small>Please select location, so that we can find a restaurant that delivers to
+                  you!</small>
+              </p>
+              <div class="btns">
+                <button class="btn btn-sm">Add Location</button>
+              </div>
+            </div>
+          </div>
+          <div class="saved-address">
+            <div class="info">
+              <span class="material-icons">
+                room
+              </span>
+              <p>Login to use your saved addresses</p>
+              <button class="btn btn-sm">My Address</button>
+            </div>
+          </div>
+        </div>
+        <div class="header">
+          <h3>Offers</h3>
+        </div>
+        <div class="cart-card">
+          <div class="redeem">
+            <div class="icon">
+              <span class="material-icons">
+                redeem
+              </span>
+            </div>
+            <div class="text">
+              <p>Select offer / Apply coupon <small>Get discount with you order</small></p>
+            </div>
+            <div class="icon">
+              <span class="material-icons">
+                arrow_forward_ios
+              </span>
+            </div>
+          </div>
+        </div>
+        <% if(session.cart) { %>
+        <div class="header">
+          <h3>Price Details</h3>
+        </div>
+        <div class="cart-card price">
+          <dl>
+            <dt>Sub Total</dt>
+            <dd><%= session.cart.totalPrice %></dd>
+            <dt>Tax</dt>
+            <dd>-</dd>
+            <dt>Discount</dt>
+            <dd>-</dd>
+            <dt>Delivery</dt>
+            <dd>-</dd>
+          </dl>
+          <dl>
+            <dt>Grand Total</dt>
+            <dd><%= session.cart.totalPrice %></dd>
+          </dl>
+          <div class="cta">
+            <button class="btn" type="button">Place Order</button>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
 </div>
-<%} %>
-total <%= session.cart.totalPrice %>
-<% } else { %>
-No items
-<%} %>
