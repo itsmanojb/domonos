@@ -1,6 +1,7 @@
 .page.home-menu {
   min-height: 90vh;
   background-color: var(--page-background-alt);
+  padding-top: 120px;
 
   .home-menus-wrapper {
     display: grid;
@@ -11,10 +12,33 @@
   .all-menus {
     section {
       margin-bottom: 4rem;
-      header {
+      .header {
+        position: relative;
+
+        &::before {
+          content: "";
+          height: 1px;
+          position: absolute;
+          left: 0;
+          width: calc(100% - 200px);
+          top: 50%;
+          margin-top: -5px;
+          background-color: #ddd;
+        }
+
         h4 {
-          margin: 0;
-          padding: 0;
+          margin: 20px 0 30px 30px;
+          padding: 18px 30px;
+          display: inline-block;
+          border-radius: 30px;
+          background-color: #fff;
+          color: #222;
+          text-transform: uppercase;
+          line-height: 1;
+          font-size: 16px;
+          font-weight: normal;
+          position: relative;
+          z-index: 1;
         }
       }
 
@@ -23,7 +47,7 @@
         flex-wrap: wrap;
 
         .menu-card {
-          width: 300px;
+          width: 350px;
           margin-right: 50px;
           margin-bottom: 50px;
         }

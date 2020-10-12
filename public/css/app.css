@@ -326,6 +326,7 @@ body {
   padding: 0;
   background-color: var(--page-background);
   font-family: "Lato", sans-serif;
+  overflow: auto;
 }
 
 a {
@@ -343,6 +344,11 @@ textarea:focus {
 .container {
   width: 100%;
   padding: 0 50px;
+}
+
+.container.padded {
+  padding-left: 100px;
+  padding-right: 100px;
 }
 
 .btn {
@@ -366,6 +372,12 @@ textarea:focus {
 .site__header {
   background-color: rgb(var(--primary-color-rgb));
   padding: 0 16px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: 56px;
 }
 
 .site__header .header-wrapper {
@@ -464,18 +476,47 @@ textarea:focus {
   color: #5c6f83;
 }
 
+.menu-sections-nav {
+  background-color: var(--page-background);
+  box-shadow: rgba(210, 221, 233, 0.5) 5px 5px 5px;
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.menu-sections-nav .menu-tabs {
+  display: flex;
+  justify-content: space-between;
+}
+
+.menu-sections-nav .menu-tabs a {
+  display: inline-block;
+  border-bottom: 3px solid transparent;
+  padding: 15px 0 12px;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #aaa;
+  font-weight: 600;
+}
+
+.menu-sections-nav .menu-tabs a.active {
+  border-bottom-color: green;
+}
+
 .menu-card {
   overflow: hidden;
   border-radius: var(--card-border-radius);
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 2px 4px 0px;
   display: grid;
-  grid-template-rows: 120px 1fr;
+  grid-template-rows: 130px 1fr;
   min-height: 300px;
 }
 
 .menu-card .menu-image {
-  height: 120px;
+  height: 130px;
   position: relative;
   overflow: hidden;
 }
@@ -594,6 +635,7 @@ textarea:focus {
 .page.home-menu {
   min-height: 90vh;
   background-color: var(--page-background-alt);
+  padding-top: 120px;
 }
 
 .page.home-menu .home-menus-wrapper {
@@ -606,9 +648,34 @@ textarea:focus {
   margin-bottom: 4rem;
 }
 
-.page.home-menu .all-menus section header h4 {
-  margin: 0;
-  padding: 0;
+.page.home-menu .all-menus section .header {
+  position: relative;
+}
+
+.page.home-menu .all-menus section .header::before {
+  content: "";
+  height: 1px;
+  position: absolute;
+  left: 0;
+  width: calc(100% - 200px);
+  top: 50%;
+  margin-top: -5px;
+  background-color: #ddd;
+}
+
+.page.home-menu .all-menus section .header h4 {
+  margin: 20px 0 30px 30px;
+  padding: 18px 30px;
+  display: inline-block;
+  border-radius: 30px;
+  background-color: #fff;
+  color: #222;
+  text-transform: uppercase;
+  line-height: 1;
+  font-size: 16px;
+  font-weight: normal;
+  position: relative;
+  z-index: 1;
 }
 
 .page.home-menu .all-menus section .menu-grid {
@@ -617,7 +684,7 @@ textarea:focus {
 }
 
 .page.home-menu .all-menus section .menu-grid .menu-card {
-  width: 300px;
+  width: 350px;
   margin-right: 50px;
   margin-bottom: 50px;
 }

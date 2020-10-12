@@ -1,6 +1,12 @@
 .site__header {
   background-color: rgb(var(--primary-color-rgb));
   padding: 0 16px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: 56px;
 
   .header-wrapper {
     display: flex;
@@ -105,6 +111,35 @@
   }
 }
 
+.menu-sections-nav {
+  background-color: var(--page-background);
+  box-shadow: rgb(210 221 233 / 50%) 5px 5px 5px;
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  z-index: 2;
+
+  .menu-tabs {
+    display: flex;
+    justify-content: space-between;
+
+    a {
+      display: inline-block;
+      border-bottom: 3px solid transparent;
+      padding: 15px 0 12px;
+      text-transform: uppercase;
+      font-size: 12px;
+      color: #aaa;
+      font-weight: 600;
+
+      &.active {
+        border-bottom-color: green;
+      }
+    }
+  }
+}
+
 .menu-card {
   overflow: hidden;
   border-radius: var(--card-border-radius);
@@ -113,11 +148,11 @@
     rgba(0, 0, 0, 0.12) 0px 2px 4px 0px;
 
   display: grid;
-  grid-template-rows: 120px 1fr;
+  grid-template-rows: 130px 1fr;
   min-height: 300px;
 
   .menu-image {
-    height: 120px;
+    height: 130px;
     position: relative;
     overflow: hidden;
 
