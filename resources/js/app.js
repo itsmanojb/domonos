@@ -39,6 +39,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const removeActive = (link) => menu_links[link].classList.remove("active");
   const removeAllActive = () => [...Array(sections.length).keys()].forEach((link) => removeActive(link));
 
+  const affix = document.getElementById("cartPreview");
+  const sticky = affix.offsetTop;
+  const offset = 110;
+
   const sectionMargin = 200;
   let currentActive = 0;
 
@@ -50,5 +54,12 @@ document.addEventListener('DOMContentLoaded', function () {
       currentActive = current;
       makeActive(current);
     }
+
+    if (window.pageYOffset > sticky - offset) {
+      affix.classList.add("fixed");
+    } else {
+      affix.classList.remove("fixed");
+    }
+
   });
 }, false);

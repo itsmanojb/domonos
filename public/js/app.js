@@ -5322,6 +5322,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   };
 
+  var affix = document.getElementById("cartPreview");
+  var sticky = affix.offsetTop;
+  var offset = 110;
   var sectionMargin = 200;
   var currentActive = 0;
   window.addEventListener("scroll", function () {
@@ -5333,6 +5336,12 @@ document.addEventListener('DOMContentLoaded', function () {
       removeAllActive();
       currentActive = current;
       makeActive(current);
+    }
+
+    if (window.pageYOffset > sticky - offset) {
+      affix.classList.add("fixed");
+    } else {
+      affix.classList.remove("fixed");
     }
   });
 }, false);

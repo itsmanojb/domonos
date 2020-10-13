@@ -272,6 +272,46 @@
   }
 }
 
+.cart-preview {
+  margin-top: 100px;
+
+  .empty {
+    @extend .card;
+    height: 450px;
+    width: 320px;
+    position: relative;
+    padding: 260px 2rem 2rem;
+
+    img {
+      height: 180px;
+      object-fit: contain;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    h3 {
+      font-size: 22px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: rgb(113, 128, 145);
+
+      small {
+        display: block;
+        margin-top: 6px;
+        font-size: 15px;
+        text-transform: none;
+        font-weight: normal;
+      }
+    }
+  }
+
+  &.fixed {
+    position: fixed;
+    top: 10px;
+  }
+}
+
 .cart-card {
   @extend .card;
   padding: 1rem;
@@ -420,12 +460,6 @@
   }
 }
 
-.menu-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 5px;
-}
-
 .additional-menu-item {
   figure {
     background-color: #ddd;
@@ -560,6 +594,61 @@
         display: block;
         color: var(--text-color-muted);
         margin-top: 4px;
+      }
+    }
+  }
+}
+
+.empty-cart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 55vh;
+  background-color: #fff;
+  margin-top: 30px;
+
+  .content {
+    text-align: center;
+
+    img {
+      user-select: none;
+      height: 145px;
+      width: 145px;
+      object-fit: contain;
+    }
+
+    h2 {
+      text-transform: uppercase;
+      color: rgb(113, 128, 145);
+      font-size: 20px;
+      letter-spacing: 1px;
+
+      small {
+        margin-top: 2px;
+        text-transform: none;
+        display: block;
+        font-size: 16px;
+        color: rgb(105, 129, 158);
+        font-weight: normal;
+        letter-spacing: 0px;
+      }
+    }
+
+    p {
+      margin-top: 40px;
+
+      .btn {
+        padding: 0.7rem 1.5rem;
+        background-color: var(--green-hover);
+        color: #fff;
+        text-transform: uppercase;
+        font-weight: 600;
+        line-height: 1;
+        transition: background 0.2s ease-in;
+
+        &:hover {
+          background-color: var(--green);
+        }
       }
     }
   }

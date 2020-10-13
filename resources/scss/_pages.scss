@@ -7,8 +7,8 @@
 
   .home-menus-wrapper {
     display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 50px;
+    grid-template-columns: 1fr 450px;
+    gap: 30px;
   }
 
   .all-menus {
@@ -22,10 +22,10 @@
           height: 1px;
           position: absolute;
           left: 0;
-          width: calc(100% - 200px);
+          width: calc(100% - 160px);
           top: 50%;
           margin-top: -5px;
-          background-color: #ddd;
+          background-color: #bbb;
         }
 
         h4 {
@@ -68,7 +68,10 @@
     gap: 100px;
   }
 
-  .cart-items {
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 5px;
   }
 
   .cart-menu {
