@@ -1,6 +1,26 @@
 import axios from 'axios';
 import Noty from 'noty';
 
+const overlay = document.getElementById('ovly');
+const hamburger = document.getElementById('hamMenu');
+const leftDrawer = document.getElementById('drawerLeft');
+
+hamburger.addEventListener('click', () => {
+  if (leftDrawer.classList.contains('opened')) {
+    document.body.classList.remove('noscroll');
+    overlay.classList.remove('shown');
+    leftDrawer.classList.remove("opened");
+  } else {
+    document.body.classList.add('noscroll');
+    overlay.classList.add('shown');
+    leftDrawer.classList.add("opened");
+  }
+})
+
+overlay.addEventListener('click', () => {
+  hamburger.click();
+});
+
 const addtoCartBtn = document.querySelectorAll('.addToCart');
 const cartCounter = document.querySelector('#cartCounter')
 
@@ -39,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const removeActive = (link) => menu_links[link].classList.remove("active");
   const removeAllActive = () => [...Array(sections.length).keys()].forEach((link) => removeActive(link));
 
-  const affix = document.getElementById("cartPreview");
+  const affix = document.getElementsByClassName("affix");
   const sticky = affix.offsetTop;
   const offset = 110;
 
@@ -55,10 +75,12 @@ document.addEventListener('DOMContentLoaded', function () {
       makeActive(current);
     }
 
-    if (window.pageYOffset > sticky - offset) {
-      affix.classList.add("fixed");
-    } else {
-      affix.classList.remove("fixed");
+    if (affix.length) {
+      if (window.pageYOffset > sticky - offset) {
+        affix.classList.add("fixed");
+      } else {
+        affix.classList.remove("fixed");
+      }
     }
 
   });

@@ -5276,6 +5276,23 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
+var overlay = document.getElementById('ovly');
+var hamburger = document.getElementById('hamMenu');
+var leftDrawer = document.getElementById('drawerLeft');
+hamburger.addEventListener('click', function () {
+  if (leftDrawer.classList.contains('opened')) {
+    document.body.classList.remove('noscroll');
+    overlay.classList.remove('shown');
+    leftDrawer.classList.remove("opened");
+  } else {
+    document.body.classList.add('noscroll');
+    overlay.classList.add('shown');
+    leftDrawer.classList.add("opened");
+  }
+});
+overlay.addEventListener('click', function () {
+  hamburger.click();
+});
 var addtoCartBtn = document.querySelectorAll('.addToCart');
 var cartCounter = document.querySelector('#cartCounter');
 
@@ -5322,7 +5339,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   };
 
-  var affix = document.getElementById("cartPreview");
+  var affix = document.getElementsByClassName("affix");
   var sticky = affix.offsetTop;
   var offset = 110;
   var sectionMargin = 200;
@@ -5338,10 +5355,12 @@ document.addEventListener('DOMContentLoaded', function () {
       makeActive(current);
     }
 
-    if (window.pageYOffset > sticky - offset) {
-      affix.classList.add("fixed");
-    } else {
-      affix.classList.remove("fixed");
+    if (affix.length) {
+      if (window.pageYOffset > sticky - offset) {
+        affix.classList.add("fixed");
+      } else {
+        affix.classList.remove("fixed");
+      }
     }
   });
 }, false);

@@ -14,8 +14,14 @@
 </head>
 
 <body>
+  <div class="site__overlay" id="ovly"></div>
   <header class="site__header">
     <div class="container header-wrapper">
+      <div class="hamburger" id="hamMenu" role="button">
+        <span class="material-icons">
+          menu
+        </span>
+      </div>
       <div class="brand">
         <a href="/">Brand</a>
       </div>
@@ -51,6 +57,7 @@
       </div>
     </div>
   </header>
+  <%- include('partials/left-drawer.ejs') %>
   <%- body %>
   <footer class="site__footer">
     <div class="footer-top">

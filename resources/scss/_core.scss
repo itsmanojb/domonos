@@ -11,6 +11,12 @@ body {
   overflow: auto;
 }
 
+body.noscroll {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
 a {
   text-decoration: none;
 }
