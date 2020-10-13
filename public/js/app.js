@@ -5279,19 +5279,49 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 var overlay = document.getElementById('ovly');
 var hamburger = document.getElementById('hamMenu');
 var leftDrawer = document.getElementById('drawerLeft');
+var locationBtn = document.getElementById('locationPickerBtn');
+var rightDrawer = document.getElementById('drawerRight');
+var headerMenu = document.getElementById('headerMenu');
 hamburger.addEventListener('click', function () {
   if (leftDrawer.classList.contains('opened')) {
     document.body.classList.remove('noscroll');
     overlay.classList.remove('shown');
     leftDrawer.classList.remove("opened");
+    headerMenu.classList.remove('inactive');
   } else {
     document.body.classList.add('noscroll');
     overlay.classList.add('shown');
-    leftDrawer.classList.add("opened");
+    leftDrawer.classList.add('opened');
+    headerMenu.classList.add('inactive');
   }
 });
 overlay.addEventListener('click', function () {
-  hamburger.click();
+  if (rightDrawer.classList.contains('opened')) {
+    document.body.classList.remove('noscroll');
+    overlay.classList.remove('shown');
+    rightDrawer.classList.remove('opened');
+    hamburger.classList.remove('inactive');
+  }
+
+  if (leftDrawer.classList.contains('opened')) {
+    document.body.classList.remove('noscroll');
+    overlay.classList.remove('shown');
+    leftDrawer.classList.remove("opened");
+    headerMenu.classList.remove('inactive');
+  }
+});
+locationBtn.addEventListener('click', function () {
+  if (rightDrawer.classList.contains('opened')) {
+    document.body.classList.remove('noscroll');
+    overlay.classList.remove('shown');
+    rightDrawer.classList.remove('opened');
+    hamburger.classList.remove('inactive');
+  } else {
+    document.body.classList.add('noscroll');
+    overlay.classList.add('shown');
+    rightDrawer.classList.add('opened');
+    hamburger.classList.add('inactive');
+  }
 });
 var addtoCartBtn = document.querySelectorAll('.addToCart');
 var cartCounter = document.querySelector('#cartCounter');
@@ -5339,8 +5369,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   };
 
-  var affix = document.getElementsByClassName("affix");
-  var sticky = affix.offsetTop;
+  var affix = document.getElementById("cartPreview");
   var offset = 110;
   var sectionMargin = 200;
   var currentActive = 0;
@@ -5355,7 +5384,9 @@ document.addEventListener('DOMContentLoaded', function () {
       makeActive(current);
     }
 
-    if (affix.length) {
+    if (affix) {
+      var sticky = affix.offsetTop;
+
       if (window.pageYOffset > sticky - offset) {
         affix.classList.add("fixed");
       } else {

@@ -9,7 +9,7 @@
     integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
     crossorigin="anonymous" />
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet" />
   <link rel="stylesheet" href="/css/app.css" />
 </head>
 
@@ -25,7 +25,7 @@
       <div class="brand">
         <a href="/">Brand</a>
       </div>
-      <div class="header-menus">
+      <div class="header-menus" id="headerMenu">
         <div class="cart-menu">
           <a href="/cart">
             <span class="material-icons">
@@ -33,6 +33,15 @@
             </span>
             <span id="cartCounter"><%= session.cart ? session.cart.totalQty : '' %></span>
           </a>
+        </div>
+        <div class="location-menu" id="locationPickerBtn" role="button">
+          <span class="material-icons-outlined">
+            location_on
+          </span>
+          <p>Select Location <small>Select location for accurate menu listings</small> </p>
+          <span class="material-icons-outlined">
+            create
+          </span>
         </div>
         <div class="user-menu">
           <div class="user-icon">
@@ -59,6 +68,7 @@
   </header>
   <%- include('partials/left-drawer.ejs') %>
   <%- body %>
+  <%- include('partials/right-drawer.ejs') %>
   <footer class="site__footer">
     <div class="footer-top">
       <div class="container">
