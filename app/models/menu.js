@@ -6,13 +6,18 @@ const menuSchema = new Schema({
     type: String,
     required: true
   },
-  price: {
-    type: Number,
-    required: true
+  description: {
+    type: String
   },
-  size: {
+  menuType: {
     type: String,
     required: true
+  },
+  foodType: {
+    type: String, // veg / nonveg
+  },
+  options: {
+    type: Object
   },
   image: {
     type: String,
