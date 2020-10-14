@@ -55,3 +55,19 @@ textarea {
     font-size: 12px;
   }
 }
+
+.noty_theme__mint.noty_bar {
+  border-radius: 4px;
+}
+.noty_theme__mint.noty_bar .noty_body {
+  padding: 1rem;
+  font-size: 16px;
+}
+.noty_theme__mint.noty_type__success {
+  background-color: var(--green-hover);
+  border-bottom: 1px solid var(--green-hover);
+}
+.noty_theme__mint.noty_type__error {
+  background-color: #e24c5b;
+  border-bottom: 1px solid #e24c5b;
+}

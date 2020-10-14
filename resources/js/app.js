@@ -51,6 +51,25 @@ locationBtn.addEventListener('click', () => {
   }
 });
 
+const alertUI = document.querySelector('#alertUI');
+const okBtn = document.getElementById('alertOKBtn');
+
+function showAlert(text, title = 'Oops...') {
+  document.getElementById('alertTitle').innerText = title;
+  document.getElementById('alertText').innerText = text;
+  alertUI.classList.add('shown')
+}
+
+okBtn.addEventListener('click', (e) => {
+  closeAlert()
+})
+
+function closeAlert() {
+  document.getElementById('alertTitle').innerText = '';
+  document.getElementById('alertText').innerText = '';
+  alertUI.classList.remove('shown');
+}
+
 const addtoCartBtn = document.querySelectorAll('.addToCart');
 const cartCounter = document.querySelector('#cartCounter')
 
@@ -60,15 +79,19 @@ function updateCart(pizza) {
     new Noty({
       type: 'success',
       text: 'Item added to cart',
-      timeout: 1000,
-      progressBar: false
+      timeout: 2000,
+      progressBar: false,
+      layout: 'bottomRight',
+
     }).show()
   }).catch((err) => {
     new Noty({
       type: 'error',
       text: 'Something went wrong',
-      timeout: 1000,
+      timeout: 2000,
       progressBar: false,
+      layout: 'bottomRight',
+
     }).show()
   })
 }

@@ -61,10 +61,14 @@
       </div>
       <div class="side-menu">
         <div class="cart-preview" id="cartPreview">
+          <% if(session.cart) { %>
+          <%- include('partials/side-cart.ejs') %>
+          <% } else { %>
           <div class="empty">
             <img src="/images/empty_cart@2x.png" alt="">
             <h3>Your Cart is Empty <small>Please add some items from the menu.</small> </h3>
           </div>
+          <% } %>
         </div>
       </div>
     </div>

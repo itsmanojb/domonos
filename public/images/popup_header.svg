@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="248px" height="37px" viewBox="0 0 248 37" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>popup_header</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="popup_header" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M234.228443,4.4408921e-15 L242.273543,4.4408921e-15 L247.5,10 L233.5,10 L231.396868,3.99105127 C230.849525,2.42721555 231.673556,0.715767436 233.237392,0.168424931 C233.555918,0.0569408721 233.890971,4.94697393e-15 234.228443,4.88498131e-15 Z" id="Rectangle-22" fill="#004D7F"></path>
+        <path d="M3,0 L242,0 L218.618357,37 L0,37 L0,3 C-2.02906125e-16,1.34314575 1.34314575,3.04359188e-16 3,0 Z" id="Rectangle-22-Copy" fill="#0066A7"></path>
+    </g>
+</svg>

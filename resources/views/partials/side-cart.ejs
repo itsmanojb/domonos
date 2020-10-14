@@ -1,0 +1,33 @@
+<div class="side-cart">
+    <div class="added-items">
+        <% for(let pizza of Object.values(session.cart.items) ){ %>
+        <div class="item">
+            <figure>
+                <img src="" alt="">
+                <!-- <%= pizza.item.image %> -->
+            </figure>
+
+            <div class="details">
+                <h2> <%= pizza.item.name %> </h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, similique.</p>
+                <div class="more">
+                    <span><%= pizza.item.size %> </span>
+                    <!-- <span></span> -->
+                </div>
+            </div>
+            <div class="price-q">
+                <p><%= pizza.qty %> </p>
+                <h5><%= pizza.item.price * pizza.qty %></h5>
+            </div>
+            <div class="custom">
+                <span>Your Customization</span>
+                <p> <strong>Added topping:</strong> askdjask</p>
+            </div>
+        </div>
+        <%} %>
+    </div>
+    <div class="cta">
+        <div>Subtotal <span><%= session.cart.totalPrice %></span></div>
+        <a href="/cart">Checkout</a>
+    </div>
+</div>

@@ -5323,6 +5323,26 @@ locationBtn.addEventListener('click', function () {
     hamburger.classList.add('inactive');
   }
 });
+var alertUI = document.querySelector('#alertUI');
+var okBtn = document.getElementById('alertOKBtn');
+
+function showAlert(text) {
+  var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'Oops...';
+  document.getElementById('alertTitle').innerText = title;
+  document.getElementById('alertText').innerText = text;
+  alertUI.classList.add('shown');
+}
+
+okBtn.addEventListener('click', function (e) {
+  closeAlert();
+});
+
+function closeAlert() {
+  document.getElementById('alertTitle').innerText = '';
+  document.getElementById('alertText').innerText = '';
+  alertUI.classList.remove('shown');
+}
+
 var addtoCartBtn = document.querySelectorAll('.addToCart');
 var cartCounter = document.querySelector('#cartCounter');
 
@@ -5332,15 +5352,17 @@ function updateCart(pizza) {
     new noty__WEBPACK_IMPORTED_MODULE_1___default.a({
       type: 'success',
       text: 'Item added to cart',
-      timeout: 1000,
-      progressBar: false
+      timeout: 2000,
+      progressBar: false,
+      layout: 'bottomRight'
     }).show();
   })["catch"](function (err) {
     new noty__WEBPACK_IMPORTED_MODULE_1___default.a({
       type: 'error',
       text: 'Something went wrong',
-      timeout: 1000,
-      progressBar: false
+      timeout: 2000,
+      progressBar: false,
+      layout: 'bottomRight'
     }).show();
   });
 }

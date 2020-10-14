@@ -1,3 +1,66 @@
+.alert-overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+
+  display: none;
+  z-index: -10;
+
+  &.shown {
+    z-index: 10;
+    display: block;
+  }
+
+  .alert-wrapper {
+    display: grid;
+    place-content: center;
+    height: 100%;
+    width: 100%;
+
+    .alertbox {
+      background-color: #fff;
+      min-width: 400px;
+      border-radius: 3px;
+      width: 25vw;
+
+      h4 {
+        display: block;
+        background: url("../../public/images/popup_header.svg") no-repeat;
+        background-size: contain;
+        background-position: top left;
+        margin: -11px 0 0;
+        height: 40px;
+        padding: 10px 15px;
+        font-size: 16px;
+        color: #fff;
+        line-height: 1;
+        font-weight: 400;
+      }
+
+      p {
+        margin: 0 0 10px;
+        padding: 15px;
+        font-weight: 600;
+      }
+
+      button {
+        float: right;
+        margin: 15px;
+        padding: 0.8rem;
+        background-color: rgb(101, 171, 11);
+        color: #fff;
+        line-height: 1;
+        border: 1px solid rgba(53, 53, 53, 0.46);
+        border-radius: 2px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
 .site__header {
   background-color: rgb(var(--primary-color-rgb));
   padding: 0 16px;
@@ -560,6 +623,168 @@
   &.fixed {
     position: fixed;
     top: 10px;
+  }
+}
+
+.side-cart {
+  @extend .card;
+  border-radius: 0;
+  min-height: 400px;
+  max-height: 600px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 1px;
+    background-color: #fff;
+    border: 1px solid var(--green);
+  }
+
+  .added-items {
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  .cta {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: rgb(239, 245, 251);
+    min-height: 5rem;
+    padding: 1rem 0.75rem 1.5rem;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px -0.56rem 0.62rem 0px;
+
+    > div {
+      font-weight: 600;
+      color: #333;
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 17px;
+    }
+
+    a {
+      width: 100%;
+      padding: 0.8rem;
+      background-color: var(--green);
+      color: #fff;
+      text-transform: uppercase;
+      font-weight: 600;
+      line-height: 1;
+      transition: background 0.2s ease-in;
+      border-radius: 4px;
+      text-align: center;
+
+      &:hover {
+        background-color: var(--green-hover);
+      }
+    }
+  }
+}
+
+.added-items {
+  .item {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    grid-template-rows: auto 1fr 1fr;
+    gap: 0;
+
+    figure {
+      background-color: #ddd;
+      height: 60px;
+      width: 60px;
+      border-radius: 3px;
+      margin: 0;
+      grid-row: 1/2;
+    }
+
+    .details {
+      grid-row: 1/2;
+
+      display: flex;
+      flex-direction: column;
+
+      h2 {
+        margin: 0 0 4px;
+        padding: 0;
+        font-size: 16px;
+        color: var(--text-color);
+      }
+
+      p {
+        margin: 0;
+        font-size: 12.5px;
+        color: rgb(100, 129, 143);
+      }
+
+      .more {
+        margin: 12px 0;
+        span {
+          color: rgba(53, 53, 53, 0.87);
+          font-size: 15px;
+          font-weight: 500;
+
+          & + span::before {
+            content: "|";
+            padding: 0 10px;
+          }
+        }
+      }
+    }
+
+    .price-q {
+      grid-row: 2/3;
+      grid-column: 1/3;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h5 {
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+        color: rgb(44, 101, 128);
+      }
+    }
+
+    .custom {
+      grid-row: 3/4;
+      grid-column: 1/3;
+      padding: 0.25rem 0;
+
+      span {
+        color: rgb(87, 153, 225);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      p:empty {
+        display: none;
+      }
+
+      p {
+        color: rgb(100, 129, 143);
+        font-size: 12px;
+        margin: 4px 0 0;
+
+        strong {
+          font-weight: 600;
+        }
+      }
+    }
+
+    & + .item {
+      border-top: 1px dashed #ccc;
+    }
   }
 }
 
