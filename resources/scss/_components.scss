@@ -28,7 +28,7 @@
 
       h4 {
         display: block;
-        background: url("../../public/images/popup_header.svg") no-repeat;
+        background: url("/public/images/popup_header.svg") no-repeat;
         background-size: contain;
         background-position: top left;
         margin: -11px 0 0;
@@ -466,7 +466,7 @@
   overflow: hidden;
   display: grid;
   grid-template-rows: 130px 1fr;
-  min-height: 300px;
+  min-height: 280px;
 
   .menu-image {
     height: 130px;
@@ -497,8 +497,8 @@
       z-index: 1;
       background-image: linear-gradient(
         to bottom,
-        rgba(0, 0, 0, 0.15),
-        rgba(0, 0, 0, 0.4)
+        rgba(0, 0, 0, 0.05),
+        rgba(0, 0, 0, 0.2)
       );
       padding: 0.75rem;
       display: flex;
@@ -551,20 +551,64 @@
 
   .menu-details {
     padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     .menu-name {
       font-size: 16px;
-      color: var(--text-color);
+      color: #333;
       margin-bottom: 10px;
-      border-bottom: 1px solid #eee;
       padding-bottom: 1rem;
+      flex-grow: 1;
+      font-weight: 600;
+
       p {
         margin: 0.5rem 0;
       }
 
       span {
-        font-size: 13px;
+        font-size: 12.5px;
         color: var(--text-color-muted);
+        font-weight: normal;
+      }
+    }
+
+    .menu-selector {
+      border-top: 1px solid #eee;
+      padding: 12px 0 14px;
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 20px;
+
+      label {
+        font-size: 12px;
+        height: 13px;
+        color: rgba(122, 122, 122, 0.87);
+        margin-bottom: 3px;
+        display: block;
+      }
+
+      select {
+        appearance: none;
+        -webkit-apperance: none;
+        width: 100%;
+        background: #fff url("/images/down_arrow_filled.svg") no-repeat;
+        background-size: 10px;
+        background-position-y: center;
+        background-position-x: calc(100% - 5px);
+        border: none;
+        border-bottom: 1px solid #ddd;
+        padding: 2px 0 6px;
+        font-size: 13px;
+        text-transform: capitalize;
+        color: var(--text-color);
+        cursor: pointer;
+
+        &:disabled {
+          background-image: none;
+          width: 60%;
+        }
       }
     }
 
@@ -574,6 +618,7 @@
       padding: 0.5rem 0;
 
       .addToCart {
+        padding: 0.6rem 0.5rem;
         margin-left: auto;
         border: 1px solid var(--green-alt);
         color: var(--green-alt);

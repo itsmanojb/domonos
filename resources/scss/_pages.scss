@@ -13,7 +13,6 @@
 
   .all-menus {
     section {
-      margin-bottom: 4rem;
       .header {
         position: relative;
 
@@ -25,7 +24,7 @@
           width: calc(100% - 160px);
           top: 50%;
           margin-top: -5px;
-          background-color: #bbb;
+          background-color: #ddd;
         }
 
         h4 {
@@ -41,6 +40,55 @@
           font-weight: normal;
           position: relative;
           z-index: 1;
+
+          &.veg,
+          &.non-veg {
+            padding-left: 56px;
+
+            &::before {
+              content: "";
+              position: absolute;
+              left: 24px;
+              top: 50%;
+              height: 16px;
+              width: 16px;
+              margin-top: -9px;
+              border-radius: 4px;
+              border: 1px solid transparent;
+            }
+
+            &::after {
+              content: "";
+              position: absolute;
+              left: 28px;
+              top: 50%;
+              height: 10px;
+              width: 10px;
+              border-radius: 50%;
+              background-color: transparent;
+              margin-top: -5px;
+            }
+          }
+
+          &.veg {
+            color: rgb(31, 179, 26);
+            &::before {
+              border-color: var(--green-alt);
+            }
+            &::after {
+              background-color: var(--green-alt);
+            }
+          }
+
+          &.non-veg {
+            color: rgb(255, 0, 0);
+            &::before {
+              border-color: rgb(255, 0, 0);
+            }
+            &::after {
+              background-color: rgb(255, 0, 0);
+            }
+          }
         }
       }
 
@@ -53,6 +101,10 @@
           margin-right: 50px;
           margin-bottom: 50px;
         }
+      }
+
+      &:last-of-type {
+        margin-bottom: 5rem;
       }
     }
   }

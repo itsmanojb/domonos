@@ -5,10 +5,12 @@
       <div class="menu-tab scrollspy-link"><a href="#bestsellers" class="active">Bestsellers</a></div>
       <div class="menu-tab scrollspy-link"><a href="#pizzaparty">Pasta Pizza Party</a></div>
       <div class="menu-tab scrollspy-link"><a href="#veg">Veg Pizza</a></div>
-      <div class="menu-tab scrollspy-link"><a href="#nonveg">Nonveg Pizza</a></div>
-      <div class="menu-tab scrollspy-link"><a href="#meals">Meals & Combos</a></div>
+      <div class="menu-tab scrollspy-link"><a href="#nonveg">Non-veg Pizza</a></div>
+      <div class="menu-tab scrollspy-link"><a href="#combos">Meals & Combos</a></div>
+      <div class="menu-tab scrollspy-link"><a href="#pizzamania">Pizza Mania</a></div>
+      <div class="menu-tab scrollspy-link"><a href="#chicken">Speciality Chicken</a></div>
       <div class="menu-tab scrollspy-link"><a href="#sides">Sides</a></div>
-      <div class="menu-tab scrollspy-link"><a href="#bevarages">Bevarages</a></div>
+      <div class="menu-tab scrollspy-link"><a href="#beverages">Beverages</a></div>
       <div class="menu-tab scrollspy-link"><a href="#desserts">Desserts</a></div>
     </div>
   </div>
@@ -23,35 +25,423 @@
           </div>
           <div class="menu-grid">
 
-            <% pizzas.map(pizza => { %>
+            <% menus.topMenu.map(item => { %>
             <div class="menu-card">
               <div class="menu-image">
                 <div class="overlay">
-                  <div class="menu-type non-veg"></div>
-                  <div class="menu-price"><%= pizza.price %></div>
+                  <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
+                  <% } else {%> <div class="menu-type non-veg"></div>
+                  <% } %>
+                  <div class="menu-price"><%= item.price %></div>
                 </div>
                 <div class="image">
-                  <img
-                    src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80"
-                    alt="">
-                  <!-- <%= pizza.image %>  -->
+                  <img src="<%= item.image %>" alt="">
                 </div>
               </div>
               <div class="menu-details">
                 <div class="menu-name">
                   <p>
-                    <%= pizza.name %>
+                    <%= item.name %>
                   </p>
                   <span>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet sed odio ea cum. Ab, tenetur.
+                    <%= item.description %>
                   </span>
                 </div>
                 <div class="menu-selector">
-                  <div class="size"><%= pizza.size %> </div>
-                  <div class="crust"></div>
+                  <div class="size">
+                    <label for="size">Size</label>
+                    <select name="" id="size">
+                      <% item.options.prices.forEach(price => { %>
+                      <option value="<%= price.size %>"><%= price.size %></option>
+                      <% }) %>
+                    </select>
+                  </div>
+                  <div class="crust">
+                    <label for="crust">Crust</label>
+                    <select name="" id="crust">
+                      <% item.options.crusts.forEach(crust => { %>
+                      <option value="<%= crust %>"><%= crust %></option>
+                      <% }) %>
+                    </select>
+                  </div>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(pizza)%>>Add to Cart</button>
+                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                </div>
+              </div>
+            </div>
+            <%}) %>
+          </div>
+        </section>
+        <section class="scrollspy-section" id="pizzaparty">
+          <div class="header">
+            <h4>Pasta Pizza Party</h4>
+          </div>
+          <div class="menu-grid">
+            <% menus.pasta.map(item => { %>
+            <div class="menu-card">
+              <div class="menu-image">
+                <div class="overlay">
+                  <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
+                  <% } else {%> <div class="menu-type non-veg"></div>
+                  <% } %>
+                  <div class="menu-price"><%= item.price %></div>
+                </div>
+                <div class="image">
+                  <img src="<%= item.image %>" alt="">
+                </div>
+              </div>
+              <div class="menu-details">
+                <div class="menu-name">
+                  <p>
+                    <%= item.name %>
+                  </p>
+                  <span>
+                    <%= item.description %>
+                  </span>
+                </div>
+                <div class="menu-actions">
+                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                </div>
+              </div>
+            </div>
+            <%}) %>
+          </div>
+        </section>
+        <section class="scrollspy-section" id="veg">
+          <div class="header">
+            <h4 class="veg">Veg Pizza</h4>
+          </div>
+          <div class="menu-grid">
+
+            <% menus.veg.map(item => { %>
+            <div class="menu-card">
+              <div class="menu-image">
+                <div class="overlay">
+                  <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
+                  <% } else {%> <div class="menu-type non-veg"></div>
+                  <% } %>
+                  <div class="menu-price"><%= item.price %></div>
+                </div>
+                <div class="image">
+                  <img src="<%= item.image %>" alt="">
+                </div>
+              </div>
+              <div class="menu-details">
+                <div class="menu-name">
+                  <p>
+                    <%= item.name %>
+                  </p>
+                  <span>
+                    <%= item.description %>
+                  </span>
+                </div>
+                <div class="menu-selector">
+                  <div class="size">
+                    <label for="size">Size</label>
+                    <select name="" id="size">
+                      <% item.options.prices.forEach(price => { %>
+                      <option value="<%= price.size %>"><%= price.size %></option>
+                      <% }) %>
+                    </select>
+                  </div>
+                  <div class="crust">
+                    <label for="crust">Crust</label>
+                    <select name="" id="crust">
+                      <% item.options.crusts.forEach(crust => { %>
+                      <option value="<%= crust %>"><%= crust %></option>
+                      <% }) %>
+                    </select>
+                  </div>
+                </div>
+                <div class="menu-actions">
+                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                </div>
+              </div>
+            </div>
+            <%}) %>
+          </div>
+        </section>
+        <section class="scrollspy-section" id="nonveg">
+          <div class="header">
+            <h4 class="non-veg">Non-Veg Pizza</h4>
+          </div>
+          <div class="menu-grid">
+
+            <% menus.nonveg.map(item => { %>
+            <div class="menu-card">
+              <div class="menu-image">
+                <div class="overlay">
+                  <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
+                  <% } else {%> <div class="menu-type non-veg"></div>
+                  <% } %>
+                  <div class="menu-price"><%= item.price %></div>
+                </div>
+                <div class="image">
+                  <img src="<%= item.image %>" alt="">
+                </div>
+              </div>
+              <div class="menu-details">
+                <div class="menu-name">
+                  <p>
+                    <%= item.name %>
+                  </p>
+                  <span>
+                    <%= item.description %>
+                  </span>
+                </div>
+                <div class="menu-selector">
+                  <div class="size">
+                    <label for="size">Size</label>
+                    <select name="" id="size">
+                      <% item.options.prices.forEach(price => { %>
+                      <option value="<%= price.size %>"><%= price.size %></option>
+                      <% }) %>
+                    </select>
+                  </div>
+                  <div class="crust">
+                    <label for="crust">Crust</label>
+                    <select name="" id="crust">
+                      <% item.options.crusts.forEach(crust => { %>
+                      <option value="<%= crust %>"><%= crust %></option>
+                      <% }) %>
+                    </select>
+                  </div>
+                </div>
+                <div class="menu-actions">
+                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                </div>
+              </div>
+            </div>
+            <%}) %>
+          </div>
+        </section>
+        <section class="scrollspy-section" id="combo">
+          <div class="header">
+            <h4>Meals & Combos</h4>
+          </div>
+          <div class="menu-grid">
+
+            <% menus.combo.map(item => { %>
+            <div class="menu-card">
+              <div class="menu-image">
+                <div class="overlay">
+                  <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
+                  <% } else {%> <div class="menu-type non-veg"></div>
+                  <% } %>
+                  <div class="menu-price"><%= item.price %></div>
+                </div>
+                <div class="image">
+                  <img src="<%= item.image %>" alt="">
+                </div>
+              </div>
+              <div class="menu-details">
+                <div class="menu-name">
+                  <p>
+                    <%= item.name %>
+                  </p>
+                  <span>
+                    <%= item.description %>
+                  </span>
+                </div>
+                <div class="menu-actions">
+                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                </div>
+              </div>
+            </div>
+            <%}) %>
+          </div>
+        </section>
+        <section class="scrollspy-section" id="pizzamania">
+          <div class="header">
+            <h4>Pizza Mania</h4>
+          </div>
+          <div class="menu-grid">
+
+            <% menus.pizzamania.map(item => { %>
+            <div class="menu-card">
+              <div class="menu-image">
+                <div class="overlay">
+                  <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
+                  <% } else {%> <div class="menu-type non-veg"></div>
+                  <% } %>
+                  <div class="menu-price"><%= item.price %></div>
+                </div>
+                <div class="image">
+                  <img src="<%= item.image %>" alt="">
+                </div>
+              </div>
+              <div class="menu-details">
+                <div class="menu-name">
+                  <p>
+                    <%= item.name %>
+                  </p>
+                  <span>
+                    <%= item.description %>
+                  </span>
+                </div>
+                <div class="menu-selector">
+                  <div class="size">
+                    <label for="size">Size</label>
+                    <select name="" id="size" disabled>
+                      <option value="regular">Regular</option>
+                    </select>
+                  </div>
+                  <div class="crust">
+                    <label for="crust">Crust</label>
+                    <select name="" id="crust">
+                      <% item.options.crusts.forEach(crust => { %>
+                      <option value="<%= crust %>"><%= crust %></option>
+                      <% }) %>
+                    </select>
+                  </div>
+                </div>
+                <div class="menu-actions">
+                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                </div>
+              </div>
+            </div>
+            <%}) %>
+          </div>
+        </section>
+        <section class="scrollspy-section" id="chicken">
+          <div class="header">
+            <h4 class="non-veg">Speciality Chicken</h4>
+          </div>
+          <div class="menu-grid">
+
+            <% menus.chicken.map(item => { %>
+            <div class="menu-card">
+              <div class="menu-image">
+                <div class="overlay">
+                  <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
+                  <% } else {%> <div class="menu-type non-veg"></div>
+                  <% } %>
+                  <div class="menu-price"><%= item.price %></div>
+                </div>
+                <div class="image">
+                  <img src="<%= item.image %>" alt="">
+                </div>
+              </div>
+              <div class="menu-details">
+                <div class="menu-name">
+                  <p>
+                    <%= item.name %>
+                  </p>
+                  <span>
+                    <%= item.description %>
+                  </span>
+                </div>
+                <div class="menu-actions">
+                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                </div>
+              </div>
+            </div>
+            <%}) %>
+          </div>
+        </section>
+        <section class="scrollspy-section" id="sides">
+          <div class="header">
+            <h4>Sides</h4>
+          </div>
+          <div class="menu-grid">
+
+            <% menus.sides.map(item => { %>
+            <div class="menu-card">
+              <div class="menu-image">
+                <div class="overlay">
+                  <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
+                  <% } else {%> <div class="menu-type non-veg"></div>
+                  <% } %>
+                  <div class="menu-price"><%= item.price %></div>
+                </div>
+                <div class="image">
+                  <img src="<%= item.image %>" alt="">
+                </div>
+              </div>
+              <div class="menu-details">
+                <div class="menu-name">
+                  <p>
+                    <%= item.name %>
+                  </p>
+                  <span>
+                    <%= item.description %>
+                  </span>
+                </div>
+                <div class="menu-actions">
+                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                </div>
+              </div>
+            </div>
+            <%}) %>
+          </div>
+        </section>
+        <section class="scrollspy-section" id="beverages">
+          <div class="header">
+            <h4 class="veg">Beverages</h4>
+          </div>
+          <div class="menu-grid">
+
+            <% menus.beverage.map(item => { %>
+            <div class="menu-card">
+              <div class="menu-image">
+                <div class="overlay">
+                  <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
+                  <% } else {%> <div class="menu-type non-veg"></div>
+                  <% } %>
+                  <div class="menu-price"><%= item.price %></div>
+                </div>
+                <div class="image">
+                  <img src="<%= item.image %>" alt="">
+                </div>
+              </div>
+              <div class="menu-details">
+                <div class="menu-name">
+                  <p>
+                    <%= item.name %>
+                  </p>
+                  <span>
+                    <%= item.description %>
+                  </span>
+                </div>
+                <div class="menu-actions">
+                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                </div>
+              </div>
+            </div>
+            <%}) %>
+          </div>
+        </section>
+        <section class="scrollspy-section" id="desserts">
+          <div class="header">
+            <h4 class="veg">Desserts</h4>
+          </div>
+          <div class="menu-grid">
+
+            <% menus.dessert.map(item => { %>
+            <div class="menu-card">
+              <div class="menu-image">
+                <div class="overlay">
+                  <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
+                  <% } else {%> <div class="menu-type non-veg"></div>
+                  <% } %>
+                  <div class="menu-price"><%= item.price %></div>
+                </div>
+                <div class="image">
+                  <img src="<%= item.image %>" alt="">
+                </div>
+              </div>
+              <div class="menu-details">
+                <div class="menu-name">
+                  <p>
+                    <%= item.name %>
+                  </p>
+                  <span>
+                    <%= item.description %>
+                  </span>
+                </div>
+                <div class="menu-actions">
+                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
                 </div>
               </div>
             </div>
