@@ -5369,8 +5369,18 @@ function updateCart(pizza) {
 
 addtoCartBtn.forEach(function (btn) {
   btn.addEventListener('click', function (e) {
-    var pizza = JSON.parse(btn.dataset.pizza);
-    updateCart(pizza);
+    var size = btn.closest(".menu-details").getElementsByClassName('size-select')[0];
+    var selectedSize = size.options[size.selectedIndex].value;
+    var crust = btn.closest(".menu-details").getElementsByClassName('crust-select')[0];
+    var selectedCrust = crust.options[crust.selectedIndex].value;
+    var item = JSON.parse(btn.dataset.item);
+    var crustIndex = item.options.crusts.indexOf(selectedCrust);
+    var price = item.options.prices.filter(function (p) {
+      return p.size === selectedSize;
+    })[0];
+    var itemPrice = price.crusts[crustIndex];
+    var extra = price.extraCheese;
+    console.log(item, itemPrice, extra); // updateCart(item);
   });
 });
 document.addEventListener('DOMContentLoaded', function () {

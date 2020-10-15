@@ -98,8 +98,20 @@ function updateCart(pizza) {
 
 addtoCartBtn.forEach(btn => {
   btn.addEventListener('click', (e) => {
-    const pizza = JSON.parse(btn.dataset.pizza);
-    updateCart(pizza);
+    const size = btn.closest(".menu-details").getElementsByClassName('size-select')[0];
+    const selectedSize = size.options[size.selectedIndex].value;
+    const crust = btn.closest(".menu-details").getElementsByClassName('crust-select')[0];
+    const selectedCrust = crust.options[crust.selectedIndex].value;
+
+    const item = JSON.parse(btn.dataset.item);
+
+    const crustIndex = item.options.crusts.indexOf(selectedCrust);
+    const price = item.options.prices.filter(p => p.size === selectedSize)[0];
+    const itemPrice = price.crusts[crustIndex];
+    const extra = price.extraCheese;
+
+    console.log(item, itemPrice, extra);
+    // updateCart(item);
   })
 });
 

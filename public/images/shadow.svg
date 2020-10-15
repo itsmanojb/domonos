@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="117px" height="91px" viewBox="0 0 117 91" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Oval 3</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-22.0%" y="-58.7%" width="144.1%" height="217.5%" filterUnits="objectBoundingBox" id="filter-1">
+            <feGaussianBlur stdDeviation="12.7566964" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+    </defs>
+    <g id="10_Cart" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.547778371">
+        <g id="EDV_cart" transform="translate(-6.000000, -879.000000)" fill="#000000">
+            <g id="frequently-bought-together" transform="translate(6.000000, 821.000000)">
+                <g id="Favorite_alt" transform="translate(0.000000, 29.000000)">
+                    <g id="Favorite-Copy-4">
+                        <g id="Veg-Extravaganza-Copy">
+                            <ellipse id="Oval-3" filter="url(#filter-1)" cx="-0.214285714" cy="92.5714286" rx="86.7857143" ry="32.5714286"></ellipse>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

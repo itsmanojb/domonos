@@ -32,7 +32,7 @@
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
                   <% } else {%> <div class="menu-type non-veg"></div>
                   <% } %>
-                  <div class="menu-price"><%= item.price %></div>
+                  <div class="menu-price"><span>&#8377; <%= item.price %></span></div>
                 </div>
                 <div class="image">
                   <img src="<%= item.image %>" alt="">
@@ -50,7 +50,7 @@
                 <div class="menu-selector">
                   <div class="size">
                     <label for="size">Size</label>
-                    <select name="" id="size">
+                    <select class="size-select" name="size">
                       <% item.options.prices.forEach(price => { %>
                       <option value="<%= price.size %>"><%= price.size %></option>
                       <% }) %>
@@ -58,7 +58,7 @@
                   </div>
                   <div class="crust">
                     <label for="crust">Crust</label>
-                    <select name="" id="crust">
+                    <select class="crust-select" name="crust">
                       <% item.options.crusts.forEach(crust => { %>
                       <option value="<%= crust %>"><%= crust %></option>
                       <% }) %>
@@ -66,7 +66,7 @@
                   </div>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
                 </div>
               </div>
             </div>
@@ -85,7 +85,7 @@
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
                   <% } else {%> <div class="menu-type non-veg"></div>
                   <% } %>
-                  <div class="menu-price"><%= item.price %></div>
+                  <div class="menu-price"><span>&#8377; <%= item.price %></span></div>
                 </div>
                 <div class="image">
                   <img src="<%= item.image %>" alt="">
@@ -101,7 +101,7 @@
                   </span>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
                 </div>
               </div>
             </div>
@@ -121,7 +121,7 @@
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
                   <% } else {%> <div class="menu-type non-veg"></div>
                   <% } %>
-                  <div class="menu-price"><%= item.price %></div>
+                  <div class="menu-price"><span>&#8377; <%= item.price %></span></div>
                 </div>
                 <div class="image">
                   <img src="<%= item.image %>" alt="">
@@ -155,7 +155,7 @@
                   </div>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
                 </div>
               </div>
             </div>
@@ -175,7 +175,7 @@
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
                   <% } else {%> <div class="menu-type non-veg"></div>
                   <% } %>
-                  <div class="menu-price"><%= item.price %></div>
+                  <div class="menu-price"><span>&#8377; <%= item.price %></span></div>
                 </div>
                 <div class="image">
                   <img src="<%= item.image %>" alt="">
@@ -209,7 +209,7 @@
                   </div>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
                 </div>
               </div>
             </div>
@@ -229,7 +229,7 @@
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
                   <% } else {%> <div class="menu-type non-veg"></div>
                   <% } %>
-                  <div class="menu-price"><%= item.price %></div>
+                  <div class="menu-price"><span>&#8377; <%= item.price %></span></div>
                 </div>
                 <div class="image">
                   <img src="<%= item.image %>" alt="">
@@ -245,7 +245,7 @@
                   </span>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
                 </div>
               </div>
             </div>
@@ -265,7 +265,7 @@
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
                   <% } else {%> <div class="menu-type non-veg"></div>
                   <% } %>
-                  <div class="menu-price"><%= item.price %></div>
+                  <div class="menu-price"><span>&#8377; <%= item.price %></span></div>
                 </div>
                 <div class="image">
                   <img src="<%= item.image %>" alt="">
@@ -297,7 +297,7 @@
                   </div>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
                 </div>
               </div>
             </div>
@@ -317,7 +317,7 @@
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
                   <% } else {%> <div class="menu-type non-veg"></div>
                   <% } %>
-                  <div class="menu-price"><%= item.price %></div>
+                  <div class="menu-price"><span>&#8377; <%= item.price %></span></div>
                 </div>
                 <div class="image">
                   <img src="<%= item.image %>" alt="">
@@ -333,7 +333,7 @@
                   </span>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
                 </div>
               </div>
             </div>
@@ -353,7 +353,7 @@
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
                   <% } else {%> <div class="menu-type non-veg"></div>
                   <% } %>
-                  <div class="menu-price"><%= item.price %></div>
+                  <div class="menu-price"><span>&#8377; <%= item.price %></span></div>
                 </div>
                 <div class="image">
                   <img src="<%= item.image %>" alt="">
@@ -369,7 +369,7 @@
                   </span>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
                 </div>
               </div>
             </div>
@@ -389,7 +389,7 @@
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
                   <% } else {%> <div class="menu-type non-veg"></div>
                   <% } %>
-                  <div class="menu-price"><%= item.price %></div>
+                  <div class="menu-price"><span>&#8377; <%= item.price %></span></div>
                 </div>
                 <div class="image">
                   <img src="<%= item.image %>" alt="">
@@ -405,7 +405,7 @@
                   </span>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
                 </div>
               </div>
             </div>
@@ -425,7 +425,7 @@
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
                   <% } else {%> <div class="menu-type non-veg"></div>
                   <% } %>
-                  <div class="menu-price"><%= item.price %></div>
+                  <div class="menu-price"><span>&#8377; <%= item.price %></span></div>
                 </div>
                 <div class="image">
                   <img src="<%= item.image %>" alt="">
@@ -441,7 +441,7 @@
                   </span>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-pizza=<%= JSON.stringify(item)%>>Add to Cart</button>
+                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
                 </div>
               </div>
             </div>

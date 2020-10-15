@@ -19,6 +19,9 @@ const menuSchema = new Schema({
   options: {
     type: Object
   },
+  price: {
+    type: Number,
+  },
   image: {
     type: String,
     required: true

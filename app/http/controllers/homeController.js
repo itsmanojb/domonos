@@ -5,6 +5,11 @@ function homeController() {
     async index(req, res) {
       const allMenus = await Menu.find();
 
+      allMenus.forEach(menu => {
+        const data = menu.toObject();
+        console.log(data);
+      })
+
       const menus = allMenus.reduce((menus, item) => {
         const group = (menus[item.menuType] || []);
         group.push(item);

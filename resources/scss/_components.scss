@@ -28,7 +28,7 @@
 
       h4 {
         display: block;
-        background: url("/public/images/popup_header.svg") no-repeat;
+        background: url("/images/popup_header.svg") no-repeat;
         background-size: contain;
         background-position: top left;
         margin: -11px 0 0;
@@ -438,6 +438,10 @@
     display: flex;
     justify-content: space-between;
 
+    .menu-tab {
+      text-align: center;
+    }
+
     a {
       display: inline-block;
       border-bottom: 3px solid transparent;
@@ -495,11 +499,9 @@
       bottom: 0;
       right: 0;
       z-index: 1;
-      background-image: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.05),
-        rgba(0, 0, 0, 0.2)
-      );
+      background: rgba(0, 0, 0, 0.3) url("/images/shadow.svg") no-repeat;
+      background-position: bottom left;
+      background-size: 120px;
       padding: 0.75rem;
       display: flex;
       flex-direction: column;
@@ -545,6 +547,10 @@
 
       .menu-price {
         margin-bottom: 0.2rem;
+
+        span {
+          font-size: 15px;
+        }
       }
     }
   }
@@ -607,7 +613,7 @@
 
         &:disabled {
           background-image: none;
-          width: 60%;
+          width: 6nu 0%;
         }
       }
     }
