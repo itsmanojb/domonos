@@ -26,7 +26,7 @@
           <div class="menu-grid">
 
             <% menus.topMenu.map(item => { %>
-            <div class="menu-card">
+            <div class="menu-card" data-item='<%= JSON.stringify(item)%>'>
               <div class="menu-image">
                 <div class="overlay">
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
@@ -66,7 +66,7 @@
                   </div>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
+                  <button class="btn btn-sm addToCart">Add to Cart</button>
                 </div>
               </div>
             </div>

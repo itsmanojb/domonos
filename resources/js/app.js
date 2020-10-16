@@ -70,6 +70,36 @@ function closeAlert() {
   alertUI.classList.remove('shown');
 }
 
+const sizeSelect = document.querySelectorAll('.size-select');
+const crustSelect = document.querySelectorAll('.crust-select');
+
+sizeSelect.forEach(select => {
+  select.addEventListener('change', (e) => {
+    const size = e.target.value;
+    const item = JSON.parse(select.closest(".menu-card").dataset.item);
+    const crusts = item.options.prices.filter(p => p.size === size)[0].crusts;
+    const crust = select.closest(".menu-selector").getElementsByClassName('crust-select')[0];
+    const crustOptions = crust.getElementsByTagName("option");
+    for (let i = 0; i < crustOptions.length; i++) {
+      crustOptions[i].disabled = crusts[i] === 0 ? true : false
+    }
+  })
+});
+
+crustSelect.forEach(select => {
+  select.addEventListener('change', (e) => {
+    const crust = e.target.value;
+    const item = JSON.parse(select.closest(".menu-card").dataset.item);
+    const sizeSelector = select.closest(".menu-selector").getElementsByClassName('size-select')[0];
+    const size = sizeSelector.options[sizeSelector.selectedIndex].value;
+    const prices = item.options.prices.filter(p => p.size === size)[0].crusts;
+    const crustIndex = item.options.crusts.indexOf(crust);
+    const price = prices[crustIndex];
+    const priceSpan = select.closest(".menu-card").querySelector('.menu-price span');
+    priceSpan.innerText = price ? `₹ ${price}` : ''
+  })
+});
+
 const addtoCartBtn = document.querySelectorAll('.addToCart');
 const cartCounter = document.querySelector('#cartCounter')
 
@@ -103,8 +133,7 @@ addtoCartBtn.forEach(btn => {
     const crust = btn.closest(".menu-details").getElementsByClassName('crust-select')[0];
     const selectedCrust = crust.options[crust.selectedIndex].value;
 
-    const item = JSON.parse(btn.dataset.item);
-
+    const item = JSON.parse(btn.closest(".menu-card").dataset.item);
     const crustIndex = item.options.crusts.indexOf(selectedCrust);
     const price = item.options.prices.filter(p => p.size === selectedSize)[0];
     const itemPrice = price.crusts[crustIndex];
@@ -123,6 +152,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const makeActive = (link) => menu_links[link].classList.add("active");
   const removeActive = (link) => menu_links[link].classList.remove("active");
   const removeAllActive = () => [...Array(sections.length).keys()].forEach((link) => removeActive(link));
+
+  const sizePickers = document.querySelectorAll('.size-select');
+  let event = new Event('change');
+  sizePickers.forEach(picker => picker.dispatchEvent(event));
 
   const affix = document.getElementById("cartPreview");
   const offset = 110;

@@ -5343,6 +5343,38 @@ function closeAlert() {
   alertUI.classList.remove('shown');
 }
 
+var sizeSelect = document.querySelectorAll('.size-select');
+var crustSelect = document.querySelectorAll('.crust-select');
+sizeSelect.forEach(function (select) {
+  select.addEventListener('change', function (e) {
+    var size = e.target.value;
+    var item = JSON.parse(select.closest(".menu-card").dataset.item);
+    var crusts = item.options.prices.filter(function (p) {
+      return p.size === size;
+    })[0].crusts;
+    var crust = select.closest(".menu-selector").getElementsByClassName('crust-select')[0];
+    var crustOptions = crust.getElementsByTagName("option");
+
+    for (var i = 0; i < crustOptions.length; i++) {
+      crustOptions[i].disabled = crusts[i] === 0 ? true : false;
+    }
+  });
+});
+crustSelect.forEach(function (select) {
+  select.addEventListener('change', function (e) {
+    var crust = e.target.value;
+    var item = JSON.parse(select.closest(".menu-card").dataset.item);
+    var sizeSelector = select.closest(".menu-selector").getElementsByClassName('size-select')[0];
+    var size = sizeSelector.options[sizeSelector.selectedIndex].value;
+    var prices = item.options.prices.filter(function (p) {
+      return p.size === size;
+    })[0].crusts;
+    var crustIndex = item.options.crusts.indexOf(crust);
+    var price = prices[crustIndex];
+    var priceSpan = select.closest(".menu-card").querySelector('.menu-price span');
+    priceSpan.innerText = price ? "\u20B9 ".concat(price) : '';
+  });
+});
 var addtoCartBtn = document.querySelectorAll('.addToCart');
 var cartCounter = document.querySelector('#cartCounter');
 
@@ -5373,7 +5405,7 @@ addtoCartBtn.forEach(function (btn) {
     var selectedSize = size.options[size.selectedIndex].value;
     var crust = btn.closest(".menu-details").getElementsByClassName('crust-select')[0];
     var selectedCrust = crust.options[crust.selectedIndex].value;
-    var item = JSON.parse(btn.dataset.item);
+    var item = JSON.parse(btn.closest(".menu-card").dataset.item);
     var crustIndex = item.options.crusts.indexOf(selectedCrust);
     var price = item.options.prices.filter(function (p) {
       return p.size === selectedSize;
@@ -5401,6 +5433,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   };
 
+  var sizePickers = document.querySelectorAll('.size-select');
+  var event = new Event('change');
+  sizePickers.forEach(function (picker) {
+    return picker.dispatchEvent(event);
+  });
   var affix = document.getElementById("cartPreview");
   var offset = 110;
   var sectionMargin = 200;
