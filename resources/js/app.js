@@ -83,6 +83,11 @@ sizeSelect.forEach(select => {
     for (let i = 0; i < crustOptions.length; i++) {
       crustOptions[i].disabled = crusts[i] === 0 ? true : false
     }
+    crust.selectedIndex = 0;
+    const prices = item.options.prices.filter(p => p.size === size)[0].crusts;
+    const price = prices[0];
+    const priceSpan = select.closest(".menu-card").querySelector('.menu-price span');
+    priceSpan.innerText = price ? `₹ ${price}` : ''
   })
 });
 
@@ -103,27 +108,71 @@ crustSelect.forEach(select => {
 const addtoCartBtn = document.querySelectorAll('.addToCart');
 const cartCounter = document.querySelector('#cartCounter')
 
-function updateCart(pizza) {
-  axios.post('/update-cart', pizza).then((res) => {
-    cartCounter.innerText = res.data.totalQty;
-    new Noty({
-      type: 'success',
-      text: 'Item added to cart',
-      timeout: 2000,
-      progressBar: false,
-      layout: 'bottomRight',
+function updateCart(item) {
+  axios.post('/update-cart', item)
+    .then((res) => {
 
-    }).show()
-  }).catch((err) => {
-    new Noty({
-      type: 'error',
-      text: 'Something went wrong',
-      timeout: 2000,
-      progressBar: false,
-      layout: 'bottomRight',
+      cartCounter.innerText = res.data.cart.totalQty;
+      populateCart(res.data.cart);
 
-    }).show()
-  })
+      new Noty({
+        type: 'success',
+        text: 'Item added to cart',
+        timeout: 2000,
+        progressBar: false,
+        layout: 'bottomRight',
+
+      }).show()
+    }).catch((err) => {
+      new Noty({
+        type: 'error',
+        text: 'Something went wrong',
+        timeout: 2000,
+        progressBar: false,
+        layout: 'bottomRight',
+
+      }).show()
+    })
+}
+
+
+function populateCart(data) {
+
+  let items = document.getElementById('sideCartItems').innerHTML || '';
+  for (let pizza of Object.values(data.items)) {
+    items += `
+    <div class="item">
+      <figure>
+          <img src="${pizza.item.image}" alt="">
+      </figure>
+      <div class="details">
+          <h2>${pizza.item.name}</h2>
+          <p>${pizza.item.description}</p>
+          <div class="more">
+              <span>${pizza.item.size}</span>
+              <span>${pizza.item.crust}</span>
+          </div>
+      </div>`;
+
+    if (pizza.item.extra) {
+      items += `
+        <div class="custom">
+            <span>Your Customization</span>
+            <p> <strong>Added topping:</strong> Extra Cheese</p>
+        </div>`;
+    }
+
+    items += `
+      <div class="price-q">
+            <p>${pizza.qty}</p>
+            <h5>&#8377; ${pizza.item.price * pizza.qty}</h5>
+        </div>
+      </div>`;
+
+  }
+
+  document.getElementById('sideCartItems').innerHTML = items;
+  document.getElementById('sideCartSubtotal').innerHTML = `₹ ${data.totalPrice}`;
 }
 
 addtoCartBtn.forEach(btn => {
@@ -139,8 +188,18 @@ addtoCartBtn.forEach(btn => {
     const itemPrice = price.crusts[crustIndex];
     const extra = price.extraCheese;
 
-    console.log(item, itemPrice, extra);
-    // updateCart(item);
+    const {
+      options,
+      ...cartItem
+    } = item;
+
+    cartItem.price = itemPrice;
+    cartItem.size = selectedSize;
+    cartItem.crust = selectedCrust;
+    cartItem.extra = extra;
+
+    console.log(cartItem, extra);
+    updateCart(cartItem);
   })
 });
 

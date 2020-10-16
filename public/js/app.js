@@ -5274,6 +5274,10 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
 
 
 var overlay = document.getElementById('ovly');
@@ -5358,6 +5362,14 @@ sizeSelect.forEach(function (select) {
     for (var i = 0; i < crustOptions.length; i++) {
       crustOptions[i].disabled = crusts[i] === 0 ? true : false;
     }
+
+    crust.selectedIndex = 0;
+    var prices = item.options.prices.filter(function (p) {
+      return p.size === size;
+    })[0].crusts;
+    var price = prices[0];
+    var priceSpan = select.closest(".menu-card").querySelector('.menu-price span');
+    priceSpan.innerText = price ? "\u20B9 ".concat(price) : '';
   });
 });
 crustSelect.forEach(function (select) {
@@ -5378,9 +5390,10 @@ crustSelect.forEach(function (select) {
 var addtoCartBtn = document.querySelectorAll('.addToCart');
 var cartCounter = document.querySelector('#cartCounter');
 
-function updateCart(pizza) {
-  axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/update-cart', pizza).then(function (res) {
-    cartCounter.innerText = res.data.totalQty;
+function updateCart(item) {
+  axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/update-cart', item).then(function (res) {
+    cartCounter.innerText = res.data.cart.totalQty;
+    populateCart(res.data.cart);
     new noty__WEBPACK_IMPORTED_MODULE_1___default.a({
       type: 'success',
       text: 'Item added to cart',
@@ -5399,6 +5412,24 @@ function updateCart(pizza) {
   });
 }
 
+function populateCart(data) {
+  var items = document.getElementById('sideCartItems').innerHTML || '';
+
+  for (var _i = 0, _Object$values = Object.values(data.items); _i < _Object$values.length; _i++) {
+    var pizza = _Object$values[_i];
+    items += "\n    <div class=\"item\">\n      <figure>\n          <img src=\"".concat(pizza.item.image, "\" alt=\"\">\n      </figure>\n      <div class=\"details\">\n          <h2>").concat(pizza.item.name, "</h2>\n          <p>").concat(pizza.item.description, "</p>\n          <div class=\"more\">\n              <span>").concat(pizza.item.size, "</span>\n              <span>").concat(pizza.item.crust, "</span>\n          </div>\n      </div>");
+
+    if (pizza.item.extra) {
+      items += "\n        <div class=\"custom\">\n            <span>Your Customization</span>\n            <p> <strong>Added topping:</strong> Extra Cheese</p>\n        </div>";
+    }
+
+    items += "\n      <div class=\"price-q\">\n            <p>".concat(pizza.qty, "</p>\n            <h5>&#8377; ").concat(pizza.item.price * pizza.qty, "</h5>\n        </div>\n      </div>");
+  }
+
+  document.getElementById('sideCartItems').innerHTML = items;
+  document.getElementById('sideCartSubtotal').innerHTML = "\u20B9 ".concat(data.totalPrice);
+}
+
 addtoCartBtn.forEach(function (btn) {
   btn.addEventListener('click', function (e) {
     var size = btn.closest(".menu-details").getElementsByClassName('size-select')[0];
@@ -5412,7 +5443,16 @@ addtoCartBtn.forEach(function (btn) {
     })[0];
     var itemPrice = price.crusts[crustIndex];
     var extra = price.extraCheese;
-    console.log(item, itemPrice, extra); // updateCart(item);
+
+    var options = item.options,
+        cartItem = _objectWithoutProperties(item, ["options"]);
+
+    cartItem.price = itemPrice;
+    cartItem.size = selectedSize;
+    cartItem.crust = selectedCrust;
+    cartItem.extra = extra;
+    console.log(cartItem, extra);
+    updateCart(cartItem);
   });
 });
 document.addEventListener('DOMContentLoaded', function () {

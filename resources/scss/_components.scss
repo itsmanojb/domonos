@@ -499,7 +499,7 @@
       bottom: 0;
       right: 0;
       z-index: 1;
-      background: rgba(0, 0, 0, 0.3) url("/images/shadow.svg") no-repeat;
+      background: rgba(0, 0, 0, 0.1) url("/images/shadow.svg") no-repeat;
       background-position: bottom left;
       background-size: 120px;
       padding: 0.75rem;
@@ -687,6 +687,7 @@
   flex-direction: column;
   overflow: hidden;
   position: relative;
+  justify-content: space-between;
 
   &::before {
     content: "";
@@ -702,6 +703,7 @@
   .added-items {
     overflow-y: scroll;
     overflow-x: hidden;
+    flex-grow: 1;
   }
 
   .cta {
@@ -709,8 +711,8 @@
     flex-direction: column;
     justify-content: center;
     background: rgb(239, 245, 251);
-    min-height: 5rem;
-    padding: 1rem 0.75rem 1.5rem;
+    min-height: 6rem;
+    padding: 1.2rem 0.75rem;
     box-shadow: rgba(0, 0, 0, 0.12) 0px -0.56rem 0.62rem 0px;
 
     > div {
@@ -756,6 +758,14 @@
       border-radius: 3px;
       margin: 0;
       grid-row: 1/2;
+      overflow: hidden;
+
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
     }
 
     .details {
@@ -767,26 +777,28 @@
       h2 {
         margin: 0 0 4px;
         padding: 0;
-        font-size: 16px;
+        font-size: 15px;
         color: var(--text-color);
       }
 
       p {
         margin: 0;
-        font-size: 12.5px;
+        font-size: 12px;
         color: rgb(100, 129, 143);
       }
 
       .more {
-        margin: 12px 0;
+        margin: 8px 0;
+
         span {
           color: rgba(53, 53, 53, 0.87);
-          font-size: 15px;
-          font-weight: 500;
+          font-size: 12px;
+          font-weight: 600;
+          text-transform: capitalize;
 
           & + span::before {
             content: "|";
-            padding: 0 10px;
+            padding: 0 8px;
           }
         }
       }
@@ -847,15 +859,24 @@
   &.item {
     padding: 1.5rem;
     display: grid;
-    grid-template-columns: 150px 1fr;
+    grid-template-columns: 140px 1fr;
     gap: 0;
 
     figure {
       background-color: #ddd;
-      height: 120px;
-      width: 120px;
-      border-radius: 3px;
+      height: 110px;
+      width: 110px;
+      border-radius: 4px;
       margin: 0;
+      overflow: hidden;
+      position: relative;
+
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
     }
 
     .info {
@@ -868,7 +889,7 @@
         h2 {
           margin: 0 0 8px;
           padding: 0;
-          font-size: 18px;
+          font-size: 17px;
           color: var(--text-color);
         }
 
@@ -880,10 +901,12 @@
 
         .more {
           margin: 12px 0;
+
           span {
             color: rgba(53, 53, 53, 0.87);
-            font-size: 15px;
-            font-weight: 500;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: capitalize;
 
             & + span::before {
               content: "|";
@@ -993,13 +1016,40 @@
     width: calc(100% - 16px);
     margin: 0 8px;
     border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .overlay {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      z-index: 1;
+      background: rgba(0, 0, 0, 0.1) url("/images/shadow.svg") no-repeat;
+      background-position: bottom left;
+      background-size: 120px;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column-reverse;
+      color: #fff;
+      font-size: 12px;
+    }
   }
 
   @extend .card;
   padding: 0 !important;
   overflow: hidden;
   display: grid;
-  grid-template-rows: 200px;
+  grid-template-rows: 180px;
   margin: 4px;
 
   .footer {

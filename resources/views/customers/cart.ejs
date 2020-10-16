@@ -11,28 +11,29 @@
           <% for(let pizza of Object.values(session.cart.items) ){ %>
           <div class="cart-card item">
             <figure>
-              <img src="" alt="">
-              <!-- <%= pizza.item.image %> -->
+              <img src="<%= pizza.item.image %>" alt="">
             </figure>
             <div>
               <div class="info">
                 <div class="details">
                   <h2> <%= pizza.item.name %> </h2>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, similique.</p>
+                  <p><%= pizza.item.description %></p>
                   <div class="more">
                     <span><%= pizza.item.size %> </span>
-                    <!-- <span></span> -->
+                    <span><%= pizza.item.crust %></span>
                   </div>
                 </div>
                 <div class="price-q">
-                  <h5><%= pizza.item.price * pizza.qty %></h5>
+                  <h5>&#8377; <%= pizza.item.price * pizza.qty %></h5>
                   <p><%= pizza.qty %> </p>
                 </div>
               </div>
+              <% if(pizza.item.extra) { %>
               <div class="custom">
                 <span>Your Customization</span>
-                <p> <strong>Added topping:</strong> askdjask</p>
+                <p> <strong>Added topping:</strong> Extra Cheese</p>
               </div>
+              <% } %>
             </div>
           </div>
           <%} %>
@@ -44,9 +45,13 @@
           <div class="meals">
             <div class="wrapper">
               <div class="menu-grid">
+                <% menus.map(menu => { %>
                 <div class="additional-menu-item">
                   <figure>
-                    <img src="" alt="">
+                    <img src="<%= menu.image %>" alt="">
+                    <div class="overlay">
+                      <div><%= menu.name %> <br>&#8377; <%= menu.price %> </div>
+                    </div>
                   </figure>
                   <div class="footer">
                     <button class="btn btn-sm" type="button">
@@ -54,56 +59,7 @@
                     </button>
                   </div>
                 </div>
-                <div class="additional-menu-item">
-                  <figure>
-                    <img src="" alt="">
-                  </figure>
-                  <div class="footer">
-                    <button class="btn btn-sm" type="button">
-                      Add
-                    </button>
-                  </div>
-                </div>
-                <div class="additional-menu-item">
-                  <figure>
-                    <img src="" alt="">
-                  </figure>
-                  <div class="footer">
-                    <button class="btn btn-sm" type="button">
-                      Add
-                    </button>
-                  </div>
-                </div>
-                <div class="additional-menu-item">
-                  <figure>
-                    <img src="" alt="">
-                  </figure>
-                  <div class="footer">
-                    <button class="btn btn-sm" type="button">
-                      Add
-                    </button>
-                  </div>
-                </div>
-                <div class="additional-menu-item">
-                  <figure>
-                    <img src="" alt="">
-                  </figure>
-                  <div class="footer">
-                    <button class="btn btn-sm" type="button">
-                      Add
-                    </button>
-                  </div>
-                </div>
-                <div class="additional-menu-item">
-                  <figure>
-                    <img src="" alt="">
-                  </figure>
-                  <div class="footer">
-                    <button class="btn btn-sm" type="button">
-                      Add
-                    </button>
-                  </div>
-                </div>
+                <% }) %>
               </div>
             </div>
           </div>
@@ -182,17 +138,17 @@
         <div class="cart-card price">
           <dl>
             <dt>Sub Total</dt>
-            <dd><%= session.cart.totalPrice %></dd>
+            <dd>&#8377; <%= session.cart.totalPrice %></dd>
             <dt>Tax</dt>
             <dd>-</dd>
             <dt>Discount</dt>
             <dd>-</dd>
             <dt>Delivery</dt>
-            <dd>-</dd>
+            <dd>0</dd>
           </dl>
           <dl>
             <dt>Grand Total</dt>
-            <dd><%= session.cart.totalPrice %></dd>
+            <dd>&#8377; <%= session.cart.totalPrice %></dd>
           </dl>
           <div class="cta">
             <button class="btn" type="button">Place Order</button>

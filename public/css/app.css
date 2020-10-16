@@ -900,7 +900,7 @@ textarea:focus {
   bottom: 0;
   right: 0;
   z-index: 1;
-  background: rgba(0, 0, 0, 0.3) url("/images/shadow.svg") no-repeat;
+  background: rgba(0, 0, 0, 0.1) url("/images/shadow.svg") no-repeat;
   background-position: bottom left;
   background-size: 120px;
   padding: 0.75rem;
@@ -1089,6 +1089,7 @@ textarea:focus {
   flex-direction: column;
   overflow: hidden;
   position: relative;
+  justify-content: space-between;
 }
 
 .side-cart::before {
@@ -1105,6 +1106,7 @@ textarea:focus {
 .side-cart .added-items {
   overflow-y: scroll;
   overflow-x: hidden;
+  flex-grow: 1;
 }
 
 .side-cart .cta {
@@ -1112,8 +1114,8 @@ textarea:focus {
   flex-direction: column;
   justify-content: center;
   background: #eff5fb;
-  min-height: 5rem;
-  padding: 1rem 0.75rem 1.5rem;
+  min-height: 6rem;
+  padding: 1.2rem 0.75rem;
   box-shadow: rgba(0, 0, 0, 0.12) 0px -0.56rem 0.62rem 0px;
 }
 
@@ -1158,6 +1160,16 @@ textarea:focus {
   border-radius: 3px;
   margin: 0;
   grid-row: 1/2;
+  overflow: hidden;
+}
+
+.added-items .item figure img {
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
 }
 
 .added-items .item .details {
@@ -1169,29 +1181,30 @@ textarea:focus {
 .added-items .item .details h2 {
   margin: 0 0 4px;
   padding: 0;
-  font-size: 16px;
+  font-size: 15px;
   color: var(--text-color);
 }
 
 .added-items .item .details p {
   margin: 0;
-  font-size: 12.5px;
+  font-size: 12px;
   color: #64818f;
 }
 
 .added-items .item .details .more {
-  margin: 12px 0;
+  margin: 8px 0;
 }
 
 .added-items .item .details .more span {
   color: rgba(53, 53, 53, 0.87);
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
 .added-items .item .details .more span + span::before {
   content: "|";
-  padding: 0 10px;
+  padding: 0 8px;
 }
 
 .added-items .item .price-q {
@@ -1247,16 +1260,27 @@ textarea:focus {
 .cart-card.item {
   padding: 1.5rem;
   display: grid;
-  grid-template-columns: 150px 1fr;
+  grid-template-columns: 140px 1fr;
   gap: 0;
 }
 
 .cart-card.item figure {
   background-color: #ddd;
-  height: 120px;
-  width: 120px;
-  border-radius: 3px;
+  height: 110px;
+  width: 110px;
+  border-radius: 4px;
   margin: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.cart-card.item figure img {
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
 }
 
 .cart-card.item .info {
@@ -1272,7 +1296,7 @@ textarea:focus {
 .cart-card.item .info .details h2 {
   margin: 0 0 8px;
   padding: 0;
-  font-size: 18px;
+  font-size: 17px;
   color: var(--text-color);
 }
 
@@ -1288,8 +1312,9 @@ textarea:focus {
 
 .cart-card.item .info .details .more span {
   color: rgba(53, 53, 53, 0.87);
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
 .cart-card.item .info .details .more span + span::before {
@@ -1394,7 +1419,7 @@ textarea:focus {
   padding: 0 !important;
   overflow: hidden;
   display: grid;
-  grid-template-rows: 200px;
+  grid-template-rows: 180px;
   margin: 4px;
 }
 
@@ -1403,6 +1428,35 @@ textarea:focus {
   width: calc(100% - 16px);
   margin: 0 8px;
   border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.additional-menu-item figure img {
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+}
+
+.additional-menu-item figure .overlay {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.1) url("/images/shadow.svg") no-repeat;
+  background-position: bottom left;
+  background-size: 120px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column-reverse;
+  color: #fff;
+  font-size: 12px;
 }
 
 .additional-menu-item .footer {
@@ -1707,6 +1761,8 @@ textarea:focus {
   display: grid;
   grid-template-columns: 1fr 400px;
   gap: 100px;
+  margin: 0 20px;
+  padding-top: 20px;
 }
 
 .page.checkout .menu-grid {
