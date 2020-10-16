@@ -15,7 +15,25 @@
                 </div>
             </div>
             <div class="price-q">
-                <p><%= pizza.qty %> </p>
+                <div class="quantity-control">
+                    <button type="button" class="less">
+                        <% if(pizza.qty === 1) { %>
+                        <span class="material-icons">
+                            delete_outline
+                        </span>
+                        <% } else { %>
+                        <span class="material-icons">
+                            remove
+                        </span>
+                        <% } %>
+                    </button>
+                    <p><%= pizza.qty %> </p>
+                    <button type="button" class="more">
+                        <span class="material-icons">
+                            add
+                        </span>
+                    </button>
+                </div>
                 <h5>&#8377; <%= pizza.item.price * pizza.qty %></h5>
             </div>
             <% if(pizza.item.extra) { %>

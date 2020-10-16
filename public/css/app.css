@@ -1114,8 +1114,8 @@ textarea:focus {
   flex-direction: column;
   justify-content: center;
   background: #eff5fb;
-  min-height: 6rem;
-  padding: 1.2rem 0.75rem;
+  min-height: 6.2rem;
+  padding: 1.2rem 0.75rem 1.3rem;
   box-shadow: rgba(0, 0, 0, 0.12) 0px -0.56rem 0.62rem 0px;
 }
 
@@ -1146,11 +1146,12 @@ textarea:focus {
 }
 
 .added-items .item {
-  padding: 1rem;
+  padding: 1.5rem 0 0;
   display: grid;
   grid-template-columns: 80px 1fr;
   grid-template-rows: auto 1fr 1fr;
   gap: 0;
+  margin: 0 1rem;
 }
 
 .added-items .item figure {
@@ -1225,7 +1226,7 @@ textarea:focus {
 .added-items .item .custom {
   grid-row: 3/4;
   grid-column: 1/3;
-  padding: 0.25rem 0;
+  padding: 0.25rem 0 0;
 }
 
 .added-items .item .custom span {
@@ -1250,6 +1251,10 @@ textarea:focus {
 
 .added-items .item + .item {
   border-top: 1px dashed #ccc;
+}
+
+.added-items .item:last-of-type {
+  padding-bottom: 1.5rem;
 }
 
 .cart-card {
@@ -1509,18 +1514,26 @@ textarea:focus {
 .location .text p span {
   text-transform: uppercase;
   font-size: 14px;
+  color: rgba(0, 102, 167, 0.87);
+  font-weight: 600;
 }
 
 .location .text p small {
-  font-size: 12px;
+  font-size: 13px;
   display: block;
-  color: var(--text-color-muted);
+  color: #b3b3b3;
   margin-top: 4px;
+  line-height: 1.3;
 }
 
 .location .text .btns {
   text-align: right;
   margin: 10px 0 0;
+}
+
+.location .text .btns .btn {
+  padding: 0.55rem 0.5rem;
+  font-size: 14px;
 }
 
 .saved-address {
@@ -1635,6 +1648,52 @@ textarea:focus {
 
 .empty-cart .content p .btn:hover {
   background-color: var(--green);
+}
+
+.quantity-control {
+  display: grid;
+  grid-template-columns: 30px 30px 30px;
+  align-items: center;
+  border: 1px solid #ccc;
+  font-size: 12px;
+  height: 30px;
+  border-radius: 3px;
+  margin: 18px 0 8px;
+}
+
+.quantity-control button {
+  border: none;
+  background-color: #fff;
+  cursor: pointer;
+  padding: 0;
+  height: 28px;
+  text-align: center;
+}
+
+.quantity-control button span {
+  font-size: 16px;
+  color: #888;
+}
+
+.quantity-control button:focus {
+  outline: none;
+}
+
+.quantity-control button.less {
+  border-right: 1px solid #ccc;
+  border-radius: 3px 0 0 3px;
+}
+
+.quantity-control button.more {
+  border-left: 1px solid #ccc;
+  border-radius: 0 3px 3px 0;
+}
+
+.quantity-control p {
+  text-align: center;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .page {

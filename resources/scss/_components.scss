@@ -711,8 +711,8 @@
     flex-direction: column;
     justify-content: center;
     background: rgb(239, 245, 251);
-    min-height: 6rem;
-    padding: 1.2rem 0.75rem;
+    min-height: 6.2rem;
+    padding: 1.2rem 0.75rem 1.3rem;
     box-shadow: rgba(0, 0, 0, 0.12) 0px -0.56rem 0.62rem 0px;
 
     > div {
@@ -745,11 +745,12 @@
 
 .added-items {
   .item {
-    padding: 1rem;
+    padding: 1.5rem 0 0;
     display: grid;
     grid-template-columns: 80px 1fr;
     grid-template-rows: auto 1fr 1fr;
     gap: 0;
+    margin: 0 1rem;
 
     figure {
       background-color: #ddd;
@@ -822,7 +823,7 @@
     .custom {
       grid-row: 3/4;
       grid-column: 1/3;
-      padding: 0.25rem 0;
+      padding: 0.25rem 0 0;
 
       span {
         color: rgb(87, 153, 225);
@@ -847,6 +848,10 @@
 
     & + .item {
       border-top: 1px dashed #ccc;
+    }
+
+    &:last-of-type {
+      padding-bottom: 1.5rem;
     }
   }
 }
@@ -1095,13 +1100,16 @@
       span {
         text-transform: uppercase;
         font-size: 14px;
+        color: rgba(0, 102, 167, 0.87);
+        font-weight: 600;
       }
 
       small {
-        font-size: 12px;
+        font-size: 13px;
         display: block;
-        color: var(--text-color-muted);
+        color: rgb(179, 179, 179);
         margin-top: 4px;
+        line-height: 1.3;
       }
     }
 
@@ -1111,6 +1119,8 @@
 
       .btn {
         @extend .green-btn;
+        padding: 0.55rem 0.5rem;
+        font-size: 14px;
       }
     }
   }
@@ -1228,5 +1238,51 @@
         }
       }
     }
+  }
+}
+
+.quantity-control {
+  display: grid;
+  grid-template-columns: 30px 30px 30px;
+  align-items: center;
+  border: 1px solid #ccc;
+  font-size: 12px;
+  height: 30px;
+  border-radius: 3px;
+  margin: 18px 0 8px;
+
+  button {
+    border: none;
+    background-color: #fff;
+    cursor: pointer;
+    padding: 0;
+    height: 28px;
+    text-align: center;
+
+    span {
+      font-size: 16px;
+      color: #888;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &.less {
+      border-right: 1px solid #ccc;
+      border-radius: 3px 0 0 3px;
+    }
+
+    &.more {
+      border-left: 1px solid #ccc;
+      border-radius: 0 3px 3px 0;
+    }
+  }
+
+  p {
+    text-align: center;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
   }
 }
