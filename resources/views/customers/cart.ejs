@@ -1,10 +1,10 @@
 <div class="page checkout">
   <div class="container">
     <div class="cart-checkout-wrapper">
-      <div class="cart-menu">
-        <% if(session.cart) { %>
+      <div class="cart-menu" id="cartPlaceholder">
+        <% if(session.cart && session.cart.totalQty !== 0) { %>
         <div class="header">
-          <h3><%= session.cart.totalQty %> Items you have selected</h3>
+          <h3> <span id="cartItemsCounter"><%= session.cart.totalQty %></span> Items you have selected</h3>
           <a class="explore" href="/">Expore Menus</a>
         </div>
         <div class="cart-items">
@@ -112,7 +112,6 @@
         <% } else { %>
         <div class="empty-cart">
           <div class="content">
-            <img src="/images/cart_empty.png" alt="">
             <h2>YOUR CART IS EMPTY
               <small>
                 Please add some items from the menu.
@@ -178,13 +177,13 @@
             </div>
           </div>
           <% if(session.cart) { %>
-          <div class="header">
+          <div class="header coPriceBox">
             <h3>Price Details</h3>
           </div>
-          <div class="cart-card price">
+          <div class="cart-card price coPriceBox">
             <dl>
               <dt>Sub Total</dt>
-              <dd>&#8377; <%= session.cart.totalPrice %></dd>
+              <dd>&#8377; <span id="coPrice"><%= session.cart.totalPrice %></span></dd>
               <dt>Tax</dt>
               <dd>-</dd>
               <dt>Discount</dt>
@@ -194,7 +193,7 @@
             </dl>
             <dl>
               <dt>Grand Total</dt>
-              <dd>&#8377; <%= session.cart.totalPrice %></dd>
+              <dd>&#8377; <span id="coPriceTotal"><%= session.cart.totalPrice %></span></dd>
             </dl>
             <div class="cta">
               <button class="btn" type="button">Place Order</button>

@@ -6258,7 +6258,7 @@ function deleteCartItem(_x2) {
 
 function _deleteCartItem() {
   _deleteCartItem = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(item) {
-    var res;
+    var res, emptyCartHtml;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -6271,33 +6271,46 @@ function _deleteCartItem() {
             res = _context2.sent;
 
             if (!(res.data.status === 'ok')) {
-              _context2.next = 8;
+              _context2.next = 13;
               break;
+            }
+
+            cartCounter.innerText = res.data.cart.totalQty;
+            document.querySelector('#coPrice').innerText = res.data.cart.totalPrice;
+            document.querySelector('#coPriceTotal').innerText = res.data.cart.totalPrice;
+            document.querySelector('#cartItemsCounter').innerText = res.data.cart.totalQty;
+
+            if (res.data.cart.totalQty === 0) {
+              emptyCartHtml = "<div class=\"empty-cart\">\n        <div class=\"content\">\n          <h2>YOUR CART IS EMPTY\n            <small>\n              Please add some items from the menu.\n            </small>\n          </h2>\n          <p>\n            <a href=\"/\" class=\"btn\">explore Menu</a>\n          </p>\n        </div>\n      </div>";
+              document.querySelector('#cartPlaceholder').innerHTML = emptyCartHtml;
+              document.querySelectorAll('.coPriceBox').forEach(function (div) {
+                return div.remove();
+              });
             }
 
             return _context2.abrupt("return", true);
 
-          case 8:
+          case 13:
             showAlert('Something went wrong. Try again later.');
             return _context2.abrupt("return", false);
 
-          case 10:
-            _context2.next = 17;
+          case 15:
+            _context2.next = 22;
             break;
 
-          case 12:
-            _context2.prev = 12;
+          case 17:
+            _context2.prev = 17;
             _context2.t0 = _context2["catch"](0);
             console.log(_context2.t0);
             showAlert('Something went wrong. Try again later.');
             return _context2.abrupt("return", false);
 
-          case 17:
+          case 22:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 12]]);
+    }, _callee2, null, [[0, 17]]);
   }));
   return _deleteCartItem.apply(this, arguments);
 }
@@ -6311,7 +6324,7 @@ function populateCart(data) {
     if (Array.isArray(cartItem)) {
       cartItem.forEach(function (pizza) {
         if (pizza.qty === 0) return;
-        items += "\n        <div class=\"item\">\n          <figure>\n              <img src=\"".concat(pizza.item.image, "\" alt=\"\">\n          </figure>\n          <div class=\"details\">\n              <h2>").concat(pizza.item.name, "</h2>\n              <p>").concat(pizza.item.description, "</p>\n              <div class=\"more\">\n                  <span>").concat(pizza.item.size, "</span>\n                  <span>").concat(pizza.item.crust, "</span>\n              </div>\n          </div>");
+        items += "\n        <div class=\"".concat(pizza.item.extra ? 'item' : 'item sm', "\">\n          <figure>\n              <img src=\"").concat(pizza.item.image, "\" alt=\"\">\n          </figure>\n          <div class=\"details\">\n              <h2>").concat(pizza.item.name, "</h2>\n              <p>").concat(pizza.item.description, "</p>\n              <div class=\"more\">\n                  <span>").concat(pizza.item.size, "</span>\n                  <span>").concat(pizza.item.crust, "</span>\n              </div>\n          </div>");
 
         if (pizza.item.extra) {
           items += "\n            <div class=\"custom\">\n                <span>Your Customization</span>\n                <p> <strong>Added topping:</strong> Extra Cheese</p>\n            </div>";
@@ -6460,7 +6473,7 @@ deleteCartItemBtn.forEach(function (btn) {
   btn.addEventListener('click', function (e) {
     // remove from cart
     if (deleteCartItem(item)) {
-      location.reload();
+      btn.closest('.cart-card').remove();
     }
   });
 });

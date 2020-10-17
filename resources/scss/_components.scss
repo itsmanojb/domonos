@@ -1283,12 +1283,20 @@
 
   .content {
     text-align: center;
+    padding-top: 150px;
+    position: relative;
 
-    img {
-      user-select: none;
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
       height: 145px;
-      width: 145px;
-      object-fit: contain;
+      right: 0;
+      background-image: url("/images/cart_empty.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
     }
 
     h2 {

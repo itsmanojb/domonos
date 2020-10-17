@@ -394,8 +394,8 @@ textarea:focus {
 }
 
 .noty_theme__mint.noty_type__success {
-  background-color: var(--green-hover);
-  border-bottom: 1px solid var(--green-hover);
+  background-color: #0066a7;
+  border-bottom: 1px solid #0066a7;
 }
 
 .noty_theme__mint.noty_type__error {
@@ -1699,17 +1699,21 @@ textarea:focus {
 
 .empty-cart .content {
   text-align: center;
+  padding-top: 150px;
+  position: relative;
 }
 
-.empty-cart .content img {
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+.empty-cart .content::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
   height: 145px;
-  width: 145px;
-  -o-object-fit: contain;
-     object-fit: contain;
+  right: 0;
+  background-image: url("/images/cart_empty.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .empty-cart .content h2 {

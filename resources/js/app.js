@@ -167,7 +167,30 @@ async function deleteCartItem(item) {
   try {
     const res = await axios.post('/delete-cart-item', item);
     if (res.data.status === 'ok') {
+      cartCounter.innerText = res.data.cart.totalQty;
+      document.querySelector('#coPrice').innerText = res.data.cart.totalPrice;
+      document.querySelector('#coPriceTotal').innerText = res.data.cart.totalPrice;
+      document.querySelector('#cartItemsCounter').innerText = res.data.cart.totalQty;
+
+      if (res.data.cart.totalQty === 0) {
+        const emptyCartHtml = `<div class="empty-cart">
+        <div class="content">
+          <h2>YOUR CART IS EMPTY
+            <small>
+              Please add some items from the menu.
+            </small>
+          </h2>
+          <p>
+            <a href="/" class="btn">explore Menu</a>
+          </p>
+        </div>
+      </div>`;
+        document.querySelector('#cartPlaceholder').innerHTML = emptyCartHtml;
+        document.querySelectorAll('.coPriceBox').forEach(div => div.remove())
+      }
+
       return true;
+
     } else {
       showAlert('Something went wrong. Try again later.', );
       return false;
@@ -190,7 +213,7 @@ function populateCart(data) {
 
         if (pizza.qty === 0) return;
         items += `
-        <div class="item">
+        <div class="${pizza.item.extra ? 'item' :  'item sm'}">
           <figure>
               <img src="${pizza.item.image}" alt="">
           </figure>
@@ -279,6 +302,7 @@ function populateCart(data) {
     document.getElementById('sideCartSubtotal').innerHTML = `₹ ${data.totalPrice}`;
   }
 }
+
 
 addtoCartBtn.forEach(btn => {
   btn.addEventListener('click', (e) => {
@@ -410,7 +434,7 @@ deleteCartItemBtn.forEach(btn => {
   btn.addEventListener('click', e => {
     // remove from cart
     if (deleteCartItem(item)) {
-      location.reload()
+      btn.closest('.cart-card').remove();
     }
 
   })

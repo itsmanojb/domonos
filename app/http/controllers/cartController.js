@@ -142,7 +142,7 @@ function cartController() {
       cart.totalPrice = cart.totalPrice - (req.body.item.price * req.body.qty);
       return res.json({
         status: 'ok',
-        cart
+        cart: req.session.cart
       })
     },
   };
