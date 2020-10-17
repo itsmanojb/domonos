@@ -234,6 +234,7 @@ addtoCartBtn.forEach(btn => {
 
 const addFirstBtn = document.querySelectorAll('.firstAdd');
 addFirstBtn.forEach(btn => {
+  const elem = btn.closest('.menu-actions');
   btn.addEventListener('click', (e) => {
     const qController = `<div class="quantity-control inline">
     <button type="button" class="less"><span class="material-icons">delete_outline</span></button>
@@ -241,6 +242,43 @@ addFirstBtn.forEach(btn => {
     <button type="button" class="more"><span class="material-icons">add</span></button>
     </div>`;
     btn.closest('.btns').innerHTML = qController;
+    const moreBtn = elem.querySelector('.more');
+    moreBtn.addEventListener('click', e => {
+
+      // increase count
+      const lessBtn = moreBtn.closest('.quantity-control').getElementsByClassName('less')[0];
+      let count = +moreBtn.previousElementSibling.innerText;
+      const newCount = count + 1;
+      const lessBtnHTML = newCount < 2 ? `<span class="material-icons">delete_outline</span>` : `<span class="material-icons">remove</span>`;
+      lessBtn.innerHTML = lessBtnHTML;
+
+      moreBtn.previousElementSibling.innerText = `${newCount}`;
+
+      // add to cart
+      const size = moreBtn.closest(".menu-details").getElementsByClassName('size-select')[0];
+      const selectedSize = size.options[size.selectedIndex].value;
+      const crust = moreBtn.closest(".menu-details").getElementsByClassName('crust-select')[0];
+      const selectedCrust = crust.options[crust.selectedIndex].value;
+
+      const item = JSON.parse(moreBtn.closest(".menu-card").dataset.item);
+      const crustIndex = item.options.crusts.indexOf(selectedCrust);
+      const price = item.options.prices.filter(p => p.size === selectedSize)[0];
+      const itemPrice = price.crusts[crustIndex];
+      const extra = price.extraCheese;
+
+      const {
+        options,
+        ...cartItem
+      } = item;
+
+      cartItem.price = itemPrice;
+      cartItem.size = selectedSize;
+      cartItem.crust = selectedCrust;
+      cartItem.extra = extra;
+
+      console.log(cartItem, extra);
+      updateCart(cartItem);
+    })
   })
 })
 

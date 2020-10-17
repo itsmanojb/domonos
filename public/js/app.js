@@ -5476,9 +5476,42 @@ addtoCartBtn.forEach(function (btn) {
 });
 var addFirstBtn = document.querySelectorAll('.firstAdd');
 addFirstBtn.forEach(function (btn) {
+  var elem = btn.closest('.menu-actions');
   btn.addEventListener('click', function (e) {
     var qController = "<div class=\"quantity-control inline\">\n    <button type=\"button\" class=\"less\"><span class=\"material-icons\">delete_outline</span></button>\n    <p>1</p>\n    <button type=\"button\" class=\"more\"><span class=\"material-icons\">add</span></button>\n    </div>";
     btn.closest('.btns').innerHTML = qController;
+    var moreBtn = elem.querySelector('.more');
+    moreBtn.addEventListener('click', function (e) {
+      // increase count
+      var lessBtn = moreBtn.closest('.quantity-control').getElementsByClassName('less')[0];
+      var count = +moreBtn.previousElementSibling.innerText;
+      var newCount = count + 1;
+      var lessBtnHTML = newCount < 2 ? "<span class=\"material-icons\">delete_outline</span>" : "<span class=\"material-icons\">remove</span>";
+      lessBtn.innerHTML = lessBtnHTML;
+      moreBtn.previousElementSibling.innerText = "".concat(newCount); // add to cart
+
+      var size = moreBtn.closest(".menu-details").getElementsByClassName('size-select')[0];
+      var selectedSize = size.options[size.selectedIndex].value;
+      var crust = moreBtn.closest(".menu-details").getElementsByClassName('crust-select')[0];
+      var selectedCrust = crust.options[crust.selectedIndex].value;
+      var item = JSON.parse(moreBtn.closest(".menu-card").dataset.item);
+      var crustIndex = item.options.crusts.indexOf(selectedCrust);
+      var price = item.options.prices.filter(function (p) {
+        return p.size === selectedSize;
+      })[0];
+      var itemPrice = price.crusts[crustIndex];
+      var extra = price.extraCheese;
+
+      var options = item.options,
+          cartItem = _objectWithoutProperties(item, ["options"]);
+
+      cartItem.price = itemPrice;
+      cartItem.size = selectedSize;
+      cartItem.crust = selectedCrust;
+      cartItem.extra = extra;
+      console.log(cartItem, extra);
+      updateCart(cartItem);
+    });
   });
 });
 var addMoreBtn = document.querySelectorAll('.addMoreBtn');
