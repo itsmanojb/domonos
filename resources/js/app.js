@@ -124,6 +124,7 @@ function updateCart(item) {
 
       }).show()
     }).catch((err) => {
+      console.log(err);
       new Noty({
         type: 'error',
         text: 'Something went wrong',
@@ -138,7 +139,8 @@ function updateCart(item) {
 
 function populateCart(data) {
 
-  let items = document.getElementById('sideCartItems').innerHTML || '';
+  let items = '';
+
   for (let pizza of Object.values(data.items)) {
     items += `
     <div class="item">
@@ -164,15 +166,43 @@ function populateCart(data) {
 
     items += `
       <div class="price-q">
-            <p>${pizza.qty}</p>
-            <h5>&#8377; ${pizza.item.price * pizza.qty}</h5>
+        <div class="quantity-control">
+          <button type="button" class="less"><span class="material-icons">${pizza.qty === 1 ? 'delete_outline' : 'remove'}</span></button>
+          <p>${pizza.qty}</p>
+          <button type="button" class="more"><span class="material-icons">add</span></button>
         </div>
+        <h5>&#8377; ${pizza.item.price * pizza.qty}</h5>
       </div>`;
+
+    items += `</div>`;
 
   }
 
-  document.getElementById('sideCartItems').innerHTML = items;
-  document.getElementById('sideCartSubtotal').innerHTML = `₹ ${data.totalPrice}`;
+  if (!document.getElementById('sideCartItems')) {
+    const container = document.getElementById('cartPreview');
+    container.getElementsByClassName('empty')[0].remove();
+    const sideCart = document.createElement('div');
+    sideCart.classList.add('side-cart');
+    const addedItems = document.createElement('div');
+    addedItems.classList.add('added-items');
+    addedItems.setAttribute('id', 'sideCartItems');
+
+    addedItems.innerHTML = items;
+
+    const cta = document.createElement('div');
+    cta.classList.add('cta');
+    cta.innerHTML = `<div>Subtotal <span id="sideCartSubtotal">&#8377; ${data.totalPrice}</span></div>
+    <a href="/cart">Checkout</a>`;
+
+    sideCart.appendChild(addedItems);
+    sideCart.appendChild(cta);
+
+    container.appendChild(sideCart)
+
+  } else {
+    document.getElementById('sideCartItems').innerHTML = items;
+    document.getElementById('sideCartSubtotal').innerHTML = `₹ ${data.totalPrice}`;
+  }
 }
 
 addtoCartBtn.forEach(btn => {
@@ -203,6 +233,7 @@ addtoCartBtn.forEach(btn => {
   })
 });
 
+
 document.addEventListener('DOMContentLoaded', function () {
 
   const sections = document.querySelectorAll(".scrollspy-section");
@@ -230,7 +261,6 @@ document.addEventListener('DOMContentLoaded', function () {
       currentActive = current;
       makeActive(current);
     }
-
     if (affix) {
       const sticky = affix.offsetTop;
       if (window.pageYOffset > sticky - offset) {
@@ -240,6 +270,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-
   });
+
 }, false);

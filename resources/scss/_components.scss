@@ -622,6 +622,11 @@
       display: flex;
       justify-content: space-between;
       padding: 0.5rem 0;
+      margin-top: 0.5rem;
+
+      .btns {
+        margin-left: auto;
+      }
 
       .addToCart {
         padding: 0.6rem 0.5rem;
@@ -632,6 +637,7 @@
         text-transform: uppercase;
         font-weight: 700;
         letter-spacing: -0.5px;
+        height: 32px;
       }
     }
   }
@@ -1284,5 +1290,13 @@
     margin: 0;
     font-size: 14px;
     font-weight: 500;
+  }
+
+  &.inline {
+    margin: 0;
+    height: 32px;
+    button {
+      height: 30px;
+    }
   }
 }

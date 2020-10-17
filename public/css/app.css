@@ -360,6 +360,10 @@ textarea:focus {
   padding-right: 100px;
 }
 
+.d-none {
+  display: none !important;
+}
+
 .btn {
   border: none;
   padding: 0.6rem 1rem;
@@ -1027,6 +1031,11 @@ textarea:focus {
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 0;
+  margin-top: 0.5rem;
+}
+
+.menu-card .menu-details .menu-actions .btns {
+  margin-left: auto;
 }
 
 .menu-card .menu-details .menu-actions .addToCart {
@@ -1038,6 +1047,7 @@ textarea:focus {
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: -0.5px;
+  height: 32px;
 }
 
 .cart-preview {
@@ -1694,6 +1704,15 @@ textarea:focus {
   margin: 0;
   font-size: 14px;
   font-weight: 500;
+}
+
+.quantity-control.inline {
+  margin: 0;
+  height: 32px;
+}
+
+.quantity-control.inline button {
+  height: 30px;
 }
 
 .page {

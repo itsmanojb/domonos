@@ -5402,6 +5402,7 @@ function updateCart(item) {
       layout: 'bottomRight'
     }).show();
   })["catch"](function (err) {
+    console.log(err);
     new noty__WEBPACK_IMPORTED_MODULE_1___default.a({
       type: 'error',
       text: 'Something went wrong',
@@ -5413,7 +5414,7 @@ function updateCart(item) {
 }
 
 function populateCart(data) {
-  var items = document.getElementById('sideCartItems').innerHTML || '';
+  var items = '';
 
   for (var _i = 0, _Object$values = Object.values(data.items); _i < _Object$values.length; _i++) {
     var pizza = _Object$values[_i];
@@ -5423,11 +5424,29 @@ function populateCart(data) {
       items += "\n        <div class=\"custom\">\n            <span>Your Customization</span>\n            <p> <strong>Added topping:</strong> Extra Cheese</p>\n        </div>";
     }
 
-    items += "\n      <div class=\"price-q\">\n            <p>".concat(pizza.qty, "</p>\n            <h5>&#8377; ").concat(pizza.item.price * pizza.qty, "</h5>\n        </div>\n      </div>");
+    items += "\n      <div class=\"price-q\">\n        <div class=\"quantity-control\">\n          <button type=\"button\" class=\"less\"><span class=\"material-icons\">".concat(pizza.qty === 1 ? 'delete_outline' : 'remove', "</span></button>\n          <p>").concat(pizza.qty, "</p>\n          <button type=\"button\" class=\"more\"><span class=\"material-icons\">add</span></button>\n        </div>\n        <h5>&#8377; ").concat(pizza.item.price * pizza.qty, "</h5>\n      </div>");
+    items += "</div>";
   }
 
-  document.getElementById('sideCartItems').innerHTML = items;
-  document.getElementById('sideCartSubtotal').innerHTML = "\u20B9 ".concat(data.totalPrice);
+  if (!document.getElementById('sideCartItems')) {
+    var container = document.getElementById('cartPreview');
+    container.getElementsByClassName('empty')[0].remove();
+    var sideCart = document.createElement('div');
+    sideCart.classList.add('side-cart');
+    var addedItems = document.createElement('div');
+    addedItems.classList.add('added-items');
+    addedItems.setAttribute('id', 'sideCartItems');
+    addedItems.innerHTML = items;
+    var cta = document.createElement('div');
+    cta.classList.add('cta');
+    cta.innerHTML = "<div>Subtotal <span id=\"sideCartSubtotal\">&#8377; ".concat(data.totalPrice, "</span></div>\n    <a href=\"/cart\">Checkout</a>");
+    sideCart.appendChild(addedItems);
+    sideCart.appendChild(cta);
+    container.appendChild(sideCart);
+  } else {
+    document.getElementById('sideCartItems').innerHTML = items;
+    document.getElementById('sideCartSubtotal').innerHTML = "\u20B9 ".concat(data.totalPrice);
+  }
 }
 
 addtoCartBtn.forEach(function (btn) {
