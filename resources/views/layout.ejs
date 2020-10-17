@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Domono's</title>
+  <title>Domono's Pizza - Realtime Order</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
     integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
     crossorigin="anonymous" />
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet" />
   <link rel="stylesheet" href="/css/app.css" />
 </head>
@@ -23,7 +23,10 @@
         </span>
       </div>
       <div class="brand">
-        <a href="/">Brand</a>
+        <a href="/">
+          <img src="/images/logo.png" alt="logo">
+          <span>Domono's Pizza</span>
+        </a>
       </div>
       <div class="header-menus" id="headerMenu">
         <div class="cart-menu">
@@ -70,18 +73,8 @@
   <%- body %>
   <%- include('partials/right-drawer.ejs') %>
   <%- include('partials/alert.ejs') %>
-  <footer class="site__footer">
-    <div class="footer-top">
-      <div class="container">
+  <%- include('partials/footer-slim.ejs') %>
 
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="container">
-        All Rights Reserved. Copyright &copy; Domono's Pizza
-      </div>
-    </div>
-  </footer>
   <script src="js/app.js"></script>
 </body>
 

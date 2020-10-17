@@ -1,10 +1,12 @@
 const guest = require('../app/http/middlewares/guest');
 const homeController = require('../app/http/controllers/homeController');
+const menuController = require('../app/http/controllers/menuController');
 const authController = require('../app/http/controllers/authController');
 const cartController = require('../app/http/controllers/cartController');
 
 function initRoutes(app) {
   app.get('/', homeController().index);
+  app.get('/menus', menuController().index);
   app.get('/login', guest, authController().login);
   app.post('/login', authController().doLogin);
   app.get('/register', guest, authController().register);
