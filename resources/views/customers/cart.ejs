@@ -14,6 +14,9 @@
           <% cartItem.forEach(pizza => { %>
           <div class="cart-card item">
             <figure>
+              <% if(pizza.item.foodType === 'veg') {%> <div class="menu-type veg"></div>
+              <% } else {%> <div class="menu-type non-veg"></div>
+              <% } %>
               <img src="<%= pizza.item.image %>" alt="">
             </figure>
             <div>
@@ -61,6 +64,9 @@
           <%} else { %>
           <div class="cart-card item">
             <figure>
+              <% if(cartItem.item.foodType === 'veg') {%> <div class="menu-type veg"></div>
+              <% } else {%> <div class="menu-type non-veg"></div>
+              <% } %>
               <img src="<%= cartItem.item.image %>" alt="">
             </figure>
             <div>
@@ -106,6 +112,9 @@
                 <% menus.map(menu => { %>
                 <div class="additional-menu-item">
                   <figure>
+                    <% if(menu.foodType === 'veg') {%> <div class="menu-type veg"></div>
+                    <% } else {%> <div class="menu-type non-veg"></div>
+                    <% } %>
                     <img src="<%= menu.image %>" alt="">
                     <div class="overlay">
                       <div><%= menu.name %> <br>&#8377; <%= menu.price %> </div>

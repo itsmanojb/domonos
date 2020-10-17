@@ -760,6 +760,11 @@
     gap: 0;
     margin: 0 1rem;
 
+    &.sm {
+      grid-template-rows: auto 1fr 0;
+      padding-bottom: 1rem;
+    }
+
     figure {
       background-color: #ddd;
       height: 60px;
@@ -872,17 +877,54 @@
   &.item {
     padding: 1.5rem;
     display: grid;
-    grid-template-columns: 140px 1fr;
+    grid-template-columns: 125px 1fr;
     gap: 0;
 
     figure {
       background-color: #ddd;
-      height: 110px;
-      width: 110px;
+      height: 100px;
+      width: 100px;
       border-radius: 4px;
       margin: 0;
       overflow: hidden;
       position: relative;
+
+      .menu-type {
+        display: inline-block;
+        height: 14px;
+        width: 14px;
+        border: 1px solid #aaa;
+        position: relative;
+        background-color: #fff;
+        border-radius: 2px;
+        position: absolute;
+        margin: 3px;
+
+        &::after {
+          content: "";
+          position: absolute;
+          left: 2px;
+          top: 2px;
+          height: 8px;
+          width: 8px;
+          border-radius: 50%;
+          background-color: #fff;
+        }
+
+        &.veg {
+          border-color: #338309;
+          &::after {
+            background-color: #338309;
+          }
+        }
+
+        &.non-veg {
+          border-color: rgb(171, 0, 0);
+          &::after {
+            background-color: rgb(171, 0, 0);
+          }
+        }
+      }
 
       img {
         height: 100%;
@@ -1032,6 +1074,43 @@
     overflow: hidden;
     position: relative;
 
+    .menu-type {
+      display: inline-block;
+      height: 16px;
+      width: 16px;
+      border: 1px solid #aaa;
+      position: relative;
+      background-color: #fff;
+      border-radius: 2px;
+      position: absolute;
+      margin: 3px;
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: 3px;
+        top: 3px;
+        height: 8px;
+        width: 8px;
+        border-radius: 50%;
+        background-color: #fff;
+      }
+
+      &.veg {
+        border-color: #338309;
+        &::after {
+          background-color: #338309;
+        }
+      }
+
+      &.non-veg {
+        border-color: rgb(171, 0, 0);
+        &::after {
+          background-color: rgb(171, 0, 0);
+        }
+      }
+    }
+
     img {
       height: 100%;
       width: 100%;
@@ -1062,7 +1141,7 @@
   padding: 0 !important;
   overflow: hidden;
   display: grid;
-  grid-template-rows: 180px;
+  grid-template-rows: 170px;
   margin: 4px;
 
   .footer {

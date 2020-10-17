@@ -1168,6 +1168,11 @@ textarea:focus {
   margin: 0 1rem;
 }
 
+.added-items .item.sm {
+  grid-template-rows: auto 1fr 0;
+  padding-bottom: 1rem;
+}
+
 .added-items .item figure {
   background-color: #ddd;
   height: 60px;
@@ -1279,18 +1284,57 @@ textarea:focus {
 .cart-card.item {
   padding: 1.5rem;
   display: grid;
-  grid-template-columns: 140px 1fr;
+  grid-template-columns: 125px 1fr;
   gap: 0;
 }
 
 .cart-card.item figure {
   background-color: #ddd;
-  height: 110px;
-  width: 110px;
+  height: 100px;
+  width: 100px;
   border-radius: 4px;
   margin: 0;
   overflow: hidden;
   position: relative;
+}
+
+.cart-card.item figure .menu-type {
+  display: inline-block;
+  height: 14px;
+  width: 14px;
+  border: 1px solid #aaa;
+  position: relative;
+  background-color: #fff;
+  border-radius: 2px;
+  position: absolute;
+  margin: 3px;
+}
+
+.cart-card.item figure .menu-type::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.cart-card.item figure .menu-type.veg {
+  border-color: #338309;
+}
+
+.cart-card.item figure .menu-type.veg::after {
+  background-color: #338309;
+}
+
+.cart-card.item figure .menu-type.non-veg {
+  border-color: #ab0000;
+}
+
+.cart-card.item figure .menu-type.non-veg::after {
+  background-color: #ab0000;
 }
 
 .cart-card.item figure img {
@@ -1438,7 +1482,7 @@ textarea:focus {
   padding: 0 !important;
   overflow: hidden;
   display: grid;
-  grid-template-rows: 180px;
+  grid-template-rows: 170px;
   margin: 4px;
 }
 
@@ -1449,6 +1493,45 @@ textarea:focus {
   border-radius: 2px;
   overflow: hidden;
   position: relative;
+}
+
+.additional-menu-item figure .menu-type {
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  border: 1px solid #aaa;
+  position: relative;
+  background-color: #fff;
+  border-radius: 2px;
+  position: absolute;
+  margin: 3px;
+}
+
+.additional-menu-item figure .menu-type::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.additional-menu-item figure .menu-type.veg {
+  border-color: #338309;
+}
+
+.additional-menu-item figure .menu-type.veg::after {
+  background-color: #338309;
+}
+
+.additional-menu-item figure .menu-type.non-veg {
+  border-color: #ab0000;
+}
+
+.additional-menu-item figure .menu-type.non-veg::after {
+  background-color: #ab0000;
 }
 
 .additional-menu-item figure img {

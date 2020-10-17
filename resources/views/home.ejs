@@ -700,7 +700,7 @@
               <% if(Array.isArray(cartItem)) { %>
               <% cartItem.forEach(pizza => { %>
               <% if(pizza.qty > 0) { %>
-              <div class="item">
+              <div class="item <% if (!pizza.item.extra) %> sm">
                 <figure>
                   <img src="<%= pizza.item.image %>" alt="">
                 </figure>
@@ -744,7 +744,7 @@
               </div>
               <% }}) %>
               <% } else { %>
-              <div class="item">
+              <div class="item sm">
                 <figure>
                   <img src="<%= cartItem.item.image %>" alt="">
                 </figure>
