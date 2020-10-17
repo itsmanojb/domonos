@@ -122,6 +122,29 @@ function cartController() {
         cart
       })
     },
+    deleteItem(req, res) {
+
+      let cart = req.session.cart;
+      console.log(cart, req.body);
+      if (Array.isArray(cart.items[req.body.item._id])) {
+
+        if (cart.items[req.body.item._id].length === 1) {
+          delete cart.items[req.body.item._id];
+        } else {
+          const index = cart.items[req.body.item._id].findIndex(it => it.item.crust === req.body.item.crust && it.item.size === req.body.item.size);
+          cart.items[req.body.item._id].splice(index, 1);
+        }
+      } else {
+        delete cart.items[req.body.item._id];
+      }
+
+      cart.totalQty = cart.totalQty - req.body.qty;
+      cart.totalPrice = cart.totalPrice - (req.body.item.price * req.body.qty);
+      return res.json({
+        status: 'ok',
+        cart
+      })
+    },
   };
 }
 

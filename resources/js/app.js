@@ -163,6 +163,23 @@ async function removeItem(item) {
 
 }
 
+async function deleteCartItem(item) {
+  try {
+    const res = await axios.post('/delete-cart-item', item);
+    if (res.data.status === 'ok') {
+      return true;
+    } else {
+      showAlert('Something went wrong. Try again later.', );
+      return false;
+    }
+  } catch (error) {
+    console.log(error);
+    showAlert('Something went wrong. Try again later.', );
+    return false;
+  }
+
+}
+
 function populateCart(data) {
 
   let items = '';
@@ -382,6 +399,18 @@ removeOneBtn.forEach(btn => {
         btn.closest('.btns').innerHTML = addBtnHtml;
       }
 
+    }
+
+  })
+})
+
+const deleteCartItemBtn = document.querySelectorAll('.deleteCartItemBtn');
+deleteCartItemBtn.forEach(btn => {
+  const item = JSON.parse(btn.closest(".menu-card-data").dataset.item);
+  btn.addEventListener('click', e => {
+    // remove from cart
+    if (deleteCartItem(item)) {
+      location.reload()
     }
 
   })

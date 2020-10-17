@@ -1338,6 +1338,11 @@
   border-radius: 3px;
   margin: 18px 0 8px;
 
+  &.no-add {
+    grid-template-columns: 40px 30px;
+    background-color: #f8f8f8;
+  }
+
   button {
     border: none;
     background-color: #fff;
@@ -1371,6 +1376,7 @@
     margin: 0;
     font-size: 14px;
     font-weight: 500;
+    color: var(--text-color);
   }
 
   &.inline {

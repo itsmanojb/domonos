@@ -13,6 +13,7 @@ function initRoutes(app) {
   app.get('/cart', cartController().index);
   app.post('/add-item', cartController().addItem);
   app.post('/remove-item', cartController().removeItem);
+  app.post('/delete-cart-item', cartController().deleteItem);
 }
 
 module.exports = initRoutes;

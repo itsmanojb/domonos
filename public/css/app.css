@@ -1758,6 +1758,11 @@ textarea:focus {
   margin: 18px 0 8px;
 }
 
+.quantity-control.no-add {
+  grid-template-columns: 40px 30px;
+  background-color: #f8f8f8;
+}
+
 .quantity-control button {
   border: none;
   background-color: #fff;
@@ -1791,6 +1796,7 @@ textarea:focus {
   margin: 0;
   font-size: 14px;
   font-weight: 500;
+  color: var(--text-color);
 }
 
 .quantity-control.inline {
@@ -1938,10 +1944,17 @@ textarea:focus {
 
 .page.checkout .cart-checkout-wrapper {
   display: grid;
-  grid-template-columns: 1fr 400px;
-  gap: 100px;
   margin: 0 20px;
   padding-top: 20px;
+  grid-template-columns: 1fr 380px;
+  gap: 50px;
+}
+
+@media (min-width: 1900px) {
+  .page.checkout .cart-checkout-wrapper {
+    grid-template-columns: 1fr 400px;
+    gap: 100px;
+  }
 }
 
 .page.checkout .menu-grid {

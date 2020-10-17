@@ -128,10 +128,15 @@
 
   .cart-checkout-wrapper {
     display: grid;
-    grid-template-columns: 1fr 400px;
-    gap: 100px;
     margin: 0 20px;
     padding-top: 20px;
+    grid-template-columns: 1fr 380px;
+    gap: 50px;
+
+    @include desktop-lg {
+      grid-template-columns: 1fr 400px;
+      gap: 100px;
+    }
   }
 
   .menu-grid {

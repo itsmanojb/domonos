@@ -12,7 +12,7 @@
 
           <% if(Array.isArray(cartItem)) { %>
           <% cartItem.forEach(pizza => { %>
-          <div class="cart-card item">
+          <div class="cart-card item  menu-card-data" data-item='<%= JSON.stringify(pizza)%>'>
             <figure>
               <% if(pizza.item.foodType === 'veg') {%> <div class="menu-type veg"></div>
               <% } else {%> <div class="menu-type non-veg"></div>
@@ -22,7 +22,7 @@
             <div>
               <div class="info">
                 <div class="details">
-                  <h2> <%= pizza.item.name %> </h2>
+                  <h2> <%= pizza.item.name %></h2>
                   <p><%= pizza.item.description %></p>
                   <div class="more">
                     <span><%= pizza.item.size %> </span>
@@ -31,22 +31,11 @@
                 </div>
                 <div class="price-q">
                   <h5>&#8377; <%= pizza.item.price * pizza.qty %></h5>
-                  <div class="quantity-control">
-                    <button type="button" class="less">
-                      <% if(pizza.qty === 1) { %>
+                  <div class="quantity-control no-add">
+                    <p><%= pizza.qty %> </p>
+                    <button type="button" class="more deleteCartItemBtn">
                       <span class="material-icons">
                         delete_outline
-                      </span>
-                      <% } else { %>
-                      <span class="material-icons">
-                        remove
-                      </span>
-                      <% } %>
-                    </button>
-                    <p><%= pizza.qty %> </p>
-                    <button type="button" class="more">
-                      <span class="material-icons">
-                        add
                       </span>
                     </button>
                   </div>
@@ -62,7 +51,7 @@
           </div>
           <%})%>
           <%} else { %>
-          <div class="cart-card item">
+          <div class="cart-card item  menu-card-data" data-item='<%= JSON.stringify(cartItem)%>'>
             <figure>
               <% if(cartItem.item.foodType === 'veg') {%> <div class="menu-type veg"></div>
               <% } else {%> <div class="menu-type non-veg"></div>
@@ -72,27 +61,16 @@
             <div>
               <div class="info">
                 <div class="details">
-                  <h2><%= cartItem.item.name %> </h2>
+                  <h2><%= cartItem.item.name %></h2>
                   <p><%= cartItem.item.description %></p>
                 </div>
                 <div class="price-q">
                   <h5>&#8377; <%= cartItem.item.price * cartItem.qty %></h5>
-                  <div class="quantity-control">
-                    <button type="button" class="less">
-                      <% if(cartItem.qty === 1) { %>
+                  <div class="quantity-control no-add">
+                    <p><%= cartItem.qty %> </p>
+                    <button type="button" class="more deleteCartItemBtn">
                       <span class="material-icons">
                         delete_outline
-                      </span>
-                      <% } else { %>
-                      <span class="material-icons">
-                        remove
-                      </span>
-                      <% } %>
-                    </button>
-                    <p><%= cartItem.qty %> </p>
-                    <button type="button" class="more">
-                      <span class="material-icons">
-                        add
                       </span>
                     </button>
                   </div>

@@ -6252,6 +6252,56 @@ function _removeItem() {
   return _removeItem.apply(this, arguments);
 }
 
+function deleteCartItem(_x2) {
+  return _deleteCartItem.apply(this, arguments);
+}
+
+function _deleteCartItem() {
+  _deleteCartItem = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(item) {
+    var res;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.prev = 0;
+            _context2.next = 3;
+            return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/delete-cart-item', item);
+
+          case 3:
+            res = _context2.sent;
+
+            if (!(res.data.status === 'ok')) {
+              _context2.next = 8;
+              break;
+            }
+
+            return _context2.abrupt("return", true);
+
+          case 8:
+            showAlert('Something went wrong. Try again later.');
+            return _context2.abrupt("return", false);
+
+          case 10:
+            _context2.next = 17;
+            break;
+
+          case 12:
+            _context2.prev = 12;
+            _context2.t0 = _context2["catch"](0);
+            console.log(_context2.t0);
+            showAlert('Something went wrong. Try again later.');
+            return _context2.abrupt("return", false);
+
+          case 17:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[0, 12]]);
+  }));
+  return _deleteCartItem.apply(this, arguments);
+}
+
 function populateCart(data) {
   var items = '';
 
@@ -6401,6 +6451,16 @@ removeOneBtn.forEach(function (btn) {
         var addBtnHtml = "<button class=\"btn btn-sm firstAdd addToCart\">Add to Cart</button>";
         btn.closest('.btns').innerHTML = addBtnHtml;
       }
+    }
+  });
+});
+var deleteCartItemBtn = document.querySelectorAll('.deleteCartItemBtn');
+deleteCartItemBtn.forEach(function (btn) {
+  var item = JSON.parse(btn.closest(".menu-card-data").dataset.item);
+  btn.addEventListener('click', function (e) {
+    // remove from cart
+    if (deleteCartItem(item)) {
+      location.reload();
     }
   });
 });
