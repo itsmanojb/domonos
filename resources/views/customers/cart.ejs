@@ -8,7 +8,10 @@
           <a class="explore" href="/">Expore Menus</a>
         </div>
         <div class="cart-items">
-          <% for(let pizza of Object.values(session.cart.items) ){ %>
+          <% for(let cartItem of Object.values(session.cart.items) ){ %>
+
+          <% if(Array.isArray(cartItem)) { %>
+          <% cartItem.forEach(pizza => { %>
           <div class="cart-card item">
             <figure>
               <img src="<%= pizza.item.image %>" alt="">
@@ -54,7 +57,44 @@
               <% } %>
             </div>
           </div>
-          <%} %>
+          <%})%>
+          <%} else { %>
+          <div class="cart-card item">
+            <figure>
+              <img src="<%= cartItem.item.image %>" alt="">
+            </figure>
+            <div>
+              <div class="info">
+                <div class="details">
+                  <h2><%= cartItem.item.name %> </h2>
+                  <p><%= cartItem.item.description %></p>
+                </div>
+                <div class="price-q">
+                  <h5>&#8377; <%= cartItem.item.price * cartItem.qty %></h5>
+                  <div class="quantity-control">
+                    <button type="button" class="less">
+                      <% if(cartItem.qty === 1) { %>
+                      <span class="material-icons">
+                        delete_outline
+                      </span>
+                      <% } else { %>
+                      <span class="material-icons">
+                        remove
+                      </span>
+                      <% } %>
+                    </button>
+                    <p><%= cartItem.qty %> </p>
+                    <button type="button" class="more">
+                      <span class="material-icons">
+                        add
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% }} %>
         </div>
         <div class="additional-menu">
           <div class="header">

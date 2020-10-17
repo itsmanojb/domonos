@@ -77,7 +77,7 @@ const crustSelect = document.querySelectorAll('.crust-select');
 sizeSelect.forEach(select => {
   select.addEventListener('change', (e) => {
     const size = e.target.value;
-    const item = JSON.parse(select.closest(".menu-card").dataset.item);
+    const item = JSON.parse(select.closest(".menu-card-data").dataset.item);
     const crusts = item.options.prices.filter(p => p.size === size)[0].crusts;
     const crust = select.closest(".menu-selector").getElementsByClassName('crust-select')[0];
     const crustOptions = crust.getElementsByTagName("option");
@@ -95,7 +95,7 @@ sizeSelect.forEach(select => {
 crustSelect.forEach(select => {
   select.addEventListener('change', (e) => {
     const crust = e.target.value;
-    const item = JSON.parse(select.closest(".menu-card").dataset.item);
+    const item = JSON.parse(select.closest(".menu-card-data").dataset.item);
     const sizeSelector = select.closest(".menu-selector").getElementsByClassName('size-select')[0];
     const size = sizeSelector.options[sizeSelector.selectedIndex].value;
     const prices = item.options.prices.filter(p => p.size === size)[0].crusts;
@@ -118,7 +118,7 @@ function addToCart(item) {
 
       new Noty({
         type: 'success',
-        text: 'Item added to cart',
+        text: `${item.name} added to cart`,
         timeout: 2000,
         progressBar: false,
         layout: 'bottomRight',
@@ -171,6 +171,7 @@ function populateCart(data) {
     if (Array.isArray(cartItem)) {
       cartItem.forEach(pizza => {
 
+        if (pizza.qty === 0) return;
         items += `
         <div class="item">
           <figure>
@@ -211,26 +212,22 @@ function populateCart(data) {
       items += `
       <div class="item">
         <figure>
-            <img src="${pizza.item.image}" alt="">
+            <img src="${cartItem.item.image}" alt="">
         </figure>
         <div class="details">
-            <h2>${pizza.item.name}</h2>
-            <p>${pizza.item.description}</p>
-            <div class="more">
-                <span>${pizza.item.size}</span>
-                <span>${pizza.item.crust}</span>
-            </div>
+            <h2>${cartItem.item.name}</h2>
+            <p>${cartItem.item.description}</p>
         </div>`;
 
 
       items += `
       <div class="price-q">
         <div class="quantity-control">
-          <button type="button" class="less"><span class="material-icons">${pizza.qty === 1 ? 'delete_outline' : 'remove'}</span></button>
-          <p>${pizza.qty}</p>
+          <button type="button" class="less"><span class="material-icons">${cartItem.qty === 1 ? 'delete_outline' : 'remove'}</span></button>
+          <p>${cartItem.qty}</p>
           <button type="button" class="more"><span class="material-icons">add</span></button>
         </div>
-        <h5>&#8377; ${pizza.item.price * pizza.qty}</h5>
+        <h5>&#8377; ${cartItem.item.price * cartItem.qty}</h5>
       </div>`;
 
       items += `</div>`;
@@ -268,29 +265,34 @@ function populateCart(data) {
 
 addtoCartBtn.forEach(btn => {
   btn.addEventListener('click', (e) => {
-    const size = btn.closest(".menu-details").getElementsByClassName('size-select')[0];
-    const selectedSize = size.options[size.selectedIndex].value;
-    const crust = btn.closest(".menu-details").getElementsByClassName('crust-select')[0];
-    const selectedCrust = crust.options[crust.selectedIndex].value;
+    const item = JSON.parse(btn.closest(".menu-card-data").dataset.item);
+    if (item.menuType === 'pizza' || item.menuType === 'pizzamania') {
+      const size = btn.closest(".menu-details").getElementsByClassName('size-select')[0];
+      const selectedSize = size.options[size.selectedIndex].value;
+      const crust = btn.closest(".menu-details").getElementsByClassName('crust-select')[0];
+      const selectedCrust = crust.options[crust.selectedIndex].value;
 
-    const item = JSON.parse(btn.closest(".menu-card").dataset.item);
-    const crustIndex = item.options.crusts.indexOf(selectedCrust);
-    const price = item.options.prices.filter(p => p.size === selectedSize)[0];
-    const itemPrice = price.crusts[crustIndex];
-    const extra = price.extraCheese;
+      const crustIndex = item.options.crusts.indexOf(selectedCrust);
+      const price = item.options.prices.filter(p => p.size === selectedSize)[0];
+      const itemPrice = price.crusts[crustIndex];
+      const extra = 0;
 
-    const {
-      options,
-      ...cartItem
-    } = item;
+      const {
+        options,
+        ...cartItem
+      } = item;
 
-    cartItem.price = itemPrice;
-    cartItem.size = selectedSize;
-    cartItem.crust = selectedCrust;
-    cartItem.extra = extra;
+      cartItem.price = itemPrice;
+      cartItem.size = selectedSize;
+      cartItem.crust = selectedCrust;
+      cartItem.extra = extra;
 
-    console.log(cartItem, extra);
-    addToCart(cartItem);
+      addToCart(cartItem);
+    } else {
+      addToCart(item);
+    }
+
+    // console.log(cartItem, extra);
   })
 });
 
@@ -317,29 +319,33 @@ addFirstBtn.forEach(btn => {
       moreBtn.previousElementSibling.innerText = `${newCount}`;
 
       // add to cart
-      const size = moreBtn.closest(".menu-details").getElementsByClassName('size-select')[0];
-      const selectedSize = size.options[size.selectedIndex].value;
-      const crust = moreBtn.closest(".menu-details").getElementsByClassName('crust-select')[0];
-      const selectedCrust = crust.options[crust.selectedIndex].value;
+      const item = JSON.parse(moreBtn.closest(".menu-card-data").dataset.item);
+      if (item.menuType === 'pizza' || item.menuType === 'pizzamania') {
+        const size = moreBtn.closest(".menu-details").getElementsByClassName('size-select')[0];
+        const selectedSize = size.options[size.selectedIndex].value;
+        const crust = moreBtn.closest(".menu-details").getElementsByClassName('crust-select')[0];
+        const selectedCrust = crust.options[crust.selectedIndex].value;
 
-      const item = JSON.parse(moreBtn.closest(".menu-card").dataset.item);
-      const crustIndex = item.options.crusts.indexOf(selectedCrust);
-      const price = item.options.prices.filter(p => p.size === selectedSize)[0];
-      const itemPrice = price.crusts[crustIndex];
-      const extra = price.extraCheese;
+        const crustIndex = item.options.crusts.indexOf(selectedCrust);
+        const price = item.options.prices.filter(p => p.size === selectedSize)[0];
+        const itemPrice = price.crusts[crustIndex];
+        const extra = 0;
 
-      const {
-        options,
-        ...cartItem
-      } = item;
+        const {
+          options,
+          ...cartItem
+        } = item;
 
-      cartItem.price = itemPrice;
-      cartItem.size = selectedSize;
-      cartItem.crust = selectedCrust;
-      cartItem.extra = extra;
+        cartItem.price = itemPrice;
+        cartItem.size = selectedSize;
+        cartItem.crust = selectedCrust;
+        cartItem.extra = extra;
 
-      // console.log(cartItem, extra);
-      addToCart(cartItem);
+        // console.log(cartItem, extra);
+        addToCart(cartItem);
+      } else {
+        addToCart(item);
+      }
     })
 
   })
@@ -360,7 +366,7 @@ addMoreBtn.forEach(btn => {
 
 const removeOneBtn = document.querySelectorAll('.removeOneBtn');
 removeOneBtn.forEach(btn => {
-  const item = JSON.parse(btn.closest(".menu-card").dataset.item);
+  const item = JSON.parse(btn.closest(".menu-card-data").dataset.item);
   btn.addEventListener('click', e => {
 
     // remove from cart

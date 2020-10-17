@@ -51,7 +51,7 @@ function cartController() {
 
       // check if items not in cart
       if (!cart.items[req.body._id]) {
-        if (req.body.menuType === 'pizza') {
+        if (req.body.menuType === 'pizza' || req.body.menuType === 'pizzamania') {
           cart.items[req.body._id] = [{
             item: req.body,
             qty: 1
@@ -63,7 +63,7 @@ function cartController() {
           }
         }
       } else {
-        if (req.body.menuType !== 'pizza') {
+        if (req.body.menuType !== 'pizza' && req.body.menuType !== 'pizzamania') {
           cart.items[req.body._id].qty = cart.items[req.body._id].qty + 1;
         } else {
           const alreadyAdded = cart.items[req.body._id].filter(it => it.item.size === req.body.size && it.item.crust === req.body.crust);
@@ -95,7 +95,7 @@ function cartController() {
             status: 'failed'
           });
         } else {
-          if (cart.items[req.body._id].qty === 1) {
+          if (cart.items[req.body._id][0].qty === 1) {
             delete cart.items[req.body._id];
           } else {
             cart.items[req.body._id][0].qty = cart.items[req.body._id][0].qty - 1
@@ -107,9 +107,14 @@ function cartController() {
             cart
           });
         }
+      } else {
+        if (cart.items[req.body._id].qty === 1) {
+          delete cart.items[req.body._id];
+        } else {
+          cart.items[req.body._id].qty = cart.items[req.body._id].qty - 1
+        }
       }
 
-      delete cart.items[req.body._id];
       cart.totalQty = cart.totalQty - 1;
       cart.totalPrice = cart.totalPrice - req.body.price;
       return res.json({

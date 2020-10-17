@@ -44,7 +44,7 @@ function homeController() {
             ...menus,
             veg,
             nonveg,
-            topMenu: shuffled.slice(0, 20)
+            topMenu: shuffled.slice(0, 12)
           }
         });
 

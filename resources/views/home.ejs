@@ -26,7 +26,7 @@
           <div class="menu-grid">
 
             <% menus.topMenu.map(item => { %>
-            <div class="menu-card" data-item='<%= JSON.stringify(item)%>'>
+            <div class="menu-card menu-card-data" data-item='<%= JSON.stringify(item)%>'>
               <div class="menu-image">
                 <div class="overlay">
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
@@ -103,7 +103,7 @@
           </div>
           <div class="menu-grid">
             <% menus.pasta.map(item => { %>
-            <div class="menu-card">
+            <div class="menu-card menu-card-data" data-item='<%= JSON.stringify(item)%>'>
               <div class="menu-image">
                 <div class="overlay">
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
@@ -125,7 +125,31 @@
                   </span>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
+                  <div class="btns">
+                    <% if(session.cart && (session.cart.items).hasOwnProperty(item._id)) { %>
+                    <div class="quantity-control inline">
+                      <button type="button" class="less removeOneBtn">
+                        <% if(session.cart.items[item._id].qty === 1) { %>
+                        <span class="material-icons">
+                          delete_outline
+                        </span>
+                        <% } else { %>
+                        <span class="material-icons">
+                          remove
+                        </span>
+                        <% } %>
+                      </button>
+                      <p><%= session.cart.items[item._id].qty %></p>
+                      <button type="button" class="more addToCart addMoreBtn">
+                        <span class="material-icons">
+                          add
+                        </span>
+                      </button>
+                    </div>
+                    <% } else { %>
+                    <button class="btn btn-sm firstAdd addToCart">Add to Cart</button>
+                    <% } %>
+                  </div>
                 </div>
               </div>
             </div>
@@ -139,7 +163,7 @@
           <div class="menu-grid">
 
             <% menus.veg.map(item => { %>
-            <div class="menu-card">
+            <div class="menu-card menu-card-data" data-item='<%= JSON.stringify(item)%>'>
               <div class="menu-image">
                 <div class="overlay">
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
@@ -163,7 +187,7 @@
                 <div class="menu-selector">
                   <div class="size">
                     <label for="size">Size</label>
-                    <select name="" id="size">
+                    <select class="size-select" name="size">
                       <% item.options.prices.forEach(price => { %>
                       <option value="<%= price.size %>"><%= price.size %></option>
                       <% }) %>
@@ -171,7 +195,7 @@
                   </div>
                   <div class="crust">
                     <label for="crust">Crust</label>
-                    <select name="" id="crust">
+                    <select class="crust-select" name="crust">
                       <% item.options.crusts.forEach(crust => { %>
                       <option value="<%= crust %>"><%= crust %></option>
                       <% }) %>
@@ -179,7 +203,31 @@
                   </div>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
+                  <div class="btns">
+                    <% if(session.cart && (session.cart.items).hasOwnProperty(item._id)) { %>
+                    <div class="quantity-control inline">
+                      <button type="button" class="less removeOneBtn">
+                        <% if(session.cart.items[item._id].reduce((a,i) => a + i.qty, 0) === 1) { %>
+                        <span class="material-icons">
+                          delete_outline
+                        </span>
+                        <% } else { %>
+                        <span class="material-icons">
+                          remove
+                        </span>
+                        <% } %>
+                      </button>
+                      <p><%= session.cart.items[item._id].reduce((a,i) => a + i.qty, 0) %></p>
+                      <button type="button" class="more addToCart addMoreBtn">
+                        <span class="material-icons">
+                          add
+                        </span>
+                      </button>
+                    </div>
+                    <% } else { %>
+                    <button class="btn btn-sm firstAdd addToCart">Add to Cart</button>
+                    <% } %>
+                  </div>
                 </div>
               </div>
             </div>
@@ -193,7 +241,7 @@
           <div class="menu-grid">
 
             <% menus.nonveg.map(item => { %>
-            <div class="menu-card">
+            <div class="menu-card menu-card-data" data-item='<%= JSON.stringify(item)%>'>
               <div class="menu-image">
                 <div class="overlay">
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
@@ -217,7 +265,7 @@
                 <div class="menu-selector">
                   <div class="size">
                     <label for="size">Size</label>
-                    <select name="" id="size">
+                    <select class="size-select" name="size">
                       <% item.options.prices.forEach(price => { %>
                       <option value="<%= price.size %>"><%= price.size %></option>
                       <% }) %>
@@ -225,7 +273,7 @@
                   </div>
                   <div class="crust">
                     <label for="crust">Crust</label>
-                    <select name="" id="crust">
+                    <select class="crust-select" name="crust">
                       <% item.options.crusts.forEach(crust => { %>
                       <option value="<%= crust %>"><%= crust %></option>
                       <% }) %>
@@ -233,7 +281,31 @@
                   </div>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
+                  <div class="btns">
+                    <% if(session.cart && (session.cart.items).hasOwnProperty(item._id)) { %>
+                    <div class="quantity-control inline">
+                      <button type="button" class="less removeOneBtn">
+                        <% if(session.cart.items[item._id].reduce((a,i) => a + i.qty, 0) === 1) { %>
+                        <span class="material-icons">
+                          delete_outline
+                        </span>
+                        <% } else { %>
+                        <span class="material-icons">
+                          remove
+                        </span>
+                        <% } %>
+                      </button>
+                      <p><%= session.cart.items[item._id].reduce((a,i) => a + i.qty, 0) %></p>
+                      <button type="button" class="more addToCart addMoreBtn">
+                        <span class="material-icons">
+                          add
+                        </span>
+                      </button>
+                    </div>
+                    <% } else { %>
+                    <button class="btn btn-sm firstAdd addToCart">Add to Cart</button>
+                    <% } %>
+                  </div>
                 </div>
               </div>
             </div>
@@ -247,7 +319,7 @@
           <div class="menu-grid">
 
             <% menus.combo.map(item => { %>
-            <div class="menu-card">
+            <div class="menu-card menu-card-data" data-item='<%= JSON.stringify(item)%>'>
               <div class="menu-image">
                 <div class="overlay">
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
@@ -269,7 +341,31 @@
                   </span>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
+                  <div class="btns">
+                    <% if(session.cart && (session.cart.items).hasOwnProperty(item._id)) { %>
+                    <div class="quantity-control inline">
+                      <button type="button" class="less removeOneBtn">
+                        <% if(session.cart.items[item._id].qty === 1) { %>
+                        <span class="material-icons">
+                          delete_outline
+                        </span>
+                        <% } else { %>
+                        <span class="material-icons">
+                          remove
+                        </span>
+                        <% } %>
+                      </button>
+                      <p><%= session.cart.items[item._id].qty %></p>
+                      <button type="button" class="more addToCart addMoreBtn">
+                        <span class="material-icons">
+                          add
+                        </span>
+                      </button>
+                    </div>
+                    <% } else { %>
+                    <button class="btn btn-sm firstAdd addToCart">Add to Cart</button>
+                    <% } %>
+                  </div>
                 </div>
               </div>
             </div>
@@ -283,7 +379,7 @@
           <div class="menu-grid">
 
             <% menus.pizzamania.map(item => { %>
-            <div class="menu-card">
+            <div class="menu-card menu-card-data" data-item='<%= JSON.stringify(item)%>'>
               <div class="menu-image">
                 <div class="overlay">
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
@@ -307,13 +403,15 @@
                 <div class="menu-selector">
                   <div class="size">
                     <label for="size">Size</label>
-                    <select name="" id="size" disabled>
-                      <option value="regular">Regular</option>
+                    <select class="size-select" name="size">
+                      <% item.options.prices.forEach(price => { %>
+                      <option value="<%= price.size %>"><%= price.size %></option>
+                      <% }) %>
                     </select>
                   </div>
                   <div class="crust">
                     <label for="crust">Crust</label>
-                    <select name="" id="crust">
+                    <select class="crust-select" name="crust">
                       <% item.options.crusts.forEach(crust => { %>
                       <option value="<%= crust %>"><%= crust %></option>
                       <% }) %>
@@ -321,7 +419,31 @@
                   </div>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
+                  <div class="btns">
+                    <% if(session.cart && (session.cart.items).hasOwnProperty(item._id)) { %>
+                    <div class="quantity-control inline">
+                      <button type="button" class="less removeOneBtn">
+                        <% if(session.cart.items[item._id].reduce((a,i) => a + i.qty, 0) === 1) { %>
+                        <span class="material-icons">
+                          delete_outline
+                        </span>
+                        <% } else { %>
+                        <span class="material-icons">
+                          remove
+                        </span>
+                        <% } %>
+                      </button>
+                      <p><%= session.cart.items[item._id].reduce((a,i) => a + i.qty, 0) %></p>
+                      <button type="button" class="more addToCart addMoreBtn">
+                        <span class="material-icons">
+                          add
+                        </span>
+                      </button>
+                    </div>
+                    <% } else { %>
+                    <button class="btn btn-sm firstAdd addToCart">Add to Cart</button>
+                    <% } %>
+                  </div>
                 </div>
               </div>
             </div>
@@ -335,7 +457,7 @@
           <div class="menu-grid">
 
             <% menus.chicken.map(item => { %>
-            <div class="menu-card">
+            <div class="menu-card menu-card-data" data-item='<%= JSON.stringify(item)%>'>
               <div class="menu-image">
                 <div class="overlay">
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
@@ -357,7 +479,31 @@
                   </span>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
+                  <div class="btns">
+                    <% if(session.cart && (session.cart.items).hasOwnProperty(item._id)) { %>
+                    <div class="quantity-control inline">
+                      <button type="button" class="less removeOneBtn">
+                        <% if(session.cart.items[item._id].qty === 1) { %>
+                        <span class="material-icons">
+                          delete_outline
+                        </span>
+                        <% } else { %>
+                        <span class="material-icons">
+                          remove
+                        </span>
+                        <% } %>
+                      </button>
+                      <p><%= session.cart.items[item._id].qty %></p>
+                      <button type="button" class="more addToCart addMoreBtn">
+                        <span class="material-icons">
+                          add
+                        </span>
+                      </button>
+                    </div>
+                    <% } else { %>
+                    <button class="btn btn-sm firstAdd addToCart">Add to Cart</button>
+                    <% } %>
+                  </div>
                 </div>
               </div>
             </div>
@@ -371,7 +517,7 @@
           <div class="menu-grid">
 
             <% menus.sides.map(item => { %>
-            <div class="menu-card">
+            <div class="menu-card menu-card-data" data-item='<%= JSON.stringify(item)%>'>
               <div class="menu-image">
                 <div class="overlay">
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
@@ -393,7 +539,31 @@
                   </span>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
+                  <div class="btns">
+                    <% if(session.cart && (session.cart.items).hasOwnProperty(item._id)) { %>
+                    <div class="quantity-control inline">
+                      <button type="button" class="less removeOneBtn">
+                        <% if(session.cart.items[item._id].qty === 1) { %>
+                        <span class="material-icons">
+                          delete_outline
+                        </span>
+                        <% } else { %>
+                        <span class="material-icons">
+                          remove
+                        </span>
+                        <% } %>
+                      </button>
+                      <p><%= session.cart.items[item._id].qty %></p>
+                      <button type="button" class="more addToCart addMoreBtn">
+                        <span class="material-icons">
+                          add
+                        </span>
+                      </button>
+                    </div>
+                    <% } else { %>
+                    <button class="btn btn-sm firstAdd addToCart">Add to Cart</button>
+                    <% } %>
+                  </div>
                 </div>
               </div>
             </div>
@@ -407,7 +577,7 @@
           <div class="menu-grid">
 
             <% menus.beverage.map(item => { %>
-            <div class="menu-card">
+            <div class="menu-card menu-card-data" data-item='<%= JSON.stringify(item)%>'>
               <div class="menu-image">
                 <div class="overlay">
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
@@ -429,7 +599,31 @@
                   </span>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
+                  <div class="btns">
+                    <% if(session.cart && (session.cart.items).hasOwnProperty(item._id)) { %>
+                    <div class="quantity-control inline">
+                      <button type="button" class="less removeOneBtn">
+                        <% if(session.cart.items[item._id].qty === 1) { %>
+                        <span class="material-icons">
+                          delete_outline
+                        </span>
+                        <% } else { %>
+                        <span class="material-icons">
+                          remove
+                        </span>
+                        <% } %>
+                      </button>
+                      <p><%= session.cart.items[item._id].qty %></p>
+                      <button type="button" class="more addToCart addMoreBtn">
+                        <span class="material-icons">
+                          add
+                        </span>
+                      </button>
+                    </div>
+                    <% } else { %>
+                    <button class="btn btn-sm firstAdd addToCart">Add to Cart</button>
+                    <% } %>
+                  </div>
                 </div>
               </div>
             </div>
@@ -443,7 +637,7 @@
           <div class="menu-grid">
 
             <% menus.dessert.map(item => { %>
-            <div class="menu-card">
+            <div class="menu-card menu-card-data" data-item='<%= JSON.stringify(item)%>'>
               <div class="menu-image">
                 <div class="overlay">
                   <% if(item.foodType === 'veg') {%> <div class="menu-type veg"></div>
@@ -465,7 +659,31 @@
                   </span>
                 </div>
                 <div class="menu-actions">
-                  <button class="btn btn-sm addToCart" data-item='<%= JSON.stringify(item)%>'>Add to Cart</button>
+                  <div class="btns">
+                    <% if(session.cart && (session.cart.items).hasOwnProperty(item._id)) { %>
+                    <div class="quantity-control inline">
+                      <button type="button" class="less removeOneBtn">
+                        <% if(session.cart.items[item._id].qty === 1) { %>
+                        <span class="material-icons">
+                          delete_outline
+                        </span>
+                        <% } else { %>
+                        <span class="material-icons">
+                          remove
+                        </span>
+                        <% } %>
+                      </button>
+                      <p><%= session.cart.items[item._id].qty %></p>
+                      <button type="button" class="more addToCart addMoreBtn">
+                        <span class="material-icons">
+                          add
+                        </span>
+                      </button>
+                    </div>
+                    <% } else { %>
+                    <button class="btn btn-sm firstAdd addToCart">Add to Cart</button>
+                    <% } %>
+                  </div>
                 </div>
               </div>
             </div>
@@ -475,12 +693,13 @@
       </div>
       <div class="side-menu">
         <div class="cart-preview" id="cartPreview">
-          <% if(session.cart) { %>
+          <% if(session.cart && session.cart.totalQty !== 0) { %>
           <div class="side-cart">
             <div class="added-items" id="sideCartItems">
               <% for(let cartItem of Object.values(session.cart.items) ){ %>
               <% if(Array.isArray(cartItem)) { %>
               <% cartItem.forEach(pizza => { %>
+              <% if(pizza.qty > 0) { %>
               <div class="item">
                 <figure>
                   <img src="<%= pizza.item.image %>" alt="">
@@ -523,7 +742,7 @@
                 </div>
                 <% } %>
               </div>
-              <% }) %>
+              <% }}) %>
               <% } else { %>
               <div class="item">
                 <figure>
