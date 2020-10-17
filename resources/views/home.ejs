@@ -70,7 +70,7 @@
                     <% if(session.cart && (session.cart.items).hasOwnProperty(item._id)) { %>
                     <div class="quantity-control inline">
                       <button type="button" class="less">
-                        <% if(1) { %>
+                        <% if(session.cart.items[item._id].qty === 1) { %>
                         <span class="material-icons">
                           delete_outline
                         </span>
@@ -80,15 +80,15 @@
                         </span>
                         <% } %>
                       </button>
-                      <p>1</p>
-                      <button type="button" class="more">
+                      <p><%= session.cart.items[item._id].qty %></p>
+                      <button type="button" class="more addToCart addMoreBtn">
                         <span class="material-icons">
                           add
                         </span>
                       </button>
                     </div>
                     <% } else { %>
-                    <button class="btn btn-sm addToCart">Add to Cart</button>
+                    <button class="btn btn-sm firstAdd addToCart">Add to Cart</button>
                     <% } %>
                   </div>
                 </div>

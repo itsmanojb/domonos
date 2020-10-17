@@ -136,7 +136,6 @@ function updateCart(item) {
     })
 }
 
-
 function populateCart(data) {
 
   let items = '';
@@ -233,6 +232,32 @@ addtoCartBtn.forEach(btn => {
   })
 });
 
+const addFirstBtn = document.querySelectorAll('.firstAdd');
+addFirstBtn.forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    const qController = `<div class="quantity-control inline">
+    <button type="button" class="less"><span class="material-icons">delete_outline</span></button>
+    <p>1</p>
+    <button type="button" class="more"><span class="material-icons">add</span></button>
+    </div>`;
+    btn.closest('.btns').innerHTML = qController;
+  })
+})
+
+
+
+const addMoreBtn = document.querySelectorAll('.addMoreBtn');
+addMoreBtn.forEach(btn => {
+  btn.addEventListener('click', e => {
+    const lessBtn = btn.closest('.quantity-control').getElementsByClassName('less')[0];
+    let count = +btn.previousElementSibling.innerText;
+    const newCount = count + 1;
+    const lessBtnHTML = newCount < 2 ? `<span class="material-icons">delete_outline</span>` : `<span class="material-icons">remove</span>`;
+    lessBtn.innerHTML = lessBtnHTML;
+
+    btn.previousElementSibling.innerText = `${newCount}`;
+  })
+})
 
 document.addEventListener('DOMContentLoaded', function () {
 

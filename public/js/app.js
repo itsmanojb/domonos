@@ -5474,6 +5474,24 @@ addtoCartBtn.forEach(function (btn) {
     updateCart(cartItem);
   });
 });
+var addFirstBtn = document.querySelectorAll('.firstAdd');
+addFirstBtn.forEach(function (btn) {
+  btn.addEventListener('click', function (e) {
+    var qController = "<div class=\"quantity-control inline\">\n    <button type=\"button\" class=\"less\"><span class=\"material-icons\">delete_outline</span></button>\n    <p>1</p>\n    <button type=\"button\" class=\"more\"><span class=\"material-icons\">add</span></button>\n    </div>";
+    btn.closest('.btns').innerHTML = qController;
+  });
+});
+var addMoreBtn = document.querySelectorAll('.addMoreBtn');
+addMoreBtn.forEach(function (btn) {
+  btn.addEventListener('click', function (e) {
+    var lessBtn = btn.closest('.quantity-control').getElementsByClassName('less')[0];
+    var count = +btn.previousElementSibling.innerText;
+    var newCount = count + 1;
+    var lessBtnHTML = newCount < 2 ? "<span class=\"material-icons\">delete_outline</span>" : "<span class=\"material-icons\">remove</span>";
+    lessBtn.innerHTML = lessBtnHTML;
+    btn.previousElementSibling.innerText = "".concat(newCount);
+  });
+});
 document.addEventListener('DOMContentLoaded', function () {
   var sections = document.querySelectorAll(".scrollspy-section");
   var menu_links = document.querySelectorAll(".scrollspy-link a");
