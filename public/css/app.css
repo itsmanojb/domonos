@@ -355,9 +355,11 @@ textarea:focus {
   padding: 0 50px;
 }
 
-.container.padded {
-  padding-left: 100px;
-  padding-right: 100px;
+@media (min-width: 1900px) {
+  .container.padded {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
 }
 
 .d-none {
@@ -439,15 +441,17 @@ textarea:focus {
   margin: -11px 0 0;
   height: 40px;
   padding: 10px 15px;
-  font-size: 16px;
+  font-size: 15px;
   color: #fff;
   line-height: 1;
   font-weight: 400;
 }
 
 .alert-overlay .alert-wrapper .alertbox p {
-  margin: 0 0 10px;
+  margin: 8px 0 10px;
   padding: 15px;
+  font-size: 14px;
+  line-height: 1.2;
   font-weight: 600;
 }
 
@@ -1726,8 +1730,14 @@ textarea:focus {
 
 .page.home-menu .home-menus-wrapper {
   display: grid;
-  grid-template-columns: 1fr 450px;
+  grid-template-columns: 1fr 330px;
   gap: 30px;
+}
+
+@media (min-width: 1900px) {
+  .page.home-menu .home-menus-wrapper {
+    grid-template-columns: 1fr 450px;
+  }
 }
 
 .page.home-menu .all-menus section .header {
@@ -1821,9 +1831,17 @@ textarea:focus {
 }
 
 .page.home-menu .all-menus section .menu-grid .menu-card {
-  width: 350px;
-  margin-right: 50px;
-  margin-bottom: 50px;
+  width: 320px;
+  margin-right: 30px;
+  margin-bottom: 30px;
+}
+
+@media (min-width: 1900px) {
+  .page.home-menu .all-menus section .menu-grid .menu-card {
+    width: 350px;
+    margin-right: 50px;
+    margin-bottom: 50px;
+  }
 }
 
 .page.home-menu .all-menus section:last-of-type {

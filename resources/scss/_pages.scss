@@ -1,3 +1,5 @@
+@import "mixins";
+
 .page {
   min-height: 90vh;
   background-color: var(--page-background-alt);
@@ -7,8 +9,12 @@
 
   .home-menus-wrapper {
     display: grid;
-    grid-template-columns: 1fr 450px;
+    grid-template-columns: 1fr 330px;
     gap: 30px;
+
+    @include desktop-lg {
+      grid-template-columns: 1fr 450px;
+    }
   }
 
   .all-menus {
@@ -97,9 +103,15 @@
         flex-wrap: wrap;
 
         .menu-card {
-          width: 350px;
-          margin-right: 50px;
-          margin-bottom: 50px;
+          width: 320px;
+          margin-right: 30px;
+          margin-bottom: 30px;
+
+          @include desktop-lg {
+            width: 350px;
+            margin-right: 50px;
+            margin-bottom: 50px;
+          }
         }
       }
 

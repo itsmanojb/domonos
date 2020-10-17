@@ -69,8 +69,8 @@
                   <div class="btns">
                     <% if(session.cart && (session.cart.items).hasOwnProperty(item._id)) { %>
                     <div class="quantity-control inline">
-                      <button type="button" class="less">
-                        <% if(session.cart.items[item._id].qty === 1) { %>
+                      <button type="button" class="less removeOneBtn">
+                        <% if(session.cart.items[item._id].reduce((a,i) => a + i.qty, 0) === 1) { %>
                         <span class="material-icons">
                           delete_outline
                         </span>
@@ -80,7 +80,7 @@
                         </span>
                         <% } %>
                       </button>
-                      <p><%= session.cart.items[item._id].qty %></p>
+                      <p><%= session.cart.items[item._id].reduce((a,i) => a + i.qty, 0) %></p>
                       <button type="button" class="more addToCart addMoreBtn">
                         <span class="material-icons">
                           add
@@ -478,7 +478,9 @@
           <% if(session.cart) { %>
           <div class="side-cart">
             <div class="added-items" id="sideCartItems">
-              <% for(let pizza of Object.values(session.cart.items) ){ %>
+              <% for(let cartItem of Object.values(session.cart.items) ){ %>
+              <% if(Array.isArray(cartItem)) { %>
+              <% cartItem.forEach(pizza => { %>
               <div class="item">
                 <figure>
                   <img src="<%= pizza.item.image %>" alt="">
@@ -521,6 +523,41 @@
                 </div>
                 <% } %>
               </div>
+              <% }) %>
+              <% } else { %>
+              <div class="item">
+                <figure>
+                  <img src="<%= cartItem.item.image %>" alt="">
+                </figure>
+
+                <div class="details">
+                  <h2> <%= cartItem.item.name %> </h2>
+                  <p><%= cartItem.item.description %> </p>
+                </div>
+                <div class="price-q">
+                  <div class="quantity-control">
+                    <button type="button" class="less">
+                      <% if(cartItem.qty === 1) { %>
+                      <span class="material-icons">
+                        delete_outline
+                      </span>
+                      <% } else { %>
+                      <span class="material-icons">
+                        remove
+                      </span>
+                      <% } %>
+                    </button>
+                    <p><%= cartItem.qty %> </p>
+                    <button type="button" class="more">
+                      <span class="material-icons">
+                        add
+                      </span>
+                    </button>
+                  </div>
+                  <h5>&#8377; <%= cartItem.item.price * cartItem.qty %></h5>
+                </div>
+              </div>
+              <%} %>
               <%} %>
             </div>
             <div class="cta">

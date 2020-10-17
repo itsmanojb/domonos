@@ -54,9 +54,10 @@ locationBtn.addEventListener('click', () => {
 const alertUI = document.querySelector('#alertUI');
 const okBtn = document.getElementById('alertOKBtn');
 
-function showAlert(text, title = 'Oops...') {
+function showAlert(text, btnText = 'OK', title = 'Oops...') {
   document.getElementById('alertTitle').innerText = title;
   document.getElementById('alertText').innerText = text;
+  document.getElementById('alertOKBtn').innerText = btnText;
   alertUI.classList.add('shown')
 }
 
@@ -108,8 +109,8 @@ crustSelect.forEach(select => {
 const addtoCartBtn = document.querySelectorAll('.addToCart');
 const cartCounter = document.querySelector('#cartCounter')
 
-function updateCart(item) {
-  axios.post('/update-cart', item)
+function addToCart(item) {
+  axios.post('/add-item', item)
     .then((res) => {
 
       cartCounter.innerText = res.data.cart.totalQty;
@@ -136,34 +137,93 @@ function updateCart(item) {
     })
 }
 
+async function removeItem(item) {
+  try {
+    const res = await axios.post('/remove-item', item);
+    if (res.data.status === 'ok') {
+      cartCounter.innerText = res.data.cart.totalQty;
+      populateCart(res.data.cart);
+      return res.data.cart;
+    } else {
+      showAlert('Multiple customizations of this item are added to cart. Please remove item from cart.', 'OK, GOT IT', 'Remove item from cart');
+      return false;
+    }
+  } catch (error) {
+    console.log(error);
+    new Noty({
+      type: 'error',
+      text: 'Something went wrong',
+      timeout: 2000,
+      progressBar: false,
+      layout: 'bottomRight',
+
+    }).show()
+    return false;
+  }
+
+}
+
 function populateCart(data) {
 
   let items = '';
 
-  for (let pizza of Object.values(data.items)) {
-    items += `
-    <div class="item">
-      <figure>
-          <img src="${pizza.item.image}" alt="">
-      </figure>
-      <div class="details">
-          <h2>${pizza.item.name}</h2>
-          <p>${pizza.item.description}</p>
-          <div class="more">
-              <span>${pizza.item.size}</span>
-              <span>${pizza.item.crust}</span>
+  for (let cartItem of Object.values(data.items)) {
+    if (Array.isArray(cartItem)) {
+      cartItem.forEach(pizza => {
+
+        items += `
+        <div class="item">
+          <figure>
+              <img src="${pizza.item.image}" alt="">
+          </figure>
+          <div class="details">
+              <h2>${pizza.item.name}</h2>
+              <p>${pizza.item.description}</p>
+              <div class="more">
+                  <span>${pizza.item.size}</span>
+                  <span>${pizza.item.crust}</span>
+              </div>
+          </div>`;
+
+        if (pizza.item.extra) {
+          items += `
+            <div class="custom">
+                <span>Your Customization</span>
+                <p> <strong>Added topping:</strong> Extra Cheese</p>
+            </div>`;
+        }
+
+        items += `
+        <div class="price-q">
+          <div class="quantity-control">
+            <button type="button" class="less"><span class="material-icons">${pizza.qty === 1 ? 'delete_outline' : 'remove'}</span></button>
+            <p>${pizza.qty}</p>
+            <button type="button" class="more"><span class="material-icons">add</span></button>
           </div>
-      </div>`;
-
-    if (pizza.item.extra) {
-      items += `
-        <div class="custom">
-            <span>Your Customization</span>
-            <p> <strong>Added topping:</strong> Extra Cheese</p>
+          <h5>&#8377; ${pizza.item.price * pizza.qty}</h5>
         </div>`;
-    }
 
-    items += `
+        items += `</div>`;
+
+      });
+    } else {
+
+      items += `
+      <div class="item">
+        <figure>
+            <img src="${pizza.item.image}" alt="">
+        </figure>
+        <div class="details">
+            <h2>${pizza.item.name}</h2>
+            <p>${pizza.item.description}</p>
+            <div class="more">
+                <span>${pizza.item.size}</span>
+                <span>${pizza.item.crust}</span>
+            </div>
+        </div>`;
+
+
+      items += `
       <div class="price-q">
         <div class="quantity-control">
           <button type="button" class="less"><span class="material-icons">${pizza.qty === 1 ? 'delete_outline' : 'remove'}</span></button>
@@ -173,7 +233,9 @@ function populateCart(data) {
         <h5>&#8377; ${pizza.item.price * pizza.qty}</h5>
       </div>`;
 
-    items += `</div>`;
+      items += `</div>`;
+
+    }
 
   }
 
@@ -228,7 +290,7 @@ addtoCartBtn.forEach(btn => {
     cartItem.extra = extra;
 
     console.log(cartItem, extra);
-    updateCart(cartItem);
+    addToCart(cartItem);
   })
 });
 
@@ -276,13 +338,12 @@ addFirstBtn.forEach(btn => {
       cartItem.crust = selectedCrust;
       cartItem.extra = extra;
 
-      console.log(cartItem, extra);
-      updateCart(cartItem);
+      // console.log(cartItem, extra);
+      addToCart(cartItem);
     })
+
   })
 })
-
-
 
 const addMoreBtn = document.querySelectorAll('.addMoreBtn');
 addMoreBtn.forEach(btn => {
@@ -294,6 +355,29 @@ addMoreBtn.forEach(btn => {
     lessBtn.innerHTML = lessBtnHTML;
 
     btn.previousElementSibling.innerText = `${newCount}`;
+  })
+})
+
+const removeOneBtn = document.querySelectorAll('.removeOneBtn');
+removeOneBtn.forEach(btn => {
+  const item = JSON.parse(btn.closest(".menu-card").dataset.item);
+  btn.addEventListener('click', e => {
+
+    // remove from cart
+    if (removeItem(item)) {
+      let count = +btn.nextElementSibling.innerText;
+      const newCount = count - 1;
+      if (newCount > 0) {
+        const lessBtnHTML = newCount < 2 ? `<span class="material-icons">delete_outline</span>` : `<span class="material-icons">remove</span>`;
+        btn.innerHTML = lessBtnHTML
+        btn.nextElementSibling.innerText = `${newCount}`;
+      } else {
+        const addBtnHtml = `<button class="btn btn-sm firstAdd addToCart">Add to Cart</button>`
+        btn.closest('.btns').innerHTML = addBtnHtml;
+      }
+
+    }
+
   })
 })
 

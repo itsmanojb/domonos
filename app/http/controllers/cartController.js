@@ -37,7 +37,7 @@ function cartController() {
       });
 
     },
-    update(req, res) {
+    addItem(req, res) {
 
       // check if empty cart
       if (!req.session.cart) {
@@ -51,23 +51,70 @@ function cartController() {
 
       // check if items not in cart
       if (!cart.items[req.body._id]) {
-        cart.items[req.body._id] = {
-          item: req.body,
-          qty: 1
+        if (req.body.menuType === 'pizza') {
+          cart.items[req.body._id] = [{
+            item: req.body,
+            qty: 1
+          }]
+        } else {
+          cart.items[req.body._id] = {
+            item: req.body,
+            qty: 1
+          }
         }
       } else {
-        if (cart.items[req.body._id].size === req.body.size &&
-          cart.items[req.body._id].crust === req.body.crust) {
+        if (req.body.menuType !== 'pizza') {
           cart.items[req.body._id].qty = cart.items[req.body._id].qty + 1;
         } else {
-          cart.items[req.body._id].qty = cart.items[req.body._id].qty + 1;
+          const alreadyAdded = cart.items[req.body._id].filter(it => it.item.size === req.body.size && it.item.crust === req.body.crust);
+          if (alreadyAdded.length > 0) {
+            const index = cart.items[req.body._id].findIndex(it => it.item.size === req.body.size && it.item.crust === req.body.crust);
+            cart.items[req.body._id][index].qty = cart.items[req.body._id][index].qty + 1
+          } else {
+            cart.items[req.body._id].push({
+              item: req.body,
+              qty: 1
+            })
+          }
         }
       }
       cart.totalQty = cart.totalQty + 1;
       cart.totalPrice = cart.totalPrice + req.body.price;
 
       return res.json({
-        cart: req.session.cart
+        cart
+      })
+    },
+    removeItem(req, res) {
+
+      let cart = req.session.cart;
+      if (Array.isArray(cart.items[req.body._id])) {
+
+        if (cart.items[req.body._id].length > 1) {
+          return res.json({
+            status: 'failed'
+          });
+        } else {
+          if (cart.items[req.body._id].qty === 1) {
+            delete cart.items[req.body._id];
+          } else {
+            cart.items[req.body._id][0].qty = cart.items[req.body._id][0].qty - 1
+          }
+          cart.totalQty = cart.totalQty - 1;
+          cart.totalPrice = cart.totalPrice - req.body.price;
+          return res.json({
+            status: 'ok',
+            cart
+          });
+        }
+      }
+
+      delete cart.items[req.body._id];
+      cart.totalQty = cart.totalQty - 1;
+      cart.totalPrice = cart.totalPrice - req.body.price;
+      return res.json({
+        status: 'ok',
+        cart
       })
     },
   };
