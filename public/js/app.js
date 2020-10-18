@@ -6478,6 +6478,12 @@ deleteCartItemBtn.forEach(function (btn) {
   });
 });
 document.addEventListener('DOMContentLoaded', function () {
+  if (window.location.href.split('/').pop() !== '') {
+    document.querySelector('.site__header').classList.remove('light');
+  } else {
+    document.querySelector('.site__header').classList.add('light');
+  }
+
   var sections = document.querySelectorAll(".scrollspy-section");
   var menu_links = document.querySelectorAll(".scrollspy-link a");
 

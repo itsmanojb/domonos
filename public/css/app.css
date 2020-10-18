@@ -478,6 +478,65 @@ textarea:focus {
   height: 56px;
 }
 
+.site__header.light {
+  height: 64px;
+  background-color: #fff;
+  --navbar-link-color: #666;
+  border-bottom: 1px solid #eee;
+}
+
+.site__header.light .header-wrapper {
+  margin: 4px 0;
+  padding-left: 200px;
+  padding-right: 200px;
+}
+
+.site__header.light .brand a {
+  color: rgb(var(--primary-color-rgb));
+}
+
+.site__header.light .hamburger,
+.site__header.light .cart-menu,
+.site__header.light .location-menu,
+.site__header.light .user-menu {
+  display: none;
+}
+
+.site__header.light nav {
+  margin: 0 auto;
+  transform: translateX(-20%);
+}
+
+.site__header.light nav ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+}
+
+.site__header.light nav ul li a {
+  color: #5f88a3;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.site__header.light nav ul li + li {
+  margin-left: 25px;
+}
+
+.site__header.light .download-menu {
+  width: 148px;
+  height: 45px;
+  border-radius: 3px;
+  background-color: #f3223b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+}
+
 .site__header .header-wrapper {
   display: flex;
   justify-content: space-between;
@@ -516,7 +575,7 @@ textarea:focus {
   font-weight: 900;
   font-size: 24px;
   line-height: 1;
-  letter-spacing: -0.05ch;
+  letter-spacing: -0.025ch;
   margin-top: 6px;
 }
 
@@ -529,17 +588,6 @@ textarea:focus {
 .site__header .header-menus.inactive {
   pointer-events: none;
   opacity: 0.6;
-}
-
-.site__header nav ul {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-  display: flex;
-}
-
-.site__header nav ul li a {
-  color: var(--navbar-link-color);
 }
 
 .site__header .location-menu {
@@ -629,6 +677,11 @@ textarea:focus {
 
 .site__header .user-menu .user-info a {
   color: inherit;
+}
+
+.site__header:not(.light) nav,
+.site__header:not(.light) .download-menu {
+  display: none;
 }
 
 .site__drawer {
@@ -1908,51 +1961,309 @@ textarea:focus {
 }
 
 .home__banner {
-  min-height: 600px;
-  background: #1a5ca3 url("/images/home-banner.png") no-repeat;
+  height: 600px;
+  background: #1a5ca3 url("/images/banner-new.png") no-repeat;
   background-size: 55vw;
   background-position: right bottom;
 }
 
+.home__banner .container {
+  height: 100%;
+}
+
+.home__banner .welcome {
+  padding-top: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  max-width: 450px;
+}
+
+.home__banner .welcome h1 {
+  color: #fff;
+  font-size: 36px;
+}
+
+.home__banner .welcome h1 small {
+  display: block;
+  opacity: 0.4;
+  font-weight: normal;
+  font-size: 24px;
+  margin-top: 4px;
+}
+
+.home__banner .welcome .cta {
+  display: block;
+  color: #fff;
+  background-color: var(--green-alt);
+  padding: 1.2rem;
+  border-radius: 4px;
+  transition: background 0.2s ease-in;
+  cursor: pointer;
+  margin: 4px 0;
+  text-align: center;
+  font-weight: 900;
+  line-height: 1;
+  font-size: 18px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 2px 0 #024389, 0 0 2px 0 rgba(0, 0, 0, 0.12);
+}
+
+.home__banner .welcome .cta:hover {
+  background-color: var(--green-hover);
+}
+
+.home__banner .welcome .ad {
+  height: 120px;
+}
+
+.home__sections {
+  padding-top: 1rem;
+}
+
 .coupons,
 .explore {
-  padding: 3rem 0;
+  margin: 3rem 0 1rem;
 }
 
 .coupons h3,
 .explore h3 {
   font-size: 30px;
   font-weight: bold;
-  letter-spacing: 0.31;
   color: #708aa5;
+}
+
+.all-coupons {
+  overflow: auto;
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+}
+
+.all-coupons::-webkit-scrollbar {
+  width: 0 !important;
+}
+
+.all-coupons .wrapper {
+  display: block;
+  white-space: nowrap;
+}
+
+.all-coupons .coupon {
+  width: 36vw;
+  height: 16vw;
+  margin-right: 20px;
+  display: inline-block;
+  border-radius: 5px;
+  min-height: 200px;
+  max-height: 500px;
+}
+
+.all-coupons .coupon:nth-child(1) {
+  background-color: #13adef;
+}
+
+.all-coupons .coupon:nth-child(2) {
+  background-color: #df9a41;
+}
+
+.all-coupons .coupon:nth-child(3) {
+  background-color: #0a0a0a;
+}
+
+.all-coupons .coupon:nth-child(4) {
+  background-color: #e16b45;
+}
+
+.all-coupons .coupon:nth-child(5) {
+  background-color: #522417;
+}
+
+.all-coupons .coupon:nth-child(6) {
+  background-color: #4d5969;
+}
+
+.explore-menus {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding-bottom: 4rem;
+}
+
+.explore-menus .col {
+  display: block;
+}
+
+.explore-menus .explore-card {
+  border: 1px dotted #999;
+  border-radius: 3px;
+  display: grid;
+  grid-template-rows: 260px 1fr;
+}
+
+.explore-menus .explore-card .card-top {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 3rem;
+  text-align: center;
+}
+
+.explore-menus .explore-card .img {
+  height: 100px;
+  color: #333;
+}
+
+.explore-menus .explore-card .img span {
+  font-size: 60px;
+  margin-top: 10px;
+}
+
+.explore-menus .explore-card h3 {
+  color: #2b4547;
+  font-size: 19px;
+  margin: 0.75rem 0;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.explore-menus .explore-card p {
+  font-size: 16px;
+  line-height: 28px;
+  text-align: center;
+  color: #2b4547;
+  margin: 0;
+}
+
+.explore-menus .explore-card .card-footer {
+  border-top: 1px dotted #999;
+  text-align: center;
+  color: #de042e;
+  font-size: 15px;
+  font-weight: 900;
+  text-transform: uppercase;
+  padding: 20px;
+  line-height: 16px;
+  height: 56px;
 }
 
 .app-promo {
   min-height: 480px;
-  background-color: #f2f5fc;
+  background-color: #f7f7f7;
   display: flex;
   justify-content: center;
   padding-top: 2em;
+  margin: 2rem 0;
+}
+
+.app-promo .container {
+  display: flex;
+}
+
+.app-promo .container .phones {
+  align-self: flex-end;
+  height: 100%;
+  flex: 1.5;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+.app-promo .container .phones .iphone {
+  left: 50%;
+  width: 320px;
+  bottom: 0;
+  height: 450px;
+  background: url("/images/iphone.png") no-repeat;
+  background-size: 700px;
+  background-position-x: center;
+  background-position-y: 100px;
+  position: absolute;
+  z-index: 1;
+  transform: translateX(-90%);
+}
+
+.app-promo .container .phones .pixel {
+  left: 50%;
+  right: 0;
+  bottom: 0;
+  height: 400px;
+  background: url("/images/pixel.png") no-repeat;
+  background-size: 450px;
+  background-position-x: center;
+  background-position-y: 100px;
+  position: absolute;
+  transform: translateX(-120px);
+}
+
+.app-promo .container .text {
+  align-self: center;
+  height: 300px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.app-promo .container .text h2 {
+  font-size: 46px;
+  font-weight: 900;
+  color: #59688c;
+  margin-bottom: 0;
+}
+
+.app-promo .container .text p {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  color: #59688c;
+  margin-top: 20px;
+  margin-right: 50px;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+
+.app-promo .container .text .btns {
+  display: flex;
+  align-items: center;
+  margin-left: -10px;
+}
+
+.app-promo .container .text .btns .app-btn {
+  height: 84px;
+  width: 200px;
+  margin: 4px 10px;
+  border-radius: 4px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.app-promo .container .text .btns .app-btn.appstore {
+  background-image: url("/images/app_store.png");
+  background-size: contain;
+}
+
+.app-promo .container .text .btns .app-btn.playstore {
+  background-image: url("/images/play_store.png");
+  background-size: contain;
 }
 
 .qna {
   padding: 3rem 0;
-  font-size: 1rem;
   color: #59688c;
 }
 
 .qna h5 {
-  font-size: 20px;
-  margin: 1rem 0;
+  font-size: 24px;
+  margin: 1.5rem 0;
 }
 
 .qna p {
-  margin: 1rem 0;
-  line-height: 1.3;
+  margin: 1.2rem 0;
+  line-height: 1.4;
+  font-size: 1.05rem;
 }
 
 .qna p + h5 {
-  margin-top: 3rem;
+  margin-top: 4rem;
 }
 
 .page {
@@ -2129,5 +2440,14 @@ textarea:focus {
   font-size: 15px;
   font-weight: 600;
   margin: 0;
+}
+
+.page.home {
+  background-color: #fff;
+}
+
+.page.home .container {
+  padding-left: 100px;
+  padding-right: 200px;
 }
 

@@ -442,6 +442,12 @@ deleteCartItemBtn.forEach(btn => {
 
 document.addEventListener('DOMContentLoaded', function () {
 
+  if (window.location.href.split('/').pop() !== '') {
+    document.querySelector('.site__header').classList.remove('light');
+  } else {
+    document.querySelector('.site__header').classList.add('light');
+  }
+
   const sections = document.querySelectorAll(".scrollspy-section");
   const menu_links = document.querySelectorAll(".scrollspy-link a");
 
