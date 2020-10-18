@@ -1,23 +1,61 @@
-<form method="POST" action="/login">
+<div class="page auth login">
   <div class="container">
-    <h1>Login</h1>
-    <p>Please enter login details.</p>
-    <hr>
-    <div>
-      <label for="email">Email</label> <br>
-      <input type="email" placeholder="Enter Email" name="email" required>
+    <div class="brand">
+      <a href="/">
+        <img src="/images/logo.png" alt="logo">
+        <span>Domono's Pizza</span>
+      </a>
     </div>
-    <div>
-      <label for="password">Password</label> <br>
-      <input type="password" placeholder="Enter Password" name="password" required>
+    <p class="info-text"><strong>Login</strong> to unlock awesome new features.</p>
+    <div class="features">
+      <div class="feat"><span class="material-icons-outlined">
+          local_pizza
+        </span>Great Food</div>
+      <div class="feat"><span class="material-icons-outlined">
+          local_offer
+        </span>Great Offers</div>
+      <div class="feat"><span class="material-icons">
+          settings_backup_restore
+        </span>No Reordering</div>
     </div>
 
-    <% if(messages.error) { %>
-    <span><%= messages.error %></span>
-    <% } %>
-    <div>
-      <button type="submit">Login</button>
-    </div>
+    <div class="login-card">
+      <div class="form">
+        <form method="POST" action="/login">
 
+          <div class="form-header">
+            <h2>Welcome!</h2>
+            <p>Sign in to continue to Domono's</p>
+          </div>
+          <div class="form-body">
+            <div class="input-row">
+              <div class="input-box">
+                <input type="email" placeholder="Enter Email" name="email" required>
+              </div>
+            </div>
+            <div class="input-row">
+              <div class="input-box">
+                <input type="password" placeholder="Enter Password" name="password" required>
+              </div>
+            </div>
+          </div>
+          <% if(messages.error) { %>
+          <div class="form-error">
+            <span><%= messages.error %></span>
+          </div>
+          <% } %>
+          <div class="form-footer">
+            <p> <a href="/register">New User Signup</a></p>
+            <div class="btns">
+              <button type="submit">Submit</button>
+            </div>
+          </div>
+
+          <div>
+          </div>
+        </form>
+
+      </div>
+    </div>
   </div>
-</form>
+</div>

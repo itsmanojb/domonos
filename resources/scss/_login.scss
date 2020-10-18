@@ -1,0 +1,193 @@
+.page.auth {
+  padding-top: 120px;
+  padding-bottom: 100px;
+
+  background-image: url("/images/login_pizza_image@3x.png");
+  background-repeat: no-repeat;
+  background-size: 800px;
+  background-position: top right;
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto 0 120px;
+  }
+
+  .brand {
+    height: 50px;
+
+    a {
+      display: flex;
+      align-items: center;
+      color: rgb(var(--primary-color-rgb));
+
+      img {
+        // height: 65px;
+        // margin-top: -2px;
+        // margin-right: 10px;
+        // margin-left: -76px;
+        display: none;
+      }
+
+      span {
+        font-weight: 900;
+        font-size: 45px;
+        line-height: 1;
+        letter-spacing: -0.05ch;
+      }
+    }
+  }
+
+  .info-text {
+    margin: 0 0 10px 0;
+  }
+
+  .features {
+    margin: 30px 0 50px 0;
+    display: flex;
+
+    .feat {
+      text-transform: uppercase;
+      color: #333;
+      width: 120px;
+      margin-right: 20px;
+      padding-left: 40px;
+      position: relative;
+      font-size: 13px;
+      font-weight: 700;
+
+      span {
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 30px;
+        color: rgb(var(--primary-color-rgb));
+      }
+    }
+  }
+}
+
+.login-card {
+  border-radius: var(--card-border-radius);
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 2px 0px,
+    rgba(0, 0, 0, 0.12) 0px 2px 4px 0px;
+  padding: 3rem;
+
+  & + .login-card {
+    margin-top: 20px;
+  }
+
+  &.thin {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+
+.form {
+  &-header {
+    h2 {
+      margin: 0;
+    }
+
+    p {
+      margin: 6px 0 10px;
+      font-size: 15px;
+    }
+  }
+
+  &-error {
+    padding: 1rem;
+    background: #2c2523;
+    color: #fff;
+    margin: 10px 0;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+
+  &-body {
+    padding: 1rem 0;
+
+    .input-row {
+      .input-box {
+        border: 1px solid #ddd;
+        border-radius: 2px;
+
+        input {
+          width: 100%;
+          border: none;
+          padding: 15px 25px;
+          line-height: 1;
+          font-size: 16px;
+        }
+      }
+      & + .input-row {
+        margin-top: 10px;
+      }
+    }
+  }
+
+  &-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    p {
+      color: var(--text-coplor);
+      font-size: 17px;
+      font-weight: 700;
+
+      a {
+        color: rgba(0, 102, 167, 0.87);
+      }
+    }
+
+    .btns {
+      button {
+        background-color: var(--green);
+        color: #fff;
+        line-height: 1;
+        text-transform: uppercase;
+        padding: 0.75rem 1.5rem;
+        border-radius: 3px;
+        transition: background 0.2s ease-in;
+        cursor: pointer;
+        border: none;
+
+        &:hover {
+          background-color: var(--green-hover);
+        }
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+}
+
+.e-login {
+  margin: 1.5rem auto 0.5rem;
+  text-align: center;
+
+  .btn {
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    line-height: 1;
+    width: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(0, 102, 167, 0.87);
+    color: rgba(0, 102, 167, 0.87);
+    background-color: rgb(255, 255, 255);
+    font-weight: 700;
+    min-width: 200px;
+
+    span {
+      margin-right: 10px;
+    }
+  }
+}

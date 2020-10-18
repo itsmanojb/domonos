@@ -1,29 +1,74 @@
-<form method="POST" action="register">
+<div class="page auth login">
   <div class="container">
-    <h1>Sign Up</h1>
-    <p>Please fill in this form to create an account.</p>
-    <hr>
-    <div>
-      <label for="name">Name</label> <br>
-      <input type="text" placeholder="Name" name="name" value="<%= messages.name %>">
+    <div class="brand">
+      <a href="/">
+        <img src="/images/logo.png" alt="logo">
+        <span>Domono's Pizza</span>
+      </a>
+    </div>
+    <p class="info-text"><strong>Login</strong> to unlock awesome new features.</p>
+    <div class="features">
+      <div class="feat"><span class="material-icons-outlined">
+          local_pizza
+        </span>Great Food</div>
+      <div class="feat"><span class="material-icons-outlined">
+          local_offer
+        </span>Great Offers</div>
+      <div class="feat"><span class="material-icons">
+          settings_backup_restore
+        </span>No Reordering</div>
     </div>
 
-    <div>
-      <label for="email">Email</label> <br>
-      <input type="email" placeholder="Enter Email" name="email" value="<%= messages.email %>">
+    <div class="login-card">
+      <div class="form">
+        <form method="POST" action="/register">
+
+          <div class="form-header">
+            <h2>Welcome!</h2>
+            <p>Sign up to continue to Domono's</p>
+          </div>
+          <div class="form-body">
+            <div class="input-row">
+              <div class="input-box">
+                <input type="text" placeholder="Name" name="name" value="<%= messages.name %>">
+              </div>
+            </div>
+            <div class="input-row">
+              <div class="input-box">
+                <input type="email" placeholder="Enter Email" name="email" value="<%= messages.email %>">
+              </div>
+            </div>
+            <div class="input-row">
+              <div class="input-box">
+                <input type="password" placeholder="Enter Password" name="password" required>
+              </div>
+            </div>
+          </div>
+          <% if(messages.error) { %>
+          <div class="form-error">
+            <span><%= messages.error %></span>
+          </div>
+          <% } %>
+          <div class="form-footer">
+            <p> </p>
+            <div class="btns">
+              <button type="submit">Submit</button>
+            </div>
+          </div>
+          <div>
+          </div>
+        </form>
+
+      </div>
     </div>
 
-    <div>
-      <label for="password">Password</label> <br>
-      <input type="password" placeholder="Enter Password" name="password" required>
+    <div class="login-card thin">
+      <p>Login with your existing account</p>
+      <div class="e-login">
+        <a href="/login" class="btn"><span class="material-icons">
+            vpn_key
+          </span> Domonos Password</a>
+      </div>
     </div>
-
-    <% if(messages.error) { %>
-    <span><%= messages.error %></span>
-    <% } %>
-    <div>
-      <button type="submit">Register</button>
-    </div>
-
   </div>
-</form>
+</div>

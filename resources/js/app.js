@@ -441,9 +441,20 @@ deleteCartItemBtn.forEach(btn => {
 })
 
 document.addEventListener('DOMContentLoaded', function () {
-
-  if (window.location.href.split('/').pop() !== '') {
+  const pageurl = window.location.href.split('/').pop();
+  if (pageurl !== '') {
     document.querySelector('.site__header').classList.remove('light');
+    if (pageurl === 'login' || pageurl === 'register') {
+      document.querySelector('.location-menu').classList.add('d-none');
+      document.querySelector('.cart-menu').classList.add('d-none');
+      document.querySelector('.user-menu').classList.add('d-none');
+      // document.querySelector('.hamburger').classList.add('d-none');
+    } else {
+      document.querySelector('.location-menu').classList.remove('d-none');
+      document.querySelector('.cart-menu').classList.remove('d-none');
+      document.querySelector('.user-menu').classList.remove('d-none');
+      // document.querySelector('.hamburger').classList.remove('d-none');
+    }
   } else {
     document.querySelector('.site__header').classList.add('light');
   }
