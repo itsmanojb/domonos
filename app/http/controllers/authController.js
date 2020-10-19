@@ -22,7 +22,7 @@ function authController() {
             req.flash('error', info.message);
             return next(err);
           }
-          return res.redirect('/')
+          return res.redirect('/menus')
         })
       })(req, res, next);
     },
@@ -63,7 +63,7 @@ function authController() {
       });
       user.save().then(() => {
         // login
-        return res.redirect('/');
+        return res.redirect('/menus');
       }).catch((err) => {
         req.flash('error', 'Something went wrong');
         return res.redirect('/register');

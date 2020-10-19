@@ -129,7 +129,7 @@
           <div class="header">
             <h3>Choose a delivery address</h3>
           </div>
-          <div class="cart-card">
+          <div class="cart-card thin">
             <div class="location">
               <div class="icon">
                 <span class="material-icons">
@@ -146,6 +146,7 @@
                 </div>
               </div>
             </div>
+            <% if(!user) { %>
             <div class="saved-address">
               <div class="info">
                 <span class="material-icons">
@@ -155,11 +156,12 @@
                 <button class="btn btn-sm">My Address</button>
               </div>
             </div>
+            <% } %>
           </div>
           <div class="header">
             <h3>Offers</h3>
           </div>
-          <div class="cart-card">
+          <div class="cart-card thin">
             <div class="redeem">
               <div class="icon">
                 <span class="material-icons">
@@ -196,7 +198,11 @@
               <dd>&#8377; <span id="coPriceTotal"><%= session.cart.totalPrice %></span></dd>
             </dl>
             <div class="cta">
+              <% if(!user) { %>
+              <a class="btn" href="/login" type="button">Login to Order</a>
+              <% } else { %>
               <button class="btn" type="button">Place Order</button>
+              <% } %>
             </div>
           </div>
           <% } %>

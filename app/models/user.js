@@ -9,12 +9,18 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
+    unique: [true, 'Email must be unique'],
     lowercase: true
+  },
+  contact: {
+    type: String
+  },
+  addresses: {
+    type: [Object]
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   role: {
     type: String,

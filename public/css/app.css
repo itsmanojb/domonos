@@ -693,6 +693,8 @@ textarea:focus {
   box-shadow: 0 2px 10px rgba(82, 98, 116, 0.3);
   transition: transform 0.2s ease-in-out;
   z-index: 11;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .site__drawer.drawer_left {
@@ -830,6 +832,11 @@ textarea:focus {
   width: 100%;
   -o-object-fit: contain;
      object-fit: contain;
+}
+
+.location-wrapper .empty-locations.user .img {
+  margin-top: 80px;
+  margin-bottom: 10px;
 }
 
 .location-wrapper .empty-locations .my {
@@ -1429,6 +1436,10 @@ textarea:focus {
   margin-bottom: 0.75rem;
 }
 
+.cart-card.thin {
+  padding: 0.5rem 1rem;
+}
+
 .cart-card.item {
   padding: 1.5rem;
   display: grid;
@@ -1570,6 +1581,10 @@ textarea:focus {
   font-weight: 600;
 }
 
+.cart-card.price {
+  padding: 0.5rem 1rem;
+}
+
 .cart-card.price dl {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1601,7 +1616,7 @@ textarea:focus {
   padding: 4px 0;
 }
 
-.cart-card.price .cta button {
+.cart-card.price .cta .btn {
   width: 100%;
   padding: 0.8rem;
   background-color: var(--green);
@@ -1610,9 +1625,10 @@ textarea:focus {
   font-weight: 600;
   line-height: 1;
   transition: background 0.2s ease-in;
+  text-align: center;
 }
 
-.cart-card.price .cta button:hover {
+.cart-card.price .cta .btn:hover {
   background-color: var(--green-hover);
 }
 
@@ -1719,6 +1735,8 @@ textarea:focus {
   text-transform: uppercase;
   background-color: #fff;
   font-size: 14px;
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 .green-btn,
@@ -2021,13 +2039,13 @@ textarea:focus {
   padding-top: 1rem;
 }
 
-.coupons,
-.explore {
+.home__sections .coupons,
+.home__sections .explore {
   margin: 3rem 0 1rem;
 }
 
-.coupons h3,
-.explore h3 {
+.home__sections .coupons h3,
+.home__sections .explore h3 {
   font-size: 30px;
   font-weight: bold;
   color: #708aa5;
@@ -2264,6 +2282,81 @@ textarea:focus {
 
 .qna p + h5 {
   margin-top: 4rem;
+}
+
+.saved-addresses {
+  margin-top: 3rem;
+}
+
+.saved-addresses p {
+  color: #b3b3b3;
+  font-size: 13px;
+  margin: 1rem 0;
+}
+
+.saved-addresses .address-list .address {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 0;
+}
+
+.saved-addresses .address-list .address .picker {
+  width: 400px;
+  position: relative;
+  padding-left: 50px;
+  cursor: pointer;
+}
+
+.saved-addresses .address-list .address .picker > span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 50px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  color: #444;
+}
+
+.saved-addresses .address-list .address .picker p {
+  margin: 0;
+  color: #5f88a3;
+  line-height: 1;
+  overflow: hidden;
+}
+
+.saved-addresses .address-list .address .picker p span {
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.saved-addresses .address-list .address .picker p small {
+  display: block;
+  font-size: 14px;
+  color: rgba(53, 53, 53, 0.87);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 4px;
+}
+
+.saved-addresses .address-list .address .delete {
+  width: 50px;
+  text-align: right;
+  cursor: pointer;
+}
+
+.saved-addresses .address-list .address .delete span {
+  color: #999;
+}
+
+.saved-addresses .address-list .address + .address {
+  border-top: 1px dotted #aaa;
 }
 
 .page {

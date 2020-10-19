@@ -64,7 +64,7 @@
           <% if(user) {%>
           <form id="logout" action="/logout" method="POST">
             <div class="user-info">
-              <p>My Account</p>
+              <p><%= user.name %></p>
               <small><span><a href="#" onclick="document.getElementById('logout').submit()">Logout</a></span></small>
             </div>
           </form>
