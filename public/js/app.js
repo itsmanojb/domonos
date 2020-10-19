@@ -6620,6 +6620,46 @@ addressPickers.forEach(function (elm) {
     elm.closest('.address').classList.add('selected');
   });
 });
+var editAddressDataBtns = document.querySelectorAll('.editAddressDataBtn');
+editAddressDataBtns.forEach(function (btn) {
+  btn.addEventListener('click', function (e) {
+    var _JSON$parse = JSON.parse(btn.dataset.address),
+        title = _JSON$parse.title,
+        locality = _JSON$parse.locality,
+        address = _JSON$parse.address,
+        contact = _JSON$parse.contact;
+
+    document.getElementById('allAddressView').classList.add('d-none');
+    document.getElementById('editAddressForm').classList.remove('d-none');
+    document.getElementById('addressTitleInput').value = title;
+    document.getElementById('addressLocalityInput').value = locality;
+    document.getElementById('addressInput').value = address;
+    document.getElementById('addressContactInput').value = contact;
+  });
+});
+var updateAdressBtn = document.getElementById('editAddressSubmitBtn');
+updateAdressBtn.addEventListener('click', function (e) {
+  var current = document.querySelector('input[name="current_address"]:checked').value;
+  var title = document.getElementById('addressTitleInput').value;
+  var locality = document.getElementById('addressLocalityInput').value;
+  var address = document.getElementById('addressInput').value;
+  var contact = document.getElementById('addressContactInput').value;
+  axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/edit-address', {
+    index: +current,
+    address: {
+      title: title,
+      locality: locality,
+      address: address,
+      contact: contact,
+      "default": false
+    }
+  }).then(function (res) {
+    location.reload();
+  })["catch"](function (err) {
+    console.log(err);
+    showAlert('Something went wrong. Try again later.');
+  });
+});
 var saveAdressBtn = document.getElementById('saveAddressBtn');
 saveAdressBtn.addEventListener('click', function (e) {
   var current = document.querySelector('input[name="current_address"]:checked').value;
@@ -6637,7 +6677,6 @@ document.getElementById('addMoreAddressBtn').addEventListener('click', function 
   newAddressView.classList.remove('d-none');
 });
 var addressEditForm = document.getElementById('addNewAddressForm');
-var addressEditSubmitBtn = document.getElementById('addAddressSubmitBtn');
 overlay.addEventListener('click', function () {
   if (rightDrawer.classList.contains('opened')) {
     document.body.classList.remove('noscroll');
@@ -6647,6 +6686,8 @@ overlay.addEventListener('click', function () {
     editAddressUI.classList.add('d-none');
     newAddressView.classList.add('d-none');
     addressListView.classList.add('d-none');
+    document.getElementById('allAddressView').classList.remove('d-none');
+    document.getElementById('editAddressForm').classList.add('d-none');
   }
 
   if (leftDrawer.classList.contains('opened')) {

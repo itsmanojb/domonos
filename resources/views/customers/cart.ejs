@@ -188,8 +188,9 @@
                   <% if(user.addresses.length === 1) { %>
                   <small><%= user.addresses[0].address %> <em><%= user.addresses[0].locality %></em> </small>
                   <% } else { 
-                      let current = user.addresses.filter(a => a.default)[0];
-                    %>
+                      const defaultAddress = user.addresses.filter(a => a['default'] === true);
+                      const current = defaultAddress.length > 0 ? defaultAddress[0]: user.addresses[0];
+                  %>
                   <small><%= current.address %> <em><%= current.locality %></em> </small>
                   <% } %>
                   <a href="javascript:void(0)" class="editAddressBtn">Edit Address</a>

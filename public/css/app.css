@@ -2438,7 +2438,7 @@ textarea:focus {
 .add-address-ui .content-body p {
   color: #5f88a3;
   font-weight: 700;
-  margin: 2rem 0;
+  margin: 0 0 2rem;
 }
 
 .add-address-ui .content-body .input-row .input-box {

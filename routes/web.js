@@ -20,6 +20,7 @@ function initRoutes(app) {
   app.post('/add-address', userController().addAddress);
   app.post('/delete-address', userController().deleteAddress);
   app.post('/current-address', userController().currentAddress);
+  app.post('/edit-address', userController().editAddress);
 }
 
 module.exports = initRoutes;

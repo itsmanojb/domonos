@@ -101,6 +101,36 @@ function userController() {
                     }
                 }
             )
+        },
+        editAddress(req, res) {
+            const {
+                index,
+                address
+            } = req.body;
+
+            const addresses = req.user.addresses;
+            addresses[index] = address;
+            console.log(addresses);
+
+            User.findByIdAndUpdate(
+                req.user.id, {
+                    addresses
+                }, {
+                    new: true
+                },
+                (err, data) => {
+                    if (err) {
+                        return res.json({
+                            status: 'failed'
+                        });
+                    } else {
+                        return res.json({
+                            status: 'ok',
+                            data: data.addresses
+                        });
+                    }
+                }
+            )
         }
     };
 }
