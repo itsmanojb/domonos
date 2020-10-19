@@ -1,0 +1,72 @@
+<div class="add-address-ui d-none" id="editAddressUI">
+    <div class="form-wrapper" id="allAddressView">
+        <div class="header">
+            Select Address
+            <button class="add-btn" id="addMoreAddressBtn">Add New Address</button>
+        </div>
+        <div class="content-body">
+            <div class="address-list">
+                <% user.addresses.map((address, i) => { %>
+                <label for="address-<%=i%>">
+                    <div class="address <% if(address.default) { %> selected <%}%>">
+                    <div class="radio">
+                        <input type="radio" value="<%=i%>" data-value="<%= JSON.stringify(address) %>"
+                        <% if(address.default) { %> checked <%}%> name="current_address" id="address-<%=i%>">
+                    </div>
+                    <div class="picker addressRadioPicker">
+                        <span class="material-icons-outlined">
+                            location_on
+                        </span>
+                        <p>
+                            <span><%= address.title %></span>
+                            <small><%= address.address %>, <%= address.locality %> </small>
+                        </p>
+                    </div>
+                </label>
+                <div class="delete" data-index='<%=i%>' role="button">
+                    <span class="material-icons-outlined">
+                        edit
+                    </span>
+                    <!-- Are you sure you want to remove the address? -->
+                </div>
+            </div>
+            <% })%>
+        </div>
+    </div>
+    <div class="footer">
+        <button type="button" id="saveAddressBtn">Save & Continue</button>
+    </div>
+</div>
+<form class="form-wrapper d-none" id="editAddressForm" onsubmit="e => {e.preventDefault();}" method="POST">
+    <div class="header">Add Address</div>
+    <div class="content-body">
+        <p>Fill the details below</p>
+        <div class="input-row">
+            <div class="input-box">
+                <input type="text" placeholder="Title: Home/ Office/ Other" id="addressTitleInput" name="title"
+                    required>
+            </div>
+        </div>
+        <div class="input-row">
+            <div class="input-box">
+                <input type="text" id="addressLocalityInput" placeholder="Locality or Landmark (optional)"
+                    name="locality" />
+            </div>
+        </div>
+        <div class="input-row">
+            <div class="input-box">
+                <textarea placeholder="Full address" name="address" required id="addressInput"></textarea>
+            </div>
+        </div>
+        <div class="input-row">
+            <div class="input-box">
+                <input type="tel" placeholder="Contact" id="addressContactInput" required value="<%= user.contact %>"
+                    name="contact" />
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <button type="button" id="editAddressSubmitBtn">Save & Continue</button>
+    </div>
+</form>
+</div>

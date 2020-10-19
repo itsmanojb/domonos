@@ -2395,10 +2395,6 @@ textarea:focus {
   color: #999;
 }
 
-.saved-addresses .address-list .address + .address {
-  border-top: 1px dotted #aaa;
-}
-
 .add-address-ui {
   height: 100%;
 }
@@ -2418,6 +2414,20 @@ textarea:focus {
   font-size: 20px;
   font-weight: 900;
   color: #718091;
+  justify-content: space-between;
+}
+
+.add-address-ui .header .add-btn {
+  height: 32px;
+  border: 1px solid rgba(0, 102, 167, 0.87);
+  color: rgba(0, 102, 167, 0.87);
+  background-color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 3px;
+  font-size: 13px;
+  text-transform: uppercase;
+  cursor: pointer;
+  line-height: 1;
 }
 
 .add-address-ui .content-body {
@@ -2452,6 +2462,74 @@ textarea:focus {
 
 .add-address-ui .content-body .input-row + .input-row {
   margin-top: 20px;
+}
+
+.add-address-ui .content-body .address-list .address {
+  display: grid;
+  align-items: center;
+  padding: 0.5rem 0;
+  grid-template-columns: 40px 1fr 50px;
+}
+
+.add-address-ui .content-body .address-list .address .picker {
+  width: 400px;
+  position: relative;
+  padding: 18px 10px 20px 50px;
+  cursor: pointer;
+  border: 1px dashed #b5cedb;
+}
+
+.add-address-ui .content-body .address-list .address .picker > span {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  color: #444;
+}
+
+.add-address-ui .content-body .address-list .address .picker p {
+  margin: 0;
+  color: #5f88a3;
+  line-height: 1;
+  overflow: hidden;
+}
+
+.add-address-ui .content-body .address-list .address .picker p span {
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.add-address-ui .content-body .address-list .address .picker p small {
+  display: block;
+  font-size: 14px;
+  color: rgba(53, 53, 53, 0.87);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+.add-address-ui .content-body .address-list .address .delete {
+  width: 50px;
+  text-align: right;
+  cursor: pointer;
+}
+
+.add-address-ui .content-body .address-list .address .delete span {
+  color: #999;
+}
+
+.add-address-ui .content-body .address-list .address.selected .picker {
+  background-color: #e9f8ff;
 }
 
 .add-address-ui .footer button {

@@ -185,8 +185,14 @@
               </div>
               <div class="text current">
                 <p><span>Current Address</span>
+                  <% if(user.addresses.length === 1) { %>
                   <small><%= user.addresses[0].address %> <em><%= user.addresses[0].locality %></em> </small>
-                  <a href="#">Edit Address</a>
+                  <% } else { 
+                      let current = user.addresses.filter(a => a.default)[0];
+                    %>
+                  <small><%= current.address %> <em><%= current.locality %></em> </small>
+                  <% } %>
+                  <a href="javascript:void(0)" class="editAddressBtn">Edit Address</a>
                 </p>
                 <div class="btns">
                   <button class="btn btn-md change locationPickerBtn">Change</button>

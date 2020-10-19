@@ -1959,10 +1959,6 @@
           color: #999;
         }
       }
-
-      & + .address {
-        border-top: 1px dotted #aaa;
-      }
     }
   }
 }
@@ -1985,6 +1981,20 @@
     font-size: 20px;
     font-weight: 900;
     color: rgb(113, 128, 145);
+    justify-content: space-between;
+
+    .add-btn {
+      height: 32px;
+      border: 1px solid rgba(0, 102, 167, 0.87);
+      color: rgba(0, 102, 167, 0.87);
+      background-color: rgb(255, 255, 255);
+      padding: 0.5rem 0.75rem;
+      border-radius: 3px;
+      font-size: 13px;
+      text-transform: uppercase;
+      cursor: pointer;
+      line-height: 1;
+    }
   }
 
   .content-body {
@@ -2020,7 +2030,77 @@
         margin-top: 20px;
       }
     }
+
+    .address-list {
+      .address {
+        display: grid;
+        align-items: center;
+        padding: 0.5rem 0;
+        grid-template-columns: 40px 1fr 50px;
+
+        .picker {
+          width: 400px;
+          position: relative;
+          padding: 18px 10px 20px 50px;
+          cursor: pointer;
+          border: 1px dashed rgb(181, 206, 219);
+
+          > span {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            user-select: none;
+            color: #444;
+          }
+
+          p {
+            margin: 0;
+            color: rgb(95, 136, 163);
+            line-height: 1;
+            overflow: hidden;
+
+            span {
+              font-size: 16px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: block;
+            }
+
+            small {
+              display: block;
+              font-size: 14px;
+              color: rgba(53, 53, 53, 0.87);
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              margin-top: 4px;
+              font-weight: 400;
+            }
+          }
+        }
+
+        .delete {
+          width: 50px;
+          text-align: right;
+          cursor: pointer;
+
+          span {
+            color: #999;
+          }
+        }
+
+        &.selected {
+          .picker {
+            background-color: rgb(233, 248, 255);
+          }
+        }
+      }
+    }
   }
+
   .footer {
     button {
       width: 100%;

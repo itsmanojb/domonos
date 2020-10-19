@@ -40,13 +40,13 @@
       <div class="header-menus" id="headerMenu">
         <div class="cart-menu">
           <a href="/cart">
-            <span class="material-icons">
-              shopping_cart
+            <span class="material-icons-outlined">
+              local_mall
             </span>
             <span id="cartCounter"><%= session.cart ? session.cart.totalQty : '' %></span>
           </a>
         </div>
-        <% if(user && user.addresses.length !== 1) { %>
+        <% if(user && user.addresses.length === 0) { %>
         <div class="location-menu locationPickerBtn" id="locationPickerBtn" role="button">
           <span class="material-icons-outlined">
             location_on

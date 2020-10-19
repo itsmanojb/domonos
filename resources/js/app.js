@@ -22,33 +22,21 @@ hamburger.addEventListener('click', () => {
   }
 });
 
-overlay.addEventListener('click', () => {
-  if (rightDrawer.classList.contains('opened')) {
-    document.body.classList.remove('noscroll');
-    overlay.classList.remove('shown');
-    rightDrawer.classList.remove('opened');
-    hamburger.classList.remove('inactive');
-  }
-  if (leftDrawer.classList.contains('opened')) {
-    document.body.classList.remove('noscroll');
-    overlay.classList.remove('shown');
-    leftDrawer.classList.remove("opened");
-    headerMenu.classList.remove('inactive');
-  }
-});
-
 locationBtns.forEach(locationBtn => {
   locationBtn.addEventListener('click', () => {
     if (rightDrawer.classList.contains('opened')) {
+
       document.body.classList.remove('noscroll');
       overlay.classList.remove('shown');
       rightDrawer.classList.remove('opened');
       hamburger.classList.remove('inactive');
+
     } else {
       document.body.classList.add('noscroll');
       overlay.classList.add('shown');
       rightDrawer.classList.add('opened');
       hamburger.classList.add('inactive');
+      addressListView.classList.remove('d-none');
     }
   });
 });
@@ -565,3 +553,74 @@ addressSubmitBtn.addEventListener('click', (e) => {
     }).show()
   }
 })
+
+const editAddressUI = document.getElementById('editAddressUI');
+const editAddressBtns = document.querySelectorAll('.editAddressBtn');
+
+editAddressBtns.forEach(btn => {
+
+  btn.addEventListener('click', () => {
+
+    document.body.classList.add('noscroll');
+    overlay.classList.add('shown');
+    rightDrawer.classList.add('opened');
+    hamburger.classList.add('inactive');
+
+    addressListView.classList.add('d-none');
+    editAddressUI.classList.remove('d-none');
+
+  });
+
+});
+
+
+const addressPickers = document.querySelectorAll('.addressRadioPicker');
+addressPickers.forEach(elm => {
+  elm.addEventListener('click', (e) => {
+    const add = elm.closest('.address-list').querySelectorAll('.address');
+    add.forEach(a => a.classList.remove('selected'));
+    elm.closest('.address').classList.add('selected');
+  })
+})
+
+const saveAdressBtn = document.getElementById('saveAddressBtn');
+saveAdressBtn.addEventListener('click', (e) => {
+  const current = document.querySelector('input[name="current_address"]:checked').value;
+  axios.post('/current-address', {
+    index: +current
+  }).then(res => {
+    location.reload();
+  }).catch(err => {
+    console.log(err);
+    showAlert('Something went wrong. Try again later.')
+  })
+});
+
+document.getElementById('addMoreAddressBtn').addEventListener('click', (e) => {
+  editAddressUI.classList.add('d-none');
+  newAddressView.classList.remove('d-none');
+})
+
+const addressEditForm = document.getElementById('addNewAddressForm');
+const addressEditSubmitBtn = document.getElementById('addAddressSubmitBtn');
+
+overlay.addEventListener('click', () => {
+  if (rightDrawer.classList.contains('opened')) {
+
+    document.body.classList.remove('noscroll');
+    overlay.classList.remove('shown');
+    rightDrawer.classList.remove('opened');
+    hamburger.classList.remove('inactive');
+
+    editAddressUI.classList.add('d-none');
+    newAddressView.classList.add('d-none');
+    addressListView.classList.add('d-none');
+
+  }
+  if (leftDrawer.classList.contains('opened')) {
+    document.body.classList.remove('noscroll');
+    overlay.classList.remove('shown');
+    leftDrawer.classList.remove("opened");
+    headerMenu.classList.remove('inactive');
+  }
+});

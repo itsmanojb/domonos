@@ -6078,21 +6078,6 @@ hamburger.addEventListener('click', function () {
     headerMenu.classList.add('inactive');
   }
 });
-overlay.addEventListener('click', function () {
-  if (rightDrawer.classList.contains('opened')) {
-    document.body.classList.remove('noscroll');
-    overlay.classList.remove('shown');
-    rightDrawer.classList.remove('opened');
-    hamburger.classList.remove('inactive');
-  }
-
-  if (leftDrawer.classList.contains('opened')) {
-    document.body.classList.remove('noscroll');
-    overlay.classList.remove('shown');
-    leftDrawer.classList.remove("opened");
-    headerMenu.classList.remove('inactive');
-  }
-});
 locationBtns.forEach(function (locationBtn) {
   locationBtn.addEventListener('click', function () {
     if (rightDrawer.classList.contains('opened')) {
@@ -6105,6 +6090,7 @@ locationBtns.forEach(function (locationBtn) {
       overlay.classList.add('shown');
       rightDrawer.classList.add('opened');
       hamburger.classList.add('inactive');
+      addressListView.classList.remove('d-none');
     }
   });
 });
@@ -6610,6 +6596,64 @@ addressSubmitBtn.addEventListener('click', function (e) {
       progressBar: false,
       layout: 'topRight'
     }).show();
+  }
+});
+var editAddressUI = document.getElementById('editAddressUI');
+var editAddressBtns = document.querySelectorAll('.editAddressBtn');
+editAddressBtns.forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.body.classList.add('noscroll');
+    overlay.classList.add('shown');
+    rightDrawer.classList.add('opened');
+    hamburger.classList.add('inactive');
+    addressListView.classList.add('d-none');
+    editAddressUI.classList.remove('d-none');
+  });
+});
+var addressPickers = document.querySelectorAll('.addressRadioPicker');
+addressPickers.forEach(function (elm) {
+  elm.addEventListener('click', function (e) {
+    var add = elm.closest('.address-list').querySelectorAll('.address');
+    add.forEach(function (a) {
+      return a.classList.remove('selected');
+    });
+    elm.closest('.address').classList.add('selected');
+  });
+});
+var saveAdressBtn = document.getElementById('saveAddressBtn');
+saveAdressBtn.addEventListener('click', function (e) {
+  var current = document.querySelector('input[name="current_address"]:checked').value;
+  axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/current-address', {
+    index: +current
+  }).then(function (res) {
+    location.reload();
+  })["catch"](function (err) {
+    console.log(err);
+    showAlert('Something went wrong. Try again later.');
+  });
+});
+document.getElementById('addMoreAddressBtn').addEventListener('click', function (e) {
+  editAddressUI.classList.add('d-none');
+  newAddressView.classList.remove('d-none');
+});
+var addressEditForm = document.getElementById('addNewAddressForm');
+var addressEditSubmitBtn = document.getElementById('addAddressSubmitBtn');
+overlay.addEventListener('click', function () {
+  if (rightDrawer.classList.contains('opened')) {
+    document.body.classList.remove('noscroll');
+    overlay.classList.remove('shown');
+    rightDrawer.classList.remove('opened');
+    hamburger.classList.remove('inactive');
+    editAddressUI.classList.add('d-none');
+    newAddressView.classList.add('d-none');
+    addressListView.classList.add('d-none');
+  }
+
+  if (leftDrawer.classList.contains('opened')) {
+    document.body.classList.remove('noscroll');
+    overlay.classList.remove('shown');
+    leftDrawer.classList.remove("opened");
+    headerMenu.classList.remove('inactive');
   }
 });
 

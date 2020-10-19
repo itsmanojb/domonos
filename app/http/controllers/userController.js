@@ -26,8 +26,9 @@ function userController() {
             if (!req.body.title || !req.body.address || !req.body.contact) {
                 return next(new AppError('Missing mandatory fields', 400));
             }
-
             const address = req.body;
+            const userAddress = req.user.addresses;
+            address['default'] = userAddress.length === 0 ? true : false;
             User.findByIdAndUpdate(req.user.id, {
                     $push: {
                         addresses: address
@@ -53,11 +54,37 @@ function userController() {
 
             const addresses = req.user.addresses;
             addresses.splice(req.body.index, 1);
-            console.log(addresses);
 
             User.findByIdAndUpdate(
                 req.user.id, {
                     addresses
+                }, {
+                    new: true
+                },
+                (err, data) => {
+                    if (err) {
+                        return res.json({
+                            status: 'failed'
+                        });
+                    } else {
+                        return res.json({
+                            status: 'ok',
+                            data: data.addresses
+                        });
+                    }
+                }
+            );
+        },
+        currentAddress(req, res) {
+            const addresses = req.user.addresses;
+            const newAddresses = addresses.map((address, i) => {
+                address.default = i === req.body.index ? true : false;
+                return address;
+            });
+
+            User.findByIdAndUpdate(
+                req.user.id, {
+                    addresses: newAddresses
                 }, {
                     new: true
                 },
