@@ -1,0 +1,31 @@
+<div class="add-address-ui d-none" id="addnewAddressUI">
+    <form class="form-wrapper" id="addNewAddressForm" onsubmit="e => {e.preventDefault();}" method="POST">
+        <div class="header">Add Address</div>
+        <div class="content-body">
+            <p>Fill the details below</p>
+            <div class="input-row">
+                <div class="input-box">
+                    <input type="text" placeholder="Title: Home/ Office/ Other" name="title" required>
+                </div>
+            </div>
+            <div class="input-row">
+                <div class="input-box">
+                    <input type="text" placeholder="Locality or Landmark (optional)" name="locality" />
+                </div>
+            </div>
+            <div class="input-row">
+                <div class="input-box">
+                    <textarea placeholder="Full address" name="address" required></textarea>
+                </div>
+            </div>
+            <div class="input-row">
+                <div class="input-box">
+                    <input type="tel" placeholder="Contact" required value="<%= user.contact %>" name="contact" />
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <button type="button" id="addAddressSubmitBtn">Save & Continue</button>
+        </div>
+    </form>
+</div>

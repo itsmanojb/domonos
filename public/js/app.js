@@ -6062,7 +6062,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var overlay = document.getElementById('ovly');
 var hamburger = document.getElementById('hamMenu');
 var leftDrawer = document.getElementById('drawerLeft');
-var locationBtn = document.getElementById('locationPickerBtn');
+var locationBtns = document.querySelectorAll('.locationPickerBtn');
 var rightDrawer = document.getElementById('drawerRight');
 var headerMenu = document.getElementById('headerMenu');
 hamburger.addEventListener('click', function () {
@@ -6093,18 +6093,20 @@ overlay.addEventListener('click', function () {
     headerMenu.classList.remove('inactive');
   }
 });
-locationBtn.addEventListener('click', function () {
-  if (rightDrawer.classList.contains('opened')) {
-    document.body.classList.remove('noscroll');
-    overlay.classList.remove('shown');
-    rightDrawer.classList.remove('opened');
-    hamburger.classList.remove('inactive');
-  } else {
-    document.body.classList.add('noscroll');
-    overlay.classList.add('shown');
-    rightDrawer.classList.add('opened');
-    hamburger.classList.add('inactive');
-  }
+locationBtns.forEach(function (locationBtn) {
+  locationBtn.addEventListener('click', function () {
+    if (rightDrawer.classList.contains('opened')) {
+      document.body.classList.remove('noscroll');
+      overlay.classList.remove('shown');
+      rightDrawer.classList.remove('opened');
+      hamburger.classList.remove('inactive');
+    } else {
+      document.body.classList.add('noscroll');
+      overlay.classList.add('shown');
+      rightDrawer.classList.add('opened');
+      hamburger.classList.add('inactive');
+    }
+  });
 });
 var alertUI = document.querySelector('#alertUI');
 var okBtn = document.getElementById('alertOKBtn');
@@ -6484,11 +6486,17 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('.site__header').classList.remove('light');
 
     if (pageurl === 'login' || pageurl === 'register') {
-      document.querySelector('.location-menu').classList.add('d-none');
+      if (document.querySelector('.location-menu')) {
+        document.querySelector('.location-menu').classList.add('d-none');
+      }
+
       document.querySelector('.cart-menu').classList.add('d-none');
       document.querySelector('.user-menu').classList.add('d-none'); // document.querySelector('.hamburger').classList.add('d-none');
     } else {
-      document.querySelector('.location-menu').classList.remove('d-none');
+      if (document.querySelector('.location-menu')) {
+        document.querySelector('.location-menu').classList.remove('d-none');
+      }
+
       document.querySelector('.cart-menu').classList.remove('d-none');
       document.querySelector('.user-menu').classList.remove('d-none'); // document.querySelector('.hamburger').classList.remove('d-none');
     }
@@ -6544,6 +6552,66 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 }, false);
+var addNewAddressBtn = document.getElementById('addNewAddressBtn');
+var addressListView = document.getElementById('locationListUI');
+var newAddressView = document.getElementById('addnewAddressUI');
+
+if (addNewAddressBtn) {
+  addNewAddressBtn.addEventListener('click', function (e) {
+    addressListView.classList.add('d-none');
+    newAddressView.classList.remove('d-none');
+  });
+}
+
+var addressDeleteBtns = document.querySelectorAll('.deleteAddressBtn');
+addressDeleteBtns.forEach(function (btn) {
+  var address = btn.closest('.address');
+  btn.addEventListener('click', function (e) {
+    var addressIndex = btn.dataset.index;
+    axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/delete-address', {
+      index: +addressIndex
+    }).then(function (res) {
+      address.remove();
+      location.reload();
+    })["catch"](function (err) {
+      console.log(err);
+      showAlert('Something went wrong. Try again later.');
+    });
+  });
+});
+var addressForm = document.getElementById('addNewAddressForm');
+var addressSubmitBtn = document.getElementById('addAddressSubmitBtn');
+addressSubmitBtn.addEventListener('click', function (e) {
+  var data = Object.fromEntries(new FormData(addressForm).entries());
+  var pattern = /^[\d ()+-]+$/;
+
+  if (data.address && data.title && data.contact) {
+    if (pattern.test(data.contact)) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/add-address', data).then(function (res) {
+        addressForm.reset();
+        location.reload();
+      })["catch"](function (err) {
+        showAlert('Something went wrong. Try again later.');
+      });
+    } else {
+      new noty__WEBPACK_IMPORTED_MODULE_2___default.a({
+        type: 'error',
+        text: 'Invalid contact number',
+        timeout: 2000,
+        progressBar: false,
+        layout: 'topRight'
+      }).show();
+    }
+  } else {
+    new noty__WEBPACK_IMPORTED_MODULE_2___default.a({
+      type: 'error',
+      text: 'Fill all required fields',
+      timeout: 2000,
+      progressBar: false,
+      layout: 'topRight'
+    }).show();
+  }
+});
 
 /***/ }),
 

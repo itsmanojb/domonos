@@ -10,7 +10,7 @@
   z-index: -10;
 
   &.shown {
-    z-index: 10;
+    z-index: 100;
     display: block;
   }
 
@@ -221,6 +221,7 @@
   }
 
   .cart-menu {
+    margin-right: 5px;
     a {
       display: flex;
       align-items: center;
@@ -402,7 +403,7 @@
     }
 
     button {
-      background-color: var(--green-alt) !important;
+      background-color: var(--green) !important;
       color: #fff !important;
       width: 140px;
       padding: 5px 3px;
@@ -1357,20 +1358,55 @@
       small {
         font-size: 13px;
         display: block;
-        color: rgb(179, 179, 179);
+        color: rgb(159, 159, 159);
         margin-top: 4px;
         line-height: 1.3;
+
+        em:not(:empty) {
+          font-style: normal;
+          &::before {
+            content: ", ";
+          }
+        }
+      }
+
+      a {
+        color: rgba(0, 102, 167, 0.87);
+        font-weight: 600;
+        font-size: 12px;
+        margin-top: 5px;
       }
     }
 
     .btns {
       text-align: right;
-      margin: 10px 0 0;
+      margin: 10px 0 4px;
 
       .btn {
         @extend .green-btn;
         padding: 0.55rem 0.5rem;
         font-size: 14px;
+
+        &.change {
+          background-color: var(--green);
+          color: rgb(255, 255, 255);
+          border: 1px solid var(--green);
+          width: 110px;
+        }
+      }
+    }
+
+    &.current {
+      display: grid;
+      grid-template-columns: 1fr 120px;
+      column-gap: 6px;
+      margin-bottom: 10px;
+
+      p {
+        span {
+          color: inherit;
+          font-size: 12px;
+        }
       }
     }
   }
@@ -1870,6 +1906,7 @@
       display: flex;
       align-items: center;
       padding: 1.5rem 0;
+      border-bottom: 1px dotted #ddd;
 
       .picker {
         width: 400px;
@@ -1925,6 +1962,81 @@
 
       & + .address {
         border-top: 1px dotted #aaa;
+      }
+    }
+  }
+}
+
+.add-address-ui {
+  height: 100%;
+
+  .form-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .header {
+    height: 70px;
+    background-color: rgb(233, 248, 255);
+    display: flex;
+    align-items: center;
+    padding: 0px 3rem;
+    font-size: 20px;
+    font-weight: 900;
+    color: rgb(113, 128, 145);
+  }
+
+  .content-body {
+    flex-grow: 1;
+    padding: 2rem 3rem;
+
+    p {
+      color: rgb(95, 136, 163);
+      font-weight: 700;
+      margin: 2rem 0;
+    }
+
+    .input-row {
+      .input-box {
+        border: 1px solid #ddd;
+        border-radius: 2px;
+
+        textarea,
+        input {
+          width: 100%;
+          border: none;
+          padding: 15px 25px;
+          line-height: 1;
+          font-size: 16px;
+        }
+
+        textarea {
+          resize: none;
+          height: 100px;
+        }
+      }
+      & + .input-row {
+        margin-top: 20px;
+      }
+    }
+  }
+  .footer {
+    button {
+      width: 100%;
+      padding: 0.6rem 0;
+      background: rgb(101, 171, 11);
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      color: #fff;
+      height: 54px;
+      font-weight: 700;
+      line-height: 1;
+      transition: background 0.2s ease-in;
+
+      &:hover {
+        background-color: var(--green-hover);
       }
     }
   }

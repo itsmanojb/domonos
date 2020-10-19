@@ -415,7 +415,7 @@ textarea:focus {
 }
 
 .alert-overlay.shown {
-  z-index: 10;
+  z-index: 100;
   display: block;
 }
 
@@ -627,6 +627,10 @@ textarea:focus {
   border-left: none;
 }
 
+.site__header .cart-menu {
+  margin-right: 5px;
+}
+
 .site__header .cart-menu a {
   display: flex;
   align-items: center;
@@ -807,7 +811,7 @@ textarea:focus {
 }
 
 .location-wrapper .input-field button {
-  background-color: var(--green-alt) !important;
+  background-color: var(--green) !important;
   color: #fff !important;
   width: 140px;
   padding: 5px 3px;
@@ -1784,19 +1788,54 @@ textarea:focus {
 .location .text p small {
   font-size: 13px;
   display: block;
-  color: #b3b3b3;
+  color: #9f9f9f;
   margin-top: 4px;
   line-height: 1.3;
 }
 
+.location .text p small em:not(:empty) {
+  font-style: normal;
+}
+
+.location .text p small em:not(:empty)::before {
+  content: ", ";
+}
+
+.location .text p a {
+  color: rgba(0, 102, 167, 0.87);
+  font-weight: 600;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
 .location .text .btns {
   text-align: right;
-  margin: 10px 0 0;
+  margin: 10px 0 4px;
 }
 
 .location .text .btns .btn {
   padding: 0.55rem 0.5rem;
   font-size: 14px;
+}
+
+.location .text .btns .btn.change {
+  background-color: var(--green);
+  color: white;
+  border: 1px solid var(--green);
+  width: 110px;
+}
+
+.location .text.current {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  -moz-column-gap: 6px;
+       column-gap: 6px;
+  margin-bottom: 10px;
+}
+
+.location .text.current p span {
+  color: inherit;
+  font-size: 12px;
 }
 
 .saved-address {
@@ -2298,6 +2337,7 @@ textarea:focus {
   display: flex;
   align-items: center;
   padding: 1.5rem 0;
+  border-bottom: 1px dotted #ddd;
 }
 
 .saved-addresses .address-list .address .picker {
@@ -2357,6 +2397,79 @@ textarea:focus {
 
 .saved-addresses .address-list .address + .address {
   border-top: 1px dotted #aaa;
+}
+
+.add-address-ui {
+  height: 100%;
+}
+
+.add-address-ui .form-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.add-address-ui .header {
+  height: 70px;
+  background-color: #e9f8ff;
+  display: flex;
+  align-items: center;
+  padding: 0px 3rem;
+  font-size: 20px;
+  font-weight: 900;
+  color: #718091;
+}
+
+.add-address-ui .content-body {
+  flex-grow: 1;
+  padding: 2rem 3rem;
+}
+
+.add-address-ui .content-body p {
+  color: #5f88a3;
+  font-weight: 700;
+  margin: 2rem 0;
+}
+
+.add-address-ui .content-body .input-row .input-box {
+  border: 1px solid #ddd;
+  border-radius: 2px;
+}
+
+.add-address-ui .content-body .input-row .input-box textarea,
+.add-address-ui .content-body .input-row .input-box input {
+  width: 100%;
+  border: none;
+  padding: 15px 25px;
+  line-height: 1;
+  font-size: 16px;
+}
+
+.add-address-ui .content-body .input-row .input-box textarea {
+  resize: none;
+  height: 100px;
+}
+
+.add-address-ui .content-body .input-row + .input-row {
+  margin-top: 20px;
+}
+
+.add-address-ui .footer button {
+  width: 100%;
+  padding: 0.6rem 0;
+  background: #65ab0b;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  color: #fff;
+  height: 54px;
+  font-weight: 700;
+  line-height: 1;
+  transition: background 0.2s ease-in;
+}
+
+.add-address-ui .footer button:hover {
+  background-color: var(--green-hover);
 }
 
 .page {

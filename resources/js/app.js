@@ -4,7 +4,7 @@ import Noty from 'noty';
 const overlay = document.getElementById('ovly');
 const hamburger = document.getElementById('hamMenu');
 const leftDrawer = document.getElementById('drawerLeft');
-const locationBtn = document.getElementById('locationPickerBtn');
+const locationBtns = document.querySelectorAll('.locationPickerBtn');
 const rightDrawer = document.getElementById('drawerRight');
 const headerMenu = document.getElementById('headerMenu');
 
@@ -37,18 +37,20 @@ overlay.addEventListener('click', () => {
   }
 });
 
-locationBtn.addEventListener('click', () => {
-  if (rightDrawer.classList.contains('opened')) {
-    document.body.classList.remove('noscroll');
-    overlay.classList.remove('shown');
-    rightDrawer.classList.remove('opened');
-    hamburger.classList.remove('inactive');
-  } else {
-    document.body.classList.add('noscroll');
-    overlay.classList.add('shown');
-    rightDrawer.classList.add('opened');
-    hamburger.classList.add('inactive');
-  }
+locationBtns.forEach(locationBtn => {
+  locationBtn.addEventListener('click', () => {
+    if (rightDrawer.classList.contains('opened')) {
+      document.body.classList.remove('noscroll');
+      overlay.classList.remove('shown');
+      rightDrawer.classList.remove('opened');
+      hamburger.classList.remove('inactive');
+    } else {
+      document.body.classList.add('noscroll');
+      overlay.classList.add('shown');
+      rightDrawer.classList.add('opened');
+      hamburger.classList.add('inactive');
+    }
+  });
 });
 
 const alertUI = document.querySelector('#alertUI');
@@ -445,12 +447,16 @@ document.addEventListener('DOMContentLoaded', function () {
   if (pageurl !== '') {
     document.querySelector('.site__header').classList.remove('light');
     if (pageurl === 'login' || pageurl === 'register') {
-      document.querySelector('.location-menu').classList.add('d-none');
+      if (document.querySelector('.location-menu')) {
+        document.querySelector('.location-menu').classList.add('d-none');
+      }
       document.querySelector('.cart-menu').classList.add('d-none');
       document.querySelector('.user-menu').classList.add('d-none');
       // document.querySelector('.hamburger').classList.add('d-none');
     } else {
-      document.querySelector('.location-menu').classList.remove('d-none');
+      if (document.querySelector('.location-menu')) {
+        document.querySelector('.location-menu').classList.remove('d-none');
+      }
       document.querySelector('.cart-menu').classList.remove('d-none');
       document.querySelector('.user-menu').classList.remove('d-none');
       // document.querySelector('.hamburger').classList.remove('d-none');
@@ -496,3 +502,66 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
 }, false);
+
+const addNewAddressBtn = document.getElementById('addNewAddressBtn');
+const addressListView = document.getElementById('locationListUI');
+const newAddressView = document.getElementById('addnewAddressUI');
+if (addNewAddressBtn) {
+  addNewAddressBtn.addEventListener('click', (e) => {
+    addressListView.classList.add('d-none');
+    newAddressView.classList.remove('d-none');
+  })
+}
+
+const addressDeleteBtns = document.querySelectorAll('.deleteAddressBtn');
+addressDeleteBtns.forEach(btn => {
+  const address = btn.closest('.address');
+  btn.addEventListener('click', e => {
+    const addressIndex = btn.dataset.index;
+    axios.post('/delete-address', {
+      index: +addressIndex
+    }).then(res => {
+      address.remove();
+      location.reload();
+    }).catch(err => {
+      console.log(err);
+      showAlert('Something went wrong. Try again later.')
+    })
+  })
+})
+
+const addressForm = document.getElementById('addNewAddressForm');
+const addressSubmitBtn = document.getElementById('addAddressSubmitBtn');
+
+addressSubmitBtn.addEventListener('click', (e) => {
+  const data = Object.fromEntries(new FormData(addressForm).entries());
+  const pattern = /^[\d ()+-]+$/;
+  if (data.address && data.title && data.contact) {
+    if (pattern.test(data.contact)) {
+      axios.post('/add-address', data).then((res) => {
+
+        addressForm.reset();
+        location.reload();
+
+      }).catch((err) => {
+        showAlert('Something went wrong. Try again later.')
+      })
+    } else {
+      new Noty({
+        type: 'error',
+        text: 'Invalid contact number',
+        timeout: 2000,
+        progressBar: false,
+        layout: 'topRight',
+      }).show()
+    }
+  } else {
+    new Noty({
+      type: 'error',
+      text: 'Fill all required fields',
+      timeout: 2000,
+      progressBar: false,
+      layout: 'topRight',
+    }).show()
+  }
+})

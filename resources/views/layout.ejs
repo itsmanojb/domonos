@@ -46,7 +46,8 @@
             <span id="cartCounter"><%= session.cart ? session.cart.totalQty : '' %></span>
           </a>
         </div>
-        <div class="location-menu" id="locationPickerBtn" role="button">
+        <% if(user && user.addresses.length !== 1) { %>
+        <div class="location-menu locationPickerBtn" id="locationPickerBtn" role="button">
           <span class="material-icons-outlined">
             location_on
           </span>
@@ -55,6 +56,7 @@
             create
           </span>
         </div>
+        <% } %>
         <div class="user-menu">
           <div class="user-icon">
             <span class="material-icons">
