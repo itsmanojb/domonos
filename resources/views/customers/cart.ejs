@@ -246,7 +246,9 @@
               <% if(!user) { %>
               <a class="btn" href="/login" type="button">Login to Order</a>
               <% } else { %>
-              <button class="btn" type="button">Place Order</button>
+              <form action="/orders" method="POST">
+                <button class="btn" id="placeOrderBtn" type="submit">Place Order</button>
+              </form>
               <% } %>
             </div>
           </div>

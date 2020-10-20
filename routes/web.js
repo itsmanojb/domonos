@@ -4,6 +4,7 @@ const menuController = require('../app/http/controllers/menuController');
 const authController = require('../app/http/controllers/authController');
 const cartController = require('../app/http/controllers/cartController');
 const userController = require('../app/http/controllers/userController');
+const orderController = require('../app/http/controllers/orderController');
 
 function initRoutes(app) {
   app.get('/', homeController().index);
@@ -21,6 +22,7 @@ function initRoutes(app) {
   app.post('/delete-address', userController().deleteAddress);
   app.post('/current-address', userController().currentAddress);
   app.post('/edit-address', userController().editAddress);
+  app.post('/orders', orderController().store);
 }
 
 module.exports = initRoutes;
