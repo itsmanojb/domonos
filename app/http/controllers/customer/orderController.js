@@ -1,7 +1,19 @@
-const Order = require('../../models/order');
+const Order = require('../../../models/order');
 
 function orderController(params) {
     return {
+        async index(req, res) {
+            const orders = await Order.find({
+                customerId: req.user._id
+            }, null, {
+                sort: {
+                    'createdAt': -1
+                }
+            });
+            res.render('customer/orders', {
+                orders
+            });
+        },
         store(req, res) {
             const addresses = req.user.addresses;
             if (addresses.length === 0) {
@@ -33,9 +45,9 @@ function orderController(params) {
 
             console.log(order);
             order.save().then(result => {
-                req.session.cart = null;
+                delete req.session.cart;
                 req.flash('success', 'Order placed successfully');
-                return res.redirect('/')
+                return res.redirect('/orders')
 
             }).catch(err => {
                 req.flash('error', 'Something went wrong');

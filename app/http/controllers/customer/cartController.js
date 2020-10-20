@@ -1,4 +1,4 @@
-const Menu = require('../../models/menu');
+const Menu = require('../../../models/menu');
 
 function cartController() {
   return {
@@ -31,8 +31,7 @@ function cartController() {
         ...desserts.sort(() => 0.5 - Math.random()).slice(0, 2),
       ];
 
-      // res.json(additionalMenus)
-      res.render('customers/cart', {
+      res.render('customer/cart', {
         menus: additionalMenus
       });
 

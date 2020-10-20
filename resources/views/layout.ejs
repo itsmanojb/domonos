@@ -30,7 +30,7 @@
       </div>
       <nav>
         <ul>
-          <li><a href="#">Our Menu</a></li>
+          <li><a href="/menus">Our Menu</a></li>
           <li><a href="#">Store Finder</a></li>
           <li><a href="#">Inside Domonos</a></li>
           <li><a href="#">Gift Card</a></li>
@@ -64,12 +64,26 @@
             </span>
           </div>
           <% if(user) {%>
-          <form id="logout" action="/logout" method="POST">
-            <div class="user-info">
-              <p><%= user.name %></p>
-              <small><span><a href="#" onclick="document.getElementById('logout').submit()">Logout</a></span></small>
-            </div>
-          </form>
+          <div class="user-info">
+            <p><%= user.name.split(' ')[0] %></p>
+            <small><span><a href="#"><%= user.contact %></a></span></small>
+          </div>
+          <div class="user-menu-dropdown">
+            <ul>
+              <li><a href="#"> <span class="material-icons-outlined">account_circle</span> <%= user.name %> </a> </li>
+              <li><a href="#"> <span class="material-icons-outlined">local_phone</span>
+                  <%= user.contact || 'Add Number' %> </a> </li>
+              <li><a href="#"> <span class="material-icons-outlined">mail</span> <%= user.email %> </a> </li>
+            </ul>
+            <ul>
+              <li><a href="/orders"> <span class="material-icons-outlined">receipt_long</span> My Orders </a> </li>
+              <li><a href="#"> <span class="material-icons-outlined">map</span> My Addresses </a> </li>
+              <li><a href="#"> <span class="material-icons">headset_mic</span> Support </a> </li>
+              <li><a href="#" onclick="document.getElementById('logout').submit()"> <span
+                    class="material-icons-outlined">login</span> Logout </a> </li>
+            </ul>
+            <form id="logout" action="/logout" method="POST"> </form>
+          </div>
           <%} else { %>
           <div class="user-info">
             <p>Hello Guest!</p>
