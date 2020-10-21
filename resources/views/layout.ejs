@@ -64,20 +64,34 @@
             </span>
           </div>
           <% if(user) {%>
-          <div class="user-info">
+          <div class="user-info" id="userMenuBtn">
             <p><%= user.name.split(' ')[0] %></p>
-            <small><span><a href="#"><%= user.contact %></a></span></small>
+            <small class="con"><span><a href="#"><%= user.contact %></a></span></small>
           </div>
           <div class="user-menu-dropdown">
             <ul>
               <li><a href="#"> <span class="material-icons-outlined">account_circle</span> <%= user.name %> </a> </li>
-              <li><a href="#"> <span class="material-icons-outlined">local_phone</span>
-                  <%= user.contact || 'Add Number' %> </a> </li>
+              <% if(user.contact) { %>
+              <li id="liContact"><a href="javascript:void(0)"> <span
+                    class="material-icons-outlined">local_phone</span><%= user.contact %> <button class="edit-btn"
+                    id="contactEditBtn">Edit</button> </a> </li>
+              <li class="d-none inline-form" id="liContactEdit"><span class="material-icons-outlined">local_phone</span>
+                <input type="text" id="contactEditInput" value="<%= user.contact %>"> <button type="button"
+                  class="edit-btn" id="contactEditDoneBtn">Done</button>
+              </li>
+              <% } else { %>
+              <li id="liContactNone"><a href="javascript:void(0)"> <span
+                    class="material-icons-outlined">local_phone</span>Add Number</a>
+              </li>
+              <li class="d-none inline-form" id="liContactAdd"><span class="material-icons-outlined">local_phone</span>
+                <input type="text" id="contactAddInput"> <button class="edit-btn" type="button"
+                  id="contactDoneBtn">Done</button> </li>
+              <% } %>
               <li><a href="#"> <span class="material-icons-outlined">mail</span> <%= user.email %> </a> </li>
             </ul>
             <ul>
               <li><a href="/orders"> <span class="material-icons-outlined">receipt_long</span> My Orders </a> </li>
-              <li><a href="#"> <span class="material-icons-outlined">map</span> My Addresses </a> </li>
+              <li class="locationPickerBtn"><a> <span class="material-icons-outlined">map</span> My Addresses </a> </li>
               <li><a href="#"> <span class="material-icons">headset_mic</span> Support </a> </li>
               <li><a href="#" onclick="document.getElementById('logout').submit()"> <span
                     class="material-icons-outlined">login</span> Logout </a> </li>

@@ -4,7 +4,7 @@
       <div class="cart-menu" id="cartPlaceholder">
         <% if(session.cart && session.cart.totalQty !== 0) { %>
         <div class="header">
-          <h3> <span id="cartItemsCounter"><%= session.cart.totalQty %></span> Items you have selected</h3>
+          <h3> <span id="cartItemsCounter"><%= session.cart.totalQty %></span> Item(s) you have selected</h3>
           <a class="explore" href="/menus">Expore Menus</a>
         </div>
         <div class="cart-items">
@@ -118,7 +118,7 @@
               </small>
             </h2>
             <p>
-              <a href="/menus" class="btn">explore Menu</a>
+              <a href="/menus" class="btn">Explore Menu</a>
             </p>
           </div>
         </div>

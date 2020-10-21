@@ -671,3 +671,77 @@ overlay.addEventListener('click', () => {
     headerMenu.classList.remove('inactive');
   }
 });
+
+// Contact add/edit
+
+const liContactNone = document.getElementById('liContactNone');
+const liContactAdd = document.getElementById('liContactAdd');
+
+const liContact = document.getElementById('liContact');
+const liContactEdit = document.getElementById('liContactEdit');
+const editContactBtn = document.getElementById('contactEditBtn');
+
+const doneContactBtn = document.getElementById('contactDoneBtn');
+const doneEditContactBtn = document.getElementById('contactEditDoneBtn');
+
+const pattern = /^[\d ()+-]+$/;
+
+if (liContactNone) {
+  liContactNone.addEventListener('click', (e) => {
+    liContactAdd.classList.remove('d-none');
+    liContactNone.classList.add('d-none');
+  });
+}
+
+if (editContactBtn) {
+  editContactBtn.addEventListener('click', (e) => {
+    liContactEdit.classList.remove('d-none');
+    liContact.classList.add('d-none');
+  });
+}
+
+if (doneContactBtn) {
+  doneContactBtn.addEventListener('click', (e) => {
+    const input = document.getElementById('contactAddInput')
+    const contactValue = input.value;
+    if (contactValue.trim().length === 0 || !pattern.test(contactValue)) return;
+    input.setAttribute('disabled', true);
+    doneContactBtn.setAttribute('disabled', true);
+    axios.post('/update-user', {
+        contact: contactValue.trim()
+      })
+      .then(() => location.reload()).catch(() => {
+        location.reload();
+        showAlert('Failed to update');
+      })
+  });
+}
+
+// Edit Contact
+
+if (doneEditContactBtn) {
+  doneEditContactBtn.addEventListener('click', (e) => {
+    const input = document.getElementById('contactEditInput');
+    const contactValue = input.value;
+    if (contactValue.trim().length === 0 || !pattern.test(contactValue)) return;
+    input.setAttribute('disabled', true);
+    doneEditContactBtn.setAttribute('disabled', true);
+    axios.post('/update-user', {
+        contact: contactValue.trim()
+      })
+      .then(() => location.reload()).catch(() => {
+        location.reload();
+        showAlert('Failed to update');
+      })
+  });
+}
+
+const dates = document.querySelectorAll('.datetime');
+dates.forEach(date => {
+  const rawdate = date.innerText;
+  const d = new Date(rawdate);
+  const formattedDate = d.toLocaleString('default', {
+    month: 'short'
+  }) + " " + d.getDate();
+  date.innerHTML = `&nbsp;${formattedDate}&nbsp;`;
+})

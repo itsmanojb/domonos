@@ -1,0 +1,63 @@
+<div class="page orders">
+    <div class="container">
+        <% if(orders.length !== 0) {%>
+        <div class="header">
+            All Orders
+        </div>
+        <div class="orders-grid">
+            <% orders.map((order, i) => {
+                const id = order._id.toString();
+                const items = Object.values(order.items);
+                const totalItems = items.length;
+            %>
+            <div class="order-card">
+                <div class="info">
+                    <div class="meta">
+                        <span class="orderid">Order
+                            <%= id.substring(0, 3) + id.toString().substring(id.length - 2, id.length) %></span>
+                        <p>
+                            Order Placed on <span class="datetime"><%= order.createdAt %></span> for Amount of &#8377;
+                            <%= order.amount %>
+                        </p>
+                    </div>
+                    <div class="details">
+                        <dl>
+                            <dt> <%= totalItems %> <% if(totalItems > 1) {%> Items <% } else { %> Item <% } %></dt>
+                            <dd>
+                                <% if(totalItems === 1) { %>
+                                <span> <%= items[0].item.name %></span>
+                                <% } else { items.map((cartitem) => {%>
+                                <% if(Array.isArray(cartitem)) { %>
+                                <span><% if(cartitem.length > 1) { %> <%= cartitem[0].item.name %>
+                                    - <%=cartitem.length%> <% } else { %> <%= cartitem[0].item.name %> <% } %> </span>
+                                <% } else { %>
+                                <span><%= cartitem.item.name %></span>
+                                <% } %>
+                                <% })}%>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="view" type="button">View Detail</button>
+                    <button class="fav" disabled type="button">Set As Favorite</button>
+                </div>
+            </div>
+            <%})%>
+        </div>
+        <% } else { %>
+        <div class="empty-cart orders">
+            <div class="content">
+                <h2>We got nothing
+                    <small>
+                        You haven't placed any orders yet.
+                    </small>
+                </h2>
+                <p>
+                    <a href="/menus" class="btn">Explore Menu</a>
+                </p>
+            </div>
+        </div>
+        <% } %>
+    </div>
+</div>

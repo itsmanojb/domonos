@@ -26,6 +26,7 @@ function initRoutes(app) {
   app.post('/delete-cart-item', cartController().deleteItem);
 
   // Customer Routes
+  app.post('/update-user', userController().update);
   app.post('/add-address', userController().addAddress);
   app.post('/delete-address', userController().deleteAddress);
   app.post('/current-address', userController().currentAddress);

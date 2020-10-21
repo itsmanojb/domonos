@@ -6696,6 +6696,76 @@ overlay.addEventListener('click', function () {
     leftDrawer.classList.remove("opened");
     headerMenu.classList.remove('inactive');
   }
+}); // Contact add/edit
+
+var liContactNone = document.getElementById('liContactNone');
+var liContactAdd = document.getElementById('liContactAdd');
+var liContact = document.getElementById('liContact');
+var liContactEdit = document.getElementById('liContactEdit');
+var editContactBtn = document.getElementById('contactEditBtn');
+var doneContactBtn = document.getElementById('contactDoneBtn');
+var doneEditContactBtn = document.getElementById('contactEditDoneBtn');
+var pattern = /^[\d ()+-]+$/;
+
+if (liContactNone) {
+  liContactNone.addEventListener('click', function (e) {
+    liContactAdd.classList.remove('d-none');
+    liContactNone.classList.add('d-none');
+  });
+}
+
+if (editContactBtn) {
+  editContactBtn.addEventListener('click', function (e) {
+    liContactEdit.classList.remove('d-none');
+    liContact.classList.add('d-none');
+  });
+}
+
+if (doneContactBtn) {
+  doneContactBtn.addEventListener('click', function (e) {
+    var input = document.getElementById('contactAddInput');
+    var contactValue = input.value;
+    if (contactValue.trim().length === 0 || !pattern.test(contactValue)) return;
+    input.setAttribute('disabled', true);
+    doneContactBtn.setAttribute('disabled', true);
+    axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/update-user', {
+      contact: contactValue.trim()
+    }).then(function () {
+      return location.reload();
+    })["catch"](function () {
+      location.reload();
+      showAlert('Failed to update');
+    });
+  });
+} // Edit Contact
+
+
+if (doneEditContactBtn) {
+  doneEditContactBtn.addEventListener('click', function (e) {
+    var input = document.getElementById('contactEditInput');
+    var contactValue = input.value;
+    if (contactValue.trim().length === 0 || !pattern.test(contactValue)) return;
+    input.setAttribute('disabled', true);
+    doneEditContactBtn.setAttribute('disabled', true);
+    axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/update-user', {
+      contact: contactValue.trim()
+    }).then(function () {
+      return location.reload();
+    })["catch"](function () {
+      location.reload();
+      showAlert('Failed to update');
+    });
+  });
+}
+
+var dates = document.querySelectorAll('.datetime');
+dates.forEach(function (date) {
+  var rawdate = date.innerText;
+  var d = new Date(rawdate);
+  var formattedDate = d.toLocaleString('default', {
+    month: 'short'
+  }) + " " + d.getDate();
+  date.innerHTML = "&nbsp;".concat(formattedDate, "&nbsp;");
 });
 
 /***/ }),

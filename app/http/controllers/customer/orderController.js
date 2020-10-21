@@ -43,7 +43,7 @@ function orderController(params) {
                 amount: req.session.cart.totalPrice
             });
 
-            console.log(order);
+            // console.log(order);
             order.save().then(result => {
                 delete req.session.cart;
                 req.flash('success', 'Order placed successfully');
