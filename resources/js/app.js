@@ -8,6 +8,17 @@ const locationBtns = document.querySelectorAll('.locationPickerBtn');
 const rightDrawer = document.getElementById('drawerRight');
 const headerMenu = document.getElementById('headerMenu');
 
+const addNewAddressBtn = document.getElementById('addNewAddressBtn');
+const addressListView = document.getElementById('locationListUI');
+const newAddressView = document.getElementById('addnewAddressUI');
+
+if (addNewAddressBtn) {
+  addNewAddressBtn.addEventListener('click', (e) => {
+    addressListView.classList.add('d-none');
+    newAddressView.classList.remove('d-none');
+  })
+}
+
 hamburger.addEventListener('click', () => {
   if (leftDrawer.classList.contains('opened')) {
     document.body.classList.remove('noscroll');
@@ -38,6 +49,97 @@ locationBtns.forEach(locationBtn => {
       hamburger.classList.add('inactive');
       addressListView.classList.remove('d-none');
     }
+  });
+});
+
+const orderDetailBtns = document.querySelectorAll('.order-detail-btn');
+const orderDetailsUI = document.getElementById('orderDetailsUI');
+
+orderDetailBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.body.classList.add('noscroll');
+    overlay.classList.add('shown');
+    rightDrawer.classList.add('opened');
+    hamburger.classList.add('inactive');
+    addressListView.classList.add('d-none');
+    orderDetailsUI.classList.remove('d-none');
+
+    // show order details
+    const order = JSON.parse(btn.closest('.order-card').dataset.order);
+    const id = order._id.toString();
+    const items = Object.values(order.items);
+    const totalItems = items.length;
+
+    console.log(order);
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'order-details-wrapper';
+    const orderInfo = document.createElement('div')
+    orderInfo.className = 'order-info';
+    const orderId = document.createElement('span');
+    const fId = id.substring(0, 3) + id.toString().substring(id.length - 2, id.length);
+    orderId.innerText = 'Order Id: ' + fId;
+    orderInfo.appendChild(orderId);
+    const orderDate = document.createElement('p');
+    orderDate.innerText = `Order Placed on ${getFormattedDate(order.createdAt)} for Amount of ₹${order.amount}`;
+    orderInfo.appendChild(orderDate);
+
+    const orderAddress = document.createElement('div')
+    orderAddress.className = 'order-address';
+    const address = document.createElement('p');
+    address.innerText = order.address.locality ? order.address.address + ', ' + order.address.locality : order.address.address;
+    orderAddress.appendChild(address);
+    const orderItems = document.createElement('div')
+    orderItems.className = 'order-items';
+
+    let itemsHtml = '';
+    items.map(cartitem => {
+      if (Array.isArray(cartitem)) {
+        cartitem.map(items => {
+          const item = items.item;
+          itemsHtml += `
+            <div class="order-item">
+            <div class="order-item-image">
+              <img src="${item.image}" alt="">
+              </div>
+              <div class="order-item-details">
+              <h2>${item.name}</h2>
+              <p>${item.description}</p>
+              <div class="order-stats">
+              <span>Qty. ${items.qty}</span>
+              <span>₹ ${item.price * items.qty}</span>
+              </div>
+              </div>
+          </div>
+        `;
+        })
+      } else {
+        const item = cartitem.item;
+        itemsHtml += `
+        <div class="order-item">
+        <div class="order-item-image">
+          <img src="${item.image}" alt="">
+          </div>
+          <div class="order-item-details">
+          <h2>${item.name}</h2>
+          <p>${item.description}</p>
+          <div class="order-stats">
+          <span>Qty. ${cartitem.qty}</span>
+          <span>₹ ${item.price * cartitem.qty}</span>
+          </div>
+          </div>
+      </div>
+      `;
+      }
+    })
+    orderItems.innerHTML = itemsHtml;
+
+    wrapper.append(orderInfo)
+    wrapper.append(orderAddress)
+    wrapper.append(orderItems);
+
+    orderDetailsUI.appendChild(wrapper);
+    orderDetailsUI.classList.remove('d-none');
   });
 });
 
@@ -491,16 +593,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 }, false);
 
-const addNewAddressBtn = document.getElementById('addNewAddressBtn');
-const addressListView = document.getElementById('locationListUI');
-const newAddressView = document.getElementById('addnewAddressUI');
-if (addNewAddressBtn) {
-  addNewAddressBtn.addEventListener('click', (e) => {
-    addressListView.classList.add('d-none');
-    newAddressView.classList.remove('d-none');
-  })
-}
-
 const addressDeleteBtns = document.querySelectorAll('.deleteAddressBtn');
 addressDeleteBtns.forEach(btn => {
   const address = btn.closest('.address');
@@ -649,29 +741,6 @@ document.getElementById('addMoreAddressBtn').addEventListener('click', (e) => {
 
 const addressEditForm = document.getElementById('addNewAddressForm');
 
-overlay.addEventListener('click', () => {
-  if (rightDrawer.classList.contains('opened')) {
-
-    document.body.classList.remove('noscroll');
-    overlay.classList.remove('shown');
-    rightDrawer.classList.remove('opened');
-    hamburger.classList.remove('inactive');
-
-    editAddressUI.classList.add('d-none');
-    newAddressView.classList.add('d-none');
-    addressListView.classList.add('d-none');
-    document.getElementById('allAddressView').classList.remove('d-none');
-    document.getElementById('editAddressForm').classList.add('d-none');
-
-  }
-  if (leftDrawer.classList.contains('opened')) {
-    document.body.classList.remove('noscroll');
-    overlay.classList.remove('shown');
-    leftDrawer.classList.remove("opened");
-    headerMenu.classList.remove('inactive');
-  }
-});
-
 // Contact add/edit
 
 const liContactNone = document.getElementById('liContactNone');
@@ -739,9 +808,42 @@ if (doneEditContactBtn) {
 const dates = document.querySelectorAll('.datetime');
 dates.forEach(date => {
   const rawdate = date.innerText;
+  const formattedDate = getFormattedDate(rawdate);
+  date.innerHTML = `&nbsp;${formattedDate}&nbsp;`;
+})
+
+function getFormattedDate(rawdate) {
   const d = new Date(rawdate);
   const formattedDate = d.toLocaleString('default', {
     month: 'short'
   }) + " " + d.getDate();
-  date.innerHTML = `&nbsp;${formattedDate}&nbsp;`;
-})
+
+  return formattedDate;
+}
+
+
+overlay.addEventListener('click', () => {
+  if (rightDrawer.classList.contains('opened')) {
+
+    document.body.classList.remove('noscroll');
+    overlay.classList.remove('shown');
+    rightDrawer.classList.remove('opened');
+    hamburger.classList.remove('inactive');
+
+    editAddressUI.classList.add('d-none');
+    newAddressView.classList.add('d-none');
+    addressListView.classList.add('d-none');
+    document.getElementById('allAddressView').classList.remove('d-none');
+    document.getElementById('editAddressForm').classList.add('d-none');
+
+    orderDetailsUI.innerHTML = null;
+    orderDetailsUI.classList.add('d-none');
+
+  }
+  if (leftDrawer.classList.contains('opened')) {
+    document.body.classList.remove('noscroll');
+    overlay.classList.remove('shown');
+    leftDrawer.classList.remove("opened");
+    headerMenu.classList.remove('inactive');
+  }
+});

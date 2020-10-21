@@ -10,7 +10,7 @@
                 const items = Object.values(order.items);
                 const totalItems = items.length;
             %>
-            <div class="order-card">
+            <div class="order-card" data-order='<%= JSON.stringify(order) %>'>
                 <div class="info">
                     <div class="meta">
                         <span class="orderid">Order
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="actions">
-                    <button class="view" type="button">View Detail</button>
+                    <button class="view order-detail-btn" type="button">View Detail</button>
                     <button class="fav" disabled type="button">Set As Favorite</button>
                 </div>
             </div>

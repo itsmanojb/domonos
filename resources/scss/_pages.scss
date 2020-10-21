@@ -193,9 +193,10 @@
     color: rgb(52, 86, 108);
     margin: 2rem 0 1rem;
   }
+
   .orders-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
     gap: 2vw;
   }
 }

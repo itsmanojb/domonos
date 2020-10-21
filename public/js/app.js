@@ -6065,6 +6065,17 @@ var leftDrawer = document.getElementById('drawerLeft');
 var locationBtns = document.querySelectorAll('.locationPickerBtn');
 var rightDrawer = document.getElementById('drawerRight');
 var headerMenu = document.getElementById('headerMenu');
+var addNewAddressBtn = document.getElementById('addNewAddressBtn');
+var addressListView = document.getElementById('locationListUI');
+var newAddressView = document.getElementById('addnewAddressUI');
+
+if (addNewAddressBtn) {
+  addNewAddressBtn.addEventListener('click', function (e) {
+    addressListView.classList.add('d-none');
+    newAddressView.classList.remove('d-none');
+  });
+}
+
 hamburger.addEventListener('click', function () {
   if (leftDrawer.classList.contains('opened')) {
     document.body.classList.remove('noscroll');
@@ -6092,6 +6103,62 @@ locationBtns.forEach(function (locationBtn) {
       hamburger.classList.add('inactive');
       addressListView.classList.remove('d-none');
     }
+  });
+});
+var orderDetailBtns = document.querySelectorAll('.order-detail-btn');
+var orderDetailsUI = document.getElementById('orderDetailsUI');
+orderDetailBtns.forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.body.classList.add('noscroll');
+    overlay.classList.add('shown');
+    rightDrawer.classList.add('opened');
+    hamburger.classList.add('inactive');
+    addressListView.classList.add('d-none');
+    orderDetailsUI.classList.remove('d-none'); // show order details
+
+    var order = JSON.parse(btn.closest('.order-card').dataset.order);
+
+    var id = order._id.toString();
+
+    var items = Object.values(order.items);
+    var totalItems = items.length;
+    console.log(order);
+    var wrapper = document.createElement('div');
+    wrapper.className = 'order-details-wrapper';
+    var orderInfo = document.createElement('div');
+    orderInfo.className = 'order-info';
+    var orderId = document.createElement('span');
+    var fId = id.substring(0, 3) + id.toString().substring(id.length - 2, id.length);
+    orderId.innerText = 'Order Id: ' + fId;
+    orderInfo.appendChild(orderId);
+    var orderDate = document.createElement('p');
+    orderDate.innerText = "Order Placed on ".concat(getFormattedDate(order.createdAt), " for Amount of \u20B9").concat(order.amount);
+    orderInfo.appendChild(orderDate);
+    var orderAddress = document.createElement('div');
+    orderAddress.className = 'order-address';
+    var address = document.createElement('p');
+    address.innerText = order.address.locality ? order.address.address + ', ' + order.address.locality : order.address.address;
+    orderAddress.appendChild(address);
+    var orderItems = document.createElement('div');
+    orderItems.className = 'order-items';
+    var itemsHtml = '';
+    items.map(function (cartitem) {
+      if (Array.isArray(cartitem)) {
+        cartitem.map(function (items) {
+          var item = items.item;
+          itemsHtml += "\n            <div class=\"order-item\">\n            <div class=\"order-item-image\">\n              <img src=\"".concat(item.image, "\" alt=\"\">\n              </div>\n              <div class=\"order-item-details\">\n              <h2>").concat(item.name, "</h2>\n              <p>").concat(item.description, "</p>\n              <div class=\"order-stats\">\n              <span>Qty. ").concat(items.qty, "</span>\n              <span>\u20B9 ").concat(item.price * items.qty, "</span>\n              </div>\n              </div>\n          </div>\n        ");
+        });
+      } else {
+        var item = cartitem.item;
+        itemsHtml += "\n        <div class=\"order-item\">\n        <div class=\"order-item-image\">\n          <img src=\"".concat(item.image, "\" alt=\"\">\n          </div>\n          <div class=\"order-item-details\">\n          <h2>").concat(item.name, "</h2>\n          <p>").concat(item.description, "</p>\n          <div class=\"order-stats\">\n          <span>Qty. ").concat(cartitem.qty, "</span>\n          <span>\u20B9 ").concat(item.price * cartitem.qty, "</span>\n          </div>\n          </div>\n      </div>\n      ");
+      }
+    });
+    orderItems.innerHTML = itemsHtml;
+    wrapper.append(orderInfo);
+    wrapper.append(orderAddress);
+    wrapper.append(orderItems);
+    orderDetailsUI.appendChild(wrapper);
+    orderDetailsUI.classList.remove('d-none');
   });
 });
 var alertUI = document.querySelector('#alertUI');
@@ -6538,17 +6605,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 }, false);
-var addNewAddressBtn = document.getElementById('addNewAddressBtn');
-var addressListView = document.getElementById('locationListUI');
-var newAddressView = document.getElementById('addnewAddressUI');
-
-if (addNewAddressBtn) {
-  addNewAddressBtn.addEventListener('click', function (e) {
-    addressListView.classList.add('d-none');
-    newAddressView.classList.remove('d-none');
-  });
-}
-
 var addressDeleteBtns = document.querySelectorAll('.deleteAddressBtn');
 addressDeleteBtns.forEach(function (btn) {
   var address = btn.closest('.address');
@@ -6676,27 +6732,7 @@ document.getElementById('addMoreAddressBtn').addEventListener('click', function 
   editAddressUI.classList.add('d-none');
   newAddressView.classList.remove('d-none');
 });
-var addressEditForm = document.getElementById('addNewAddressForm');
-overlay.addEventListener('click', function () {
-  if (rightDrawer.classList.contains('opened')) {
-    document.body.classList.remove('noscroll');
-    overlay.classList.remove('shown');
-    rightDrawer.classList.remove('opened');
-    hamburger.classList.remove('inactive');
-    editAddressUI.classList.add('d-none');
-    newAddressView.classList.add('d-none');
-    addressListView.classList.add('d-none');
-    document.getElementById('allAddressView').classList.remove('d-none');
-    document.getElementById('editAddressForm').classList.add('d-none');
-  }
-
-  if (leftDrawer.classList.contains('opened')) {
-    document.body.classList.remove('noscroll');
-    overlay.classList.remove('shown');
-    leftDrawer.classList.remove("opened");
-    headerMenu.classList.remove('inactive');
-  }
-}); // Contact add/edit
+var addressEditForm = document.getElementById('addNewAddressForm'); // Contact add/edit
 
 var liContactNone = document.getElementById('liContactNone');
 var liContactAdd = document.getElementById('liContactAdd');
@@ -6761,11 +6797,39 @@ if (doneEditContactBtn) {
 var dates = document.querySelectorAll('.datetime');
 dates.forEach(function (date) {
   var rawdate = date.innerText;
+  var formattedDate = getFormattedDate(rawdate);
+  date.innerHTML = "&nbsp;".concat(formattedDate, "&nbsp;");
+});
+
+function getFormattedDate(rawdate) {
   var d = new Date(rawdate);
   var formattedDate = d.toLocaleString('default', {
     month: 'short'
   }) + " " + d.getDate();
-  date.innerHTML = "&nbsp;".concat(formattedDate, "&nbsp;");
+  return formattedDate;
+}
+
+overlay.addEventListener('click', function () {
+  if (rightDrawer.classList.contains('opened')) {
+    document.body.classList.remove('noscroll');
+    overlay.classList.remove('shown');
+    rightDrawer.classList.remove('opened');
+    hamburger.classList.remove('inactive');
+    editAddressUI.classList.add('d-none');
+    newAddressView.classList.add('d-none');
+    addressListView.classList.add('d-none');
+    document.getElementById('allAddressView').classList.remove('d-none');
+    document.getElementById('editAddressForm').classList.add('d-none');
+    orderDetailsUI.innerHTML = null;
+    orderDetailsUI.classList.add('d-none');
+  }
+
+  if (leftDrawer.classList.contains('opened')) {
+    document.body.classList.remove('noscroll');
+    overlay.classList.remove('shown');
+    leftDrawer.classList.remove("opened");
+    headerMenu.classList.remove('inactive');
+  }
 });
 
 /***/ }),

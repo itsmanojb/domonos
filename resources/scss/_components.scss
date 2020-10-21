@@ -2255,7 +2255,7 @@
     }
     .details {
       padding: 20px 0;
-      min-height: 60px;
+      min-height: 70px;
 
       dl {
         margin: 0;
@@ -2291,6 +2291,7 @@
     justify-content: space-between;
     border-top: 1px solid #ddd;
     padding-top: 15px;
+    margin-top: 5px;
 
     button {
       background-color: #fff;
@@ -2313,6 +2314,132 @@
       &:disabled {
         opacity: 0.9;
         pointer-events: none;
+      }
+    }
+  }
+}
+
+.order-details-ui {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.order-details-wrapper {
+  height: 100%;
+  background-color: var(--page-background-alt);
+  padding: 1rem 0;
+
+  .order-info,
+  .order-address {
+    @extend .card;
+    padding: 1.5rem 1rem;
+    margin: 0 0 15px;
+    border-radius: 0;
+  }
+
+  .order-info {
+    padding: 1.5rem 2rem;
+
+    span {
+      color: #fff;
+      background-color: rgb(102, 159, 220);
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-size: 13px;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    p {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: rgb(95, 136, 163);
+      margin: 16px 0 0;
+    }
+  }
+
+  .order-address {
+    position: relative;
+    padding: 3rem 2rem 1rem;
+
+    &::before {
+      content: "Delivery Address";
+      position: absolute;
+      top: 1rem;
+      left: 2rem;
+      color: #fff;
+      background-color: rgb(130, 187, 55);
+      padding: 6px 10px;
+      border-radius: 3px;
+      font-size: 13px;
+    }
+
+    p {
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: rgb(95, 136, 163);
+      margin: 10px 0;
+    }
+  }
+
+  .order-items {
+    @extend .card;
+    padding: 1rem 0.5rem;
+    border-radius: 0;
+    margin-bottom: 2rem;
+
+    .order-item {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 16px;
+      padding: 1.5rem;
+
+      &-image {
+        height: 100px;
+        width: 100px;
+        border-radius: 4px;
+        overflow: hidden;
+
+        img {
+          height: 100%;
+          width: 100%;
+          object-fit: cover;
+        }
+      }
+
+      &-details {
+        display: flex;
+        flex-direction: column;
+
+        h2 {
+          margin: 0;
+          font-size: 17px;
+          font-weight: 600;
+          color: #444;
+        }
+
+        p {
+          font-size: 14px;
+          color: rgb(100, 129, 143);
+          width: 60%;
+          display: block;
+          margin: 10px 0;
+          line-height: 1.1;
+        }
+
+        .order-stats {
+          margin-top: auto;
+          display: inline-flex;
+          justify-content: space-between;
+          align-items: center;
+          line-height: 1;
+
+          span {
+            font-size: 14px;
+            font-weight: 400;
+          }
+        }
       }
     }
   }

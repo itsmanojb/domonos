@@ -1122,6 +1122,9 @@ textarea:focus {
 }
 
 .card,
+.order-details-wrapper .order-items,
+.order-details-wrapper .order-info,
+.order-details-wrapper .order-address,
 .order-card,
 .additional-menu-item,
 .cart-card,
@@ -2689,7 +2692,7 @@ textarea:focus {
 
 .order-card .info .details {
   padding: 20px 0;
-  min-height: 60px;
+  min-height: 70px;
 }
 
 .order-card .info .details dl {
@@ -2722,6 +2725,7 @@ textarea:focus {
   justify-content: space-between;
   border-top: 1px solid #ddd;
   padding-top: 15px;
+  margin-top: 5px;
 }
 
 .order-card .actions button {
@@ -2746,6 +2750,131 @@ textarea:focus {
 .order-card .actions button:disabled {
   opacity: 0.9;
   pointer-events: none;
+}
+
+.order-details-ui {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.order-details-wrapper {
+  height: 100%;
+  background-color: var(--page-background-alt);
+  padding: 1rem 0;
+}
+
+.order-details-wrapper .order-info,
+.order-details-wrapper .order-address {
+  padding: 1.5rem 1rem;
+  margin: 0 0 15px;
+  border-radius: 0;
+}
+
+.order-details-wrapper .order-info {
+  padding: 1.5rem 2rem;
+}
+
+.order-details-wrapper .order-info span {
+  color: #fff;
+  background-color: #669fdc;
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-size: 13px;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.order-details-wrapper .order-info p {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #5f88a3;
+  margin: 16px 0 0;
+}
+
+.order-details-wrapper .order-address {
+  position: relative;
+  padding: 3rem 2rem 1rem;
+}
+
+.order-details-wrapper .order-address::before {
+  content: "Delivery Address";
+  position: absolute;
+  top: 1rem;
+  left: 2rem;
+  color: #fff;
+  background-color: #82bb37;
+  padding: 6px 10px;
+  border-radius: 3px;
+  font-size: 13px;
+}
+
+.order-details-wrapper .order-address p {
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: #5f88a3;
+  margin: 10px 0;
+}
+
+.order-details-wrapper .order-items {
+  padding: 1rem 0.5rem;
+  border-radius: 0;
+  margin-bottom: 2rem;
+}
+
+.order-details-wrapper .order-items .order-item {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 16px;
+  padding: 1.5rem;
+}
+
+.order-details-wrapper .order-items .order-item-image {
+  height: 100px;
+  width: 100px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.order-details-wrapper .order-items .order-item-image img {
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.order-details-wrapper .order-items .order-item-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-details-wrapper .order-items .order-item-details h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #444;
+}
+
+.order-details-wrapper .order-items .order-item-details p {
+  font-size: 14px;
+  color: #64818f;
+  width: 60%;
+  display: block;
+  margin: 10px 0;
+  line-height: 1.1;
+}
+
+.order-details-wrapper .order-items .order-item-details .order-stats {
+  margin-top: auto;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 1;
+}
+
+.order-details-wrapper .order-items .order-item-details .order-stats span {
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .page {
@@ -2952,7 +3081,7 @@ textarea:focus {
 
 .page.orders .orders-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
   gap: 2vw;
 }
 
