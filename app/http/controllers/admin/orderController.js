@@ -31,7 +31,9 @@ function adminOrderController() {
                 }).populate('customerId', '-password -addresses -createdAt -updatedAt')
                 .exec((err, orders) => {
 
-                    return res.status(200).json(orders);
+                    return res.json({
+                        orders
+                    });
 
                 });
         },
@@ -44,8 +46,8 @@ function adminOrderController() {
             const currentStatus = (await Order.findById(orderId)).toJSON().status;
             if (
                 (currentStatus === 'order_placed' && status !== 'confirmed') ||
-                (currentStatus === 'confirmed' && status !== 'prepared') ||
-                (currentStatus === 'prepared' && status !== 'dispatched') ||
+                (currentStatus === 'confirmed' && status !== 'preparing') ||
+                (currentStatus === 'preparing' && status !== 'dispatched') ||
                 (currentStatus === 'dispatched' && status !== 'delivered') ||
                 (currentStatus === 'delivered' && status !== 'completed')
             ) {

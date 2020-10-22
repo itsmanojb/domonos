@@ -15,6 +15,21 @@ function orderController(params) {
                 orders
             });
         },
+        async currentOrders(req, res) {
+            const orders = await Order.find({
+                customerId: req.user._id,
+                status: {
+                    $ne: 'completed'
+                }
+            }, null, {
+                sort: {
+                    'createdAt': -1
+                }
+            });
+            return res.json({
+                orders
+            });
+        },
         store(req, res) {
             const addresses = req.user.addresses;
             if (addresses.length === 0) {
@@ -54,6 +69,17 @@ function orderController(params) {
                 req.flash('error', 'Something went wrong');
                 return res.redirect('/cart')
             });
+        },
+        async trackOrder(req, res) {
+            const order = await Order.findById(req.params.id);
+
+            if (req.user._id.toString() === order.customerId.toString()) {
+                return res.json({
+                    order
+                })
+            }
+
+            return res.redirect('/')
         }
     }
 }

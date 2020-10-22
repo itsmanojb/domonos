@@ -1,0 +1,51 @@
+<aside class="site__drawer drawer__big drawer_left" id="orderTracking">
+    <div class="order-loader" id="trackOrderLoader">
+        <div class="loader">Loading...</div>
+    </div>
+    <div class="order-tracking d-none" id="trackOrderDetails">
+        <div class="status-wrapper">
+            <div class="order-status-steps">
+                <div class="step completed">
+                    <div class="icon"></div>
+                    <div class="text">
+                        <span>Confirmed</span>
+                    </div>
+                </div>
+                <div class="step" id="step2">
+                    <div class="icon"></div>
+                    <div class="text">
+                        <span>Being Prepared</span>
+                    </div>
+                </div>
+                <div class="step" id="step3">
+                    <div class="icon"></div>
+                    <div class="text">
+                        <span>Out of Delivery</span>
+                    </div>
+                </div>
+                <div class="step" id="step4">
+                    <div class="icon"></div>
+                    <div class="text">
+                        <span>Delivered</span>
+                    </div>
+                </div>
+                <div class="step" id="step5">
+                    <div class="icon"></div>
+                    <div class="text">
+                        <span>Completed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="order-details">
+            <div class="short">
+                <h3 id="trackOrderTitle"></h3>
+                <div class="meta">
+                    <button type="button" id="toggleOrderDetailsBtn">Show Details</button>
+                    <span id="trackOrderMeta"></span>
+                </div>
+            </div>
+            <div class="full d-none" id="currentOrderDetailsUI"></div>
+        </div>
+    </div>
+</aside>

@@ -1,7 +1,7 @@
 @import "mixins";
 
 .page {
-  min-height: 90vh;
+  min-height: 85vh;
   background-color: var(--page-background-alt);
 }
 .page.home-menu {
@@ -202,5 +202,15 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
     gap: 2vw;
+  }
+}
+
+.page.tracking {
+  padding-top: 56px;
+  padding-bottom: 60px;
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
   }
 }

@@ -10,17 +10,20 @@ export function initAdmin() {
     let orders = [];
     let markup = '';
 
-    axios.get('/admin/orders/current', {
-        headers: {
-            "X-Requested-With": "XMLHttpRequest"
-        }
-    }).then(res => {
-        orders = res.data;
-        markup = generateMarkup(orders);
-        orderTableBody.innerHTML = markup
-    }).catch(err => {
-        console.log(err)
-    })
+    if (orderTableBody) {
+
+        axios.get('/admin/orders/current', {
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        }).then(res => {
+            orders = res.data.orders;
+            markup = generateMarkup(orders);
+            orderTableBody.innerHTML = markup
+        }).catch(err => {
+            console.log(err)
+        })
+    }
 
     function getOrdersMarkup(items) {
         let markup = '';
@@ -54,7 +57,7 @@ export function initAdmin() {
             return `
             <option value="order_placed" selected>Placed</option>
             <option value="confirmed" >Confirmed</option>
-            <option value="prepared" disabled>Prepared</option>
+            <option value="preparing" disabled>Preparing</option>
             <option value="dispatched" disabled>Dispatched</option>
             <option value="delivered" disabled>Delivered</option>
             <option value="completed" disabled>Completed</option>
@@ -62,14 +65,14 @@ export function initAdmin() {
         } else if (status === 'confirmed') {
             return `
             <option value="" selected>Confirmed</option>
-            <option value="prepared">Prepared</option>
+            <option value="preparing">Preparing</option>
             <option value="dispatched" disabled>Dispatched</option>
             <option value="delivered" disabled>Delivered</option>
             <option value="completed" disabled>Completed</option>
             `
-        } else if (status === 'prepared') {
+        } else if (status === 'preparing') {
             return `
-            <option value="" selected>Prepared</option>
+            <option value="" selected>Preparing</option>
             <option value="dispatched">Dispatched</option>
             <option value="delivered" disabled>Delivered</option>
             <option value="completed" disabled>Completed</option>
@@ -91,7 +94,6 @@ export function initAdmin() {
     }
 
     function generateMarkup(orders) {
-        console.log(orders);
         return orders.map((order, i) => {
             return `
                 <div class="tr">

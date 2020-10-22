@@ -36,6 +36,7 @@ function initRoutes(app) {
   app.post('/edit-address', userController().editAddress);
   app.get('/orders', auth, orderController().index);
   app.post('/orders', auth, orderController().store);
+  app.get('/order/:id', auth, orderController().trackOrder);
 
   // Admin Routes
   app.get('/admin/orders', admin, adminOrderController().index);

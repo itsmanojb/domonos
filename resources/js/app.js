@@ -55,8 +55,49 @@ locationBtns.forEach(locationBtn => {
   });
 });
 
+const orderTrackingUI = document.getElementById('orderTracking');
+const trackBtns = document.querySelectorAll('.track-btn');
+
+trackBtns.forEach(trackBtn => {
+  trackBtn.addEventListener('click', () => {
+
+    document.body.classList.add('noscroll');
+    overlay.classList.add('shown');
+    orderTrackingUI.classList.add('opened');
+    headerMenu.classList.add('inactive');
+
+    const orderId = trackBtn.dataset.id;
+    axios.get(`/order/${orderId}`).then(res => {
+
+      const order = res.data.order;
+      const wrapper = populateOrderDetails(order, true);
+      currentOrderDetailsUI.appendChild(wrapper);
+
+      // setTimeout(() => {
+      document.getElementById('trackOrderLoader').classList.add('d-none');
+      document.getElementById('trackOrderDetails').classList.remove('d-none');
+      // }, 500);
+
+
+    });
+
+    const toggle = document.getElementById('toggleOrderDetailsBtn')
+    toggle.addEventListener('click', (e) => {
+
+      toggle.innerText = toggle.innerText === 'Hide Details' ? 'Show Details' : 'Hide Details';
+      if (currentOrderDetailsUI.classList.contains('d-none')) {
+        currentOrderDetailsUI.classList.remove('d-none')
+      } else {
+        currentOrderDetailsUI.classList.add('d-none')
+      }
+    })
+
+  });
+});
+
 const orderDetailBtns = document.querySelectorAll('.order-detail-btn');
 const orderDetailsUI = document.getElementById('orderDetailsUI');
+const currentOrderDetailsUI = document.getElementById('currentOrderDetailsUI');
 
 orderDetailBtns.forEach(btn => {
   btn.addEventListener('click', () => {
@@ -69,84 +110,124 @@ orderDetailBtns.forEach(btn => {
 
     // show order details
     const order = JSON.parse(btn.closest('.order-card').dataset.order);
-    const id = order._id.toString();
-    const items = Object.values(order.items);
-    const totalItems = items.length;
-
-    console.log(order);
-
-    const wrapper = document.createElement('div');
-    wrapper.className = 'order-details-wrapper';
-    const orderInfo = document.createElement('div')
-    orderInfo.className = 'order-info';
-    const orderId = document.createElement('span');
-    const fId = id.substring(0, 3) + id.toString().substring(id.length - 2, id.length);
-    orderId.innerText = 'Order Id: ' + fId;
-    orderInfo.appendChild(orderId);
-    const orderDate = document.createElement('p');
-    orderDate.innerText = `Order Placed on ${getFormattedDate(order.createdAt)} for Amount of ₹${order.amount}`;
-    orderInfo.appendChild(orderDate);
-
-    const orderAddress = document.createElement('div')
-    orderAddress.className = 'order-address';
-    const address = document.createElement('p');
-    address.innerText = order.address.locality ? order.address.address + ', ' + order.address.locality : order.address.address;
-    orderAddress.appendChild(address);
-    const orderItems = document.createElement('div')
-    orderItems.className = 'order-items';
-
-    let itemsHtml = '';
-    items.map(cartitem => {
-      if (Array.isArray(cartitem)) {
-        cartitem.map(items => {
-          const item = items.item;
-          itemsHtml += `
-            <div class="order-item">
-            <div class="order-item-image">
-              <span class="ftype ${item.foodType}"></span>
-              <img src="${item.image}" alt="">
-              </div>
-              <div class="order-item-details">
-              <h2>${item.name}</h2>
-              <p>${item.description}</p>
-              <div class="order-stats">
-              <span>Qty. ${items.qty}</span>
-              <span>₹ ${item.price * items.qty}</span>
-              </div>
-              </div>
-          </div>
-        `;
-        })
-      } else {
-        const item = cartitem.item;
-        itemsHtml += `
-        <div class="order-item">
-        <div class="order-item-image">
-          <span class="ftype ${item.foodType}"></span>
-          <img src="${item.image}" alt="">
-          </div>
-          <div class="order-item-details">
-          <h2>${item.name}</h2>
-          <p>${item.description}</p>
-          <div class="order-stats">
-          <span>Qty. ${cartitem.qty}</span>
-          <span>₹ ${item.price * cartitem.qty}</span>
-          </div>
-          </div>
-      </div>
-      `;
-      }
-    })
-    orderItems.innerHTML = itemsHtml;
-
-    wrapper.append(orderInfo)
-    wrapper.append(orderAddress)
-    wrapper.append(orderItems);
-
+    const wrapper = populateOrderDetails(order, false);
     orderDetailsUI.appendChild(wrapper);
     orderDetailsUI.classList.remove('d-none');
+
   });
 });
+
+
+function populateOrderDetails(order, trackView) {
+
+  // console.log(order);
+  const id = order._id.toString();
+  const items = Object.values(order.items);
+  const totalItems = items.length;
+  const orderItemsTitle = [];
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'order-details-wrapper';
+  const orderInfo = document.createElement('div')
+  orderInfo.className = 'order-info';
+  const orderId = document.createElement('span');
+  const fId = id.substring(0, 3) + id.toString().substring(id.length - 2, id.length);
+  orderId.innerText = 'Order Id: ' + fId;
+  orderInfo.appendChild(orderId);
+  const orderDate = document.createElement('p');
+  orderDate.innerText = `Order Placed on ${getFormattedDate(order.createdAt)} for Amount of ₹${order.amount}`;
+  orderInfo.appendChild(orderDate);
+
+  const orderAddress = document.createElement('div')
+  orderAddress.className = 'order-address';
+  const address = document.createElement('p');
+  address.innerText = order.address.locality ? order.address.address + ', ' + order.address.locality : order.address.address;
+  orderAddress.appendChild(address);
+  const orderItems = document.createElement('div')
+  orderItems.className = 'order-items';
+
+  let itemsHtml = '';
+  items.map(cartitem => {
+    if (Array.isArray(cartitem)) {
+      cartitem.map(items => {
+        const item = items.item;
+        itemsHtml += `
+          <div class="order-item">
+          <div class="order-item-image">
+            <span class="ftype ${item.foodType}"></span>
+            <img src="${item.image}" alt="">
+            </div>
+            <div class="order-item-details">
+            <h2>${item.name}</h2>
+            <p>${item.description}</p>
+            <div class="order-stats">
+            <span>Qty. ${items.qty}</span>
+            <span>₹ ${item.price * items.qty}</span>
+            </div>
+            </div>
+        </div>
+      `;
+        orderItemsTitle.push(item.name);
+      })
+    } else {
+      const item = cartitem.item;
+      itemsHtml += `
+      <div class="order-item">
+      <div class="order-item-image">
+        <span class="ftype ${item.foodType}"></span>
+        <img src="${item.image}" alt="">
+        </div>
+        <div class="order-item-details">
+        <h2>${item.name}</h2>
+        <p>${item.description}</p>
+        <div class="order-stats">
+        <span>Qty. ${cartitem.qty}</span>
+        <span>₹ ${item.price * cartitem.qty}</span>
+        </div>
+        </div>
+    </div>
+    `;
+      orderItemsTitle.push(item.name);
+    }
+  })
+
+  orderItems.innerHTML = itemsHtml;
+
+  if (trackView) {
+    document.getElementById('trackOrderTitle').innerHTML = orderItemsTitle.join(', ');
+    document.getElementById('trackOrderMeta').innerHTML = `${totalItems} Items <strong>₹${order.amount}</strong> `;
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    const step4 = document.getElementById('step4');
+    const step5 = document.getElementById('step5');
+
+    if (order.status === 'preparing') {
+      step2.classList.add('completed');
+    }
+    if (order.status === 'dispatched') {
+      step2.classList.add('completed');
+      step3.classList.add('completed');
+    }
+    if (order.status === 'delivered') {
+      step2.classList.add('completed');
+      step3.classList.add('completed');
+      step4.classList.add('completed');
+    }
+    if (order.status === 'completed') {
+      step2.classList.add('completed');
+      step3.classList.add('completed');
+      step4.classList.add('completed');
+      step5.classList.add('completed');
+    }
+
+  }
+
+  wrapper.append(orderInfo)
+  wrapper.append(orderAddress)
+  wrapper.append(orderItems);
+
+  return wrapper;
+}
 
 const alertUI = document.querySelector('#alertUI');
 const okBtn = document.getElementById('alertOKBtn');
@@ -622,46 +703,46 @@ addressDeleteBtns.forEach(btn => {
 const addressForm = document.getElementById('addNewAddressForm');
 const addressSubmitBtn = document.getElementById('addAddressSubmitBtn');
 
-addressSubmitBtn.addEventListener('click', (e) => {
-  const data = Object.fromEntries(new FormData(addressForm).entries());
-  const pattern = /^[\d ()+-]+$/;
-  if (data.address && data.title && data.contact) {
-    if (pattern.test(data.contact)) {
-      axios.post('/add-address', data).then((res) => {
+if (addressSubmitBtn) {
+  addressSubmitBtn.addEventListener('click', (e) => {
+    const data = Object.fromEntries(new FormData(addressForm).entries());
+    const pattern = /^[\d ()+-]+$/;
+    if (data.address && data.title && data.contact) {
+      if (pattern.test(data.contact)) {
+        axios.post('/add-address', data).then((res) => {
 
-        addressForm.reset();
-        location.reload();
+          addressForm.reset();
+          location.reload();
 
-      }).catch((err) => {
-        showAlert('Something went wrong. Try again later.')
-      })
+        }).catch((err) => {
+          showAlert('Something went wrong. Try again later.')
+        })
+      } else {
+        new Noty({
+          type: 'error',
+          text: 'Invalid contact number',
+          timeout: 2000,
+          progressBar: false,
+          layout: 'topRight',
+        }).show()
+      }
     } else {
       new Noty({
         type: 'error',
-        text: 'Invalid contact number',
+        text: 'Fill all required fields',
         timeout: 2000,
         progressBar: false,
         layout: 'topRight',
       }).show()
     }
-  } else {
-    new Noty({
-      type: 'error',
-      text: 'Fill all required fields',
-      timeout: 2000,
-      progressBar: false,
-      layout: 'topRight',
-    }).show()
-  }
-})
+  })
+}
 
 const editAddressUI = document.getElementById('editAddressUI');
 const editAddressBtns = document.querySelectorAll('.editAddressBtn');
 
 editAddressBtns.forEach(btn => {
-
   btn.addEventListener('click', () => {
-
     document.body.classList.add('noscroll');
     overlay.classList.add('shown');
     rightDrawer.classList.add('opened');
@@ -673,7 +754,6 @@ editAddressBtns.forEach(btn => {
   });
 
 });
-
 
 const addressPickers = document.querySelectorAll('.addressRadioPicker');
 addressPickers.forEach(elm => {
@@ -704,49 +784,58 @@ editAddressDataBtns.forEach(btn => {
 })
 
 const updateAdressBtn = document.getElementById('editAddressSubmitBtn');
-updateAdressBtn.addEventListener('click', (e) => {
+if (updateAdressBtn) {
 
-  const current = document.querySelector('input[name="current_address"]:checked').value;
+  updateAdressBtn.addEventListener('click', (e) => {
 
-  const title = document.getElementById('addressTitleInput').value;
-  const locality = document.getElementById('addressLocalityInput').value;
-  const address = document.getElementById('addressInput').value;
-  const contact = document.getElementById('addressContactInput').value;
+    const current = document.querySelector('input[name="current_address"]:checked').value;
+    const title = document.getElementById('addressTitleInput').value;
+    const locality = document.getElementById('addressLocalityInput').value;
+    const address = document.getElementById('addressInput').value;
+    const contact = document.getElementById('addressContactInput').value;
 
-  axios.post('/edit-address', {
-    index: +current,
-    address: {
-      title,
-      locality,
-      address,
-      contact,
-      default: false
-    }
-  }).then(res => {
-    location.reload();
-  }).catch(err => {
-    console.log(err);
-    showAlert('Something went wrong. Try again later.')
-  })
-});
+    axios.post('/edit-address', {
+      index: +current,
+      address: {
+        title,
+        locality,
+        address,
+        contact,
+        default: false
+      }
+    }).then(res => {
+      location.reload();
+    }).catch(err => {
+      console.log(err);
+      showAlert('Something went wrong. Try again later.')
+    })
+  });
+
+}
 
 const saveAdressBtn = document.getElementById('saveAddressBtn');
-saveAdressBtn.addEventListener('click', (e) => {
-  const current = document.querySelector('input[name="current_address"]:checked').value;
-  axios.post('/current-address', {
-    index: +current
-  }).then(res => {
-    location.reload();
-  }).catch(err => {
-    console.log(err);
-    showAlert('Something went wrong. Try again later.')
-  })
-});
+if (saveAdressBtn) {
+  saveAdressBtn.addEventListener('click', (e) => {
+    const current = document.querySelector('input[name="current_address"]:checked').value;
+    axios.post('/current-address', {
+      index: +current
+    }).then(res => {
+      location.reload();
+    }).catch(err => {
+      console.log(err);
+      showAlert('Something went wrong. Try again later.')
+    })
+  });
+}
 
-document.getElementById('addMoreAddressBtn').addEventListener('click', (e) => {
-  editAddressUI.classList.add('d-none');
-  newAddressView.classList.remove('d-none');
-})
+const addMoreAddressBtn = document.getElementById('addMoreAddressBtn');
+if (addMoreAddressBtn) {
+
+  addMoreAddressBtn.addEventListener('click', (e) => {
+    editAddressUI.classList.add('d-none');
+    newAddressView.classList.remove('d-none');
+  })
+}
 
 const addressEditForm = document.getElementById('addNewAddressForm');
 
@@ -851,10 +940,24 @@ overlay.addEventListener('click', () => {
     orderDetailsUI.classList.add('d-none');
 
   }
+
   if (leftDrawer.classList.contains('opened')) {
     document.body.classList.remove('noscroll');
     overlay.classList.remove('shown');
     leftDrawer.classList.remove("opened");
     headerMenu.classList.remove('inactive');
+  }
+
+  if (orderTrackingUI.classList.contains('opened')) {
+    document.body.classList.remove('noscroll');
+    overlay.classList.remove('shown');
+    headerMenu.classList.remove('inactive');
+    orderTrackingUI.classList.remove('opened');
+    document.getElementById('trackOrderLoader').classList.remove('d-none');
+    document.getElementById('trackOrderDetails').classList.add('d-none');
+
+    currentOrderDetailsUI.innerHTML = null;
+    document.getElementById('toggleOrderDetailsBtn').innerText = 'Show Details';
+    currentOrderDetailsUI.classList.add('d-none');
   }
 });

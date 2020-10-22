@@ -24110,17 +24110,20 @@ function initAdmin() {
   var orderTableBody = document.querySelector('#adminOrderTableBody');
   var orders = [];
   var markup = '';
-  axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/admin/orders/current', {
-    headers: {
-      "X-Requested-With": "XMLHttpRequest"
-    }
-  }).then(function (res) {
-    orders = res.data;
-    markup = generateMarkup(orders);
-    orderTableBody.innerHTML = markup;
-  })["catch"](function (err) {
-    console.log(err);
-  });
+
+  if (orderTableBody) {
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/admin/orders/current', {
+      headers: {
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    }).then(function (res) {
+      orders = res.data.orders;
+      markup = generateMarkup(orders);
+      orderTableBody.innerHTML = markup;
+    })["catch"](function (err) {
+      console.log(err);
+    });
+  }
 
   function getOrdersMarkup(items) {
     var markup = '';
@@ -24142,11 +24145,11 @@ function initAdmin() {
 
   function getOrderOptions(status) {
     if (status === 'order_placed') {
-      return "\n            <option value=\"order_placed\" selected>Placed</option>\n            <option value=\"confirmed\" >Confirmed</option>\n            <option value=\"prepared\" disabled>Prepared</option>\n            <option value=\"dispatched\" disabled>Dispatched</option>\n            <option value=\"delivered\" disabled>Delivered</option>\n            <option value=\"completed\" disabled>Completed</option>\n            ";
+      return "\n            <option value=\"order_placed\" selected>Placed</option>\n            <option value=\"confirmed\" >Confirmed</option>\n            <option value=\"preparing\" disabled>Preparing</option>\n            <option value=\"dispatched\" disabled>Dispatched</option>\n            <option value=\"delivered\" disabled>Delivered</option>\n            <option value=\"completed\" disabled>Completed</option>\n            ";
     } else if (status === 'confirmed') {
-      return "\n            <option value=\"\" selected>Confirmed</option>\n            <option value=\"prepared\">Prepared</option>\n            <option value=\"dispatched\" disabled>Dispatched</option>\n            <option value=\"delivered\" disabled>Delivered</option>\n            <option value=\"completed\" disabled>Completed</option>\n            ";
-    } else if (status === 'prepared') {
-      return "\n            <option value=\"\" selected>Prepared</option>\n            <option value=\"dispatched\">Dispatched</option>\n            <option value=\"delivered\" disabled>Delivered</option>\n            <option value=\"completed\" disabled>Completed</option>\n            ";
+      return "\n            <option value=\"\" selected>Confirmed</option>\n            <option value=\"preparing\">Preparing</option>\n            <option value=\"dispatched\" disabled>Dispatched</option>\n            <option value=\"delivered\" disabled>Delivered</option>\n            <option value=\"completed\" disabled>Completed</option>\n            ";
+    } else if (status === 'preparing') {
+      return "\n            <option value=\"\" selected>Preparing</option>\n            <option value=\"dispatched\">Dispatched</option>\n            <option value=\"delivered\" disabled>Delivered</option>\n            <option value=\"completed\" disabled>Completed</option>\n            ";
     } else if (status === 'dispatched') {
       return "\n            <option value=\"\" selected>Dispatched</option>\n            <option value=\"delivered\">Delivered</option>\n            <option value=\"completed\" disabled>Completed</option>\n            ";
     } else if (status === 'delivered') {
@@ -24157,7 +24160,6 @@ function initAdmin() {
   }
 
   function generateMarkup(orders) {
-    console.log(orders);
     return orders.map(function (order, i) {
       return "\n                <div class=\"tr\">\n                    <div>".concat(i + 1, "</div>\n                    <div class=\"status ").concat(order.status, "\">\n                        <span>").concat(order.status === 'order_placed' ? 'New' : order.status, "</span>\n                    </div>\n                    <div>\n                        ").concat(Object(date_fns__WEBPACK_IMPORTED_MODULE_1__["format"])(Object(date_fns__WEBPACK_IMPORTED_MODULE_1__["parseISO"])(order.createdAt), 'hh:mm aa'), "\n                    </div>\n                    <div class=\"order-items\">\n                        ").concat(getOrdersMarkup(order.items), "\n                    </div>\n                    <div class=\"u\">\n                        <p>").concat(order.customerId.name, "</p>\n                        <a href=\"tel:+").concat(order.customerId.contact, "\">").concat(order.customerId.contact, "</a>\n                    </div>\n                    <div class=\"address\">\n                        <p>").concat(order.address.address, "\n                        <small>").concat(order.address.locality, "</small>\n                        </p>\n                    </div>\n                    <div class=\"act\">\n                    <form method=\"POST\" action=\"/admin/order/status\">\n                    <input type=\"hidden\" name=\"orderId\" value=\"").concat(order._id, "\" />\n                        <select name=\"status\" onchange=\"this.form.submit()\">\n                            ").concat(getOrderOptions(order.status), "\n                        </select>\n                    </form>\n                    </div>\n                </div>\n            ");
     }).join('');
@@ -24253,8 +24255,38 @@ locationBtns.forEach(function (locationBtn) {
     }
   });
 });
+var orderTrackingUI = document.getElementById('orderTracking');
+var trackBtns = document.querySelectorAll('.track-btn');
+trackBtns.forEach(function (trackBtn) {
+  trackBtn.addEventListener('click', function () {
+    document.body.classList.add('noscroll');
+    overlay.classList.add('shown');
+    orderTrackingUI.classList.add('opened');
+    headerMenu.classList.add('inactive');
+    var orderId = trackBtn.dataset.id;
+    axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/order/".concat(orderId)).then(function (res) {
+      var order = res.data.order;
+      var wrapper = populateOrderDetails(order, true);
+      currentOrderDetailsUI.appendChild(wrapper); // setTimeout(() => {
+
+      document.getElementById('trackOrderLoader').classList.add('d-none');
+      document.getElementById('trackOrderDetails').classList.remove('d-none'); // }, 500);
+    });
+    var toggle = document.getElementById('toggleOrderDetailsBtn');
+    toggle.addEventListener('click', function (e) {
+      toggle.innerText = toggle.innerText === 'Hide Details' ? 'Show Details' : 'Hide Details';
+
+      if (currentOrderDetailsUI.classList.contains('d-none')) {
+        currentOrderDetailsUI.classList.remove('d-none');
+      } else {
+        currentOrderDetailsUI.classList.add('d-none');
+      }
+    });
+  });
+});
 var orderDetailBtns = document.querySelectorAll('.order-detail-btn');
 var orderDetailsUI = document.getElementById('orderDetailsUI');
+var currentOrderDetailsUI = document.getElementById('currentOrderDetailsUI');
 orderDetailBtns.forEach(function (btn) {
   btn.addEventListener('click', function () {
     document.body.classList.add('noscroll');
@@ -24265,50 +24297,90 @@ orderDetailBtns.forEach(function (btn) {
     orderDetailsUI.classList.remove('d-none'); // show order details
 
     var order = JSON.parse(btn.closest('.order-card').dataset.order);
-
-    var id = order._id.toString();
-
-    var items = Object.values(order.items);
-    var totalItems = items.length;
-    console.log(order);
-    var wrapper = document.createElement('div');
-    wrapper.className = 'order-details-wrapper';
-    var orderInfo = document.createElement('div');
-    orderInfo.className = 'order-info';
-    var orderId = document.createElement('span');
-    var fId = id.substring(0, 3) + id.toString().substring(id.length - 2, id.length);
-    orderId.innerText = 'Order Id: ' + fId;
-    orderInfo.appendChild(orderId);
-    var orderDate = document.createElement('p');
-    orderDate.innerText = "Order Placed on ".concat(getFormattedDate(order.createdAt), " for Amount of \u20B9").concat(order.amount);
-    orderInfo.appendChild(orderDate);
-    var orderAddress = document.createElement('div');
-    orderAddress.className = 'order-address';
-    var address = document.createElement('p');
-    address.innerText = order.address.locality ? order.address.address + ', ' + order.address.locality : order.address.address;
-    orderAddress.appendChild(address);
-    var orderItems = document.createElement('div');
-    orderItems.className = 'order-items';
-    var itemsHtml = '';
-    items.map(function (cartitem) {
-      if (Array.isArray(cartitem)) {
-        cartitem.map(function (items) {
-          var item = items.item;
-          itemsHtml += "\n            <div class=\"order-item\">\n            <div class=\"order-item-image\">\n              <span class=\"ftype ".concat(item.foodType, "\"></span>\n              <img src=\"").concat(item.image, "\" alt=\"\">\n              </div>\n              <div class=\"order-item-details\">\n              <h2>").concat(item.name, "</h2>\n              <p>").concat(item.description, "</p>\n              <div class=\"order-stats\">\n              <span>Qty. ").concat(items.qty, "</span>\n              <span>\u20B9 ").concat(item.price * items.qty, "</span>\n              </div>\n              </div>\n          </div>\n        ");
-        });
-      } else {
-        var item = cartitem.item;
-        itemsHtml += "\n        <div class=\"order-item\">\n        <div class=\"order-item-image\">\n          <span class=\"ftype ".concat(item.foodType, "\"></span>\n          <img src=\"").concat(item.image, "\" alt=\"\">\n          </div>\n          <div class=\"order-item-details\">\n          <h2>").concat(item.name, "</h2>\n          <p>").concat(item.description, "</p>\n          <div class=\"order-stats\">\n          <span>Qty. ").concat(cartitem.qty, "</span>\n          <span>\u20B9 ").concat(item.price * cartitem.qty, "</span>\n          </div>\n          </div>\n      </div>\n      ");
-      }
-    });
-    orderItems.innerHTML = itemsHtml;
-    wrapper.append(orderInfo);
-    wrapper.append(orderAddress);
-    wrapper.append(orderItems);
+    var wrapper = populateOrderDetails(order, false);
     orderDetailsUI.appendChild(wrapper);
     orderDetailsUI.classList.remove('d-none');
   });
 });
+
+function populateOrderDetails(order, trackView) {
+  // console.log(order);
+  var id = order._id.toString();
+
+  var items = Object.values(order.items);
+  var totalItems = items.length;
+  var orderItemsTitle = [];
+  var wrapper = document.createElement('div');
+  wrapper.className = 'order-details-wrapper';
+  var orderInfo = document.createElement('div');
+  orderInfo.className = 'order-info';
+  var orderId = document.createElement('span');
+  var fId = id.substring(0, 3) + id.toString().substring(id.length - 2, id.length);
+  orderId.innerText = 'Order Id: ' + fId;
+  orderInfo.appendChild(orderId);
+  var orderDate = document.createElement('p');
+  orderDate.innerText = "Order Placed on ".concat(getFormattedDate(order.createdAt), " for Amount of \u20B9").concat(order.amount);
+  orderInfo.appendChild(orderDate);
+  var orderAddress = document.createElement('div');
+  orderAddress.className = 'order-address';
+  var address = document.createElement('p');
+  address.innerText = order.address.locality ? order.address.address + ', ' + order.address.locality : order.address.address;
+  orderAddress.appendChild(address);
+  var orderItems = document.createElement('div');
+  orderItems.className = 'order-items';
+  var itemsHtml = '';
+  items.map(function (cartitem) {
+    if (Array.isArray(cartitem)) {
+      cartitem.map(function (items) {
+        var item = items.item;
+        itemsHtml += "\n          <div class=\"order-item\">\n          <div class=\"order-item-image\">\n            <span class=\"ftype ".concat(item.foodType, "\"></span>\n            <img src=\"").concat(item.image, "\" alt=\"\">\n            </div>\n            <div class=\"order-item-details\">\n            <h2>").concat(item.name, "</h2>\n            <p>").concat(item.description, "</p>\n            <div class=\"order-stats\">\n            <span>Qty. ").concat(items.qty, "</span>\n            <span>\u20B9 ").concat(item.price * items.qty, "</span>\n            </div>\n            </div>\n        </div>\n      ");
+        orderItemsTitle.push(item.name);
+      });
+    } else {
+      var item = cartitem.item;
+      itemsHtml += "\n      <div class=\"order-item\">\n      <div class=\"order-item-image\">\n        <span class=\"ftype ".concat(item.foodType, "\"></span>\n        <img src=\"").concat(item.image, "\" alt=\"\">\n        </div>\n        <div class=\"order-item-details\">\n        <h2>").concat(item.name, "</h2>\n        <p>").concat(item.description, "</p>\n        <div class=\"order-stats\">\n        <span>Qty. ").concat(cartitem.qty, "</span>\n        <span>\u20B9 ").concat(item.price * cartitem.qty, "</span>\n        </div>\n        </div>\n    </div>\n    ");
+      orderItemsTitle.push(item.name);
+    }
+  });
+  orderItems.innerHTML = itemsHtml;
+
+  if (trackView) {
+    document.getElementById('trackOrderTitle').innerHTML = orderItemsTitle.join(', ');
+    document.getElementById('trackOrderMeta').innerHTML = "".concat(totalItems, " Items <strong>\u20B9").concat(order.amount, "</strong> ");
+    var step2 = document.getElementById('step2');
+    var step3 = document.getElementById('step3');
+    var step4 = document.getElementById('step4');
+    var step5 = document.getElementById('step5');
+
+    if (order.status === 'preparing') {
+      step2.classList.add('completed');
+    }
+
+    if (order.status === 'dispatched') {
+      step2.classList.add('completed');
+      step3.classList.add('completed');
+    }
+
+    if (order.status === 'delivered') {
+      step2.classList.add('completed');
+      step3.classList.add('completed');
+      step4.classList.add('completed');
+    }
+
+    if (order.status === 'completed') {
+      step2.classList.add('completed');
+      step3.classList.add('completed');
+      step4.classList.add('completed');
+      step5.classList.add('completed');
+    }
+  }
+
+  wrapper.append(orderInfo);
+  wrapper.append(orderAddress);
+  wrapper.append(orderItems);
+  return wrapper;
+}
+
 var alertUI = document.querySelector('#alertUI');
 var okBtn = document.getElementById('alertOKBtn');
 
@@ -24777,37 +24849,41 @@ addressDeleteBtns.forEach(function (btn) {
 });
 var addressForm = document.getElementById('addNewAddressForm');
 var addressSubmitBtn = document.getElementById('addAddressSubmitBtn');
-addressSubmitBtn.addEventListener('click', function (e) {
-  var data = Object.fromEntries(new FormData(addressForm).entries());
-  var pattern = /^[\d ()+-]+$/;
 
-  if (data.address && data.title && data.contact) {
-    if (pattern.test(data.contact)) {
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/add-address', data).then(function (res) {
-        addressForm.reset();
-        location.reload();
-      })["catch"](function (err) {
-        showAlert('Something went wrong. Try again later.');
-      });
+if (addressSubmitBtn) {
+  addressSubmitBtn.addEventListener('click', function (e) {
+    var data = Object.fromEntries(new FormData(addressForm).entries());
+    var pattern = /^[\d ()+-]+$/;
+
+    if (data.address && data.title && data.contact) {
+      if (pattern.test(data.contact)) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/add-address', data).then(function (res) {
+          addressForm.reset();
+          location.reload();
+        })["catch"](function (err) {
+          showAlert('Something went wrong. Try again later.');
+        });
+      } else {
+        new noty__WEBPACK_IMPORTED_MODULE_2___default.a({
+          type: 'error',
+          text: 'Invalid contact number',
+          timeout: 2000,
+          progressBar: false,
+          layout: 'topRight'
+        }).show();
+      }
     } else {
       new noty__WEBPACK_IMPORTED_MODULE_2___default.a({
         type: 'error',
-        text: 'Invalid contact number',
+        text: 'Fill all required fields',
         timeout: 2000,
         progressBar: false,
         layout: 'topRight'
       }).show();
     }
-  } else {
-    new noty__WEBPACK_IMPORTED_MODULE_2___default.a({
-      type: 'error',
-      text: 'Fill all required fields',
-      timeout: 2000,
-      progressBar: false,
-      layout: 'topRight'
-    }).show();
-  }
-});
+  });
+}
+
 var editAddressUI = document.getElementById('editAddressUI');
 var editAddressBtns = document.querySelectorAll('.editAddressBtn');
 editAddressBtns.forEach(function (btn) {
@@ -24848,44 +24924,57 @@ editAddressDataBtns.forEach(function (btn) {
   });
 });
 var updateAdressBtn = document.getElementById('editAddressSubmitBtn');
-updateAdressBtn.addEventListener('click', function (e) {
-  var current = document.querySelector('input[name="current_address"]:checked').value;
-  var title = document.getElementById('addressTitleInput').value;
-  var locality = document.getElementById('addressLocalityInput').value;
-  var address = document.getElementById('addressInput').value;
-  var contact = document.getElementById('addressContactInput').value;
-  axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/edit-address', {
-    index: +current,
-    address: {
-      title: title,
-      locality: locality,
-      address: address,
-      contact: contact,
-      "default": false
-    }
-  }).then(function (res) {
-    location.reload();
-  })["catch"](function (err) {
-    console.log(err);
-    showAlert('Something went wrong. Try again later.');
+
+if (updateAdressBtn) {
+  updateAdressBtn.addEventListener('click', function (e) {
+    var current = document.querySelector('input[name="current_address"]:checked').value;
+    var title = document.getElementById('addressTitleInput').value;
+    var locality = document.getElementById('addressLocalityInput').value;
+    var address = document.getElementById('addressInput').value;
+    var contact = document.getElementById('addressContactInput').value;
+    axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/edit-address', {
+      index: +current,
+      address: {
+        title: title,
+        locality: locality,
+        address: address,
+        contact: contact,
+        "default": false
+      }
+    }).then(function (res) {
+      location.reload();
+    })["catch"](function (err) {
+      console.log(err);
+      showAlert('Something went wrong. Try again later.');
+    });
   });
-});
+}
+
 var saveAdressBtn = document.getElementById('saveAddressBtn');
-saveAdressBtn.addEventListener('click', function (e) {
-  var current = document.querySelector('input[name="current_address"]:checked').value;
-  axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/current-address', {
-    index: +current
-  }).then(function (res) {
-    location.reload();
-  })["catch"](function (err) {
-    console.log(err);
-    showAlert('Something went wrong. Try again later.');
+
+if (saveAdressBtn) {
+  saveAdressBtn.addEventListener('click', function (e) {
+    var current = document.querySelector('input[name="current_address"]:checked').value;
+    axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/current-address', {
+      index: +current
+    }).then(function (res) {
+      location.reload();
+    })["catch"](function (err) {
+      console.log(err);
+      showAlert('Something went wrong. Try again later.');
+    });
   });
-});
-document.getElementById('addMoreAddressBtn').addEventListener('click', function (e) {
-  editAddressUI.classList.add('d-none');
-  newAddressView.classList.remove('d-none');
-});
+}
+
+var addMoreAddressBtn = document.getElementById('addMoreAddressBtn');
+
+if (addMoreAddressBtn) {
+  addMoreAddressBtn.addEventListener('click', function (e) {
+    editAddressUI.classList.add('d-none');
+    newAddressView.classList.remove('d-none');
+  });
+}
+
 var addressEditForm = document.getElementById('addNewAddressForm'); // Contact add/edit
 
 var liContactNone = document.getElementById('liContactNone');
@@ -24984,6 +25073,18 @@ overlay.addEventListener('click', function () {
     overlay.classList.remove('shown');
     leftDrawer.classList.remove("opened");
     headerMenu.classList.remove('inactive');
+  }
+
+  if (orderTrackingUI.classList.contains('opened')) {
+    document.body.classList.remove('noscroll');
+    overlay.classList.remove('shown');
+    headerMenu.classList.remove('inactive');
+    orderTrackingUI.classList.remove('opened');
+    document.getElementById('trackOrderLoader').classList.remove('d-none');
+    document.getElementById('trackOrderDetails').classList.add('d-none');
+    currentOrderDetailsUI.innerHTML = null;
+    document.getElementById('toggleOrderDetailsBtn').innerText = 'Show Details';
+    currentOrderDetailsUI.classList.add('d-none');
   }
 });
 

@@ -39,25 +39,31 @@
                     </div>
                 </div>
                 <div class="actions">
-                    <button class="view order-detail-btn" type="button">View Detail</button>
-                    <button class="fav" disabled type="button">Set As Favorite</button>
+                    <button class="btn view order-detail-btn" type="button">View Detail</button>
+                    <% if(order.status === 'confirmed' || order.status === 'preparing' || order.status === 'dispatched' || order.status === 'delivered') {%>
+                    <button class="btn fav track-btn" data-id="<%= id %>" type="button">Track order</button>
+                    <%} else if(order.status === 'order_placed' ){%>
+                    <button class="btn fav" disabled type="button">Awaiting Confirmation</button>
+                    <%} else {%>
+                    <button class="btn" disabled type="button">Set Favorite</button>
+                    <%}%>
                 </div>
             </div>
             <%})%>
-        </div>
-        <% } else { %>
-        <div class="empty-cart orders">
-            <div class="content">
-                <h2>We got nothing
-                    <small>
-                        You haven't placed any orders yet.
-                    </small>
-                </h2>
-                <p>
-                    <a href="/menus" class="btn">Explore Menu</a>
-                </p>
+                </div>
+                <% } else { %>
+                <div class="empty-cart orders">
+                    <div class="content">
+                        <h2>We got nothing
+                            <small>
+                                You haven't placed any orders yet.
+                            </small>
+                        </h2>
+                        <p>
+                            <a href="/menus" class="btn">Explore Menu</a>
+                        </p>
+                    </div>
+                </div>
+                <% } %>
             </div>
         </div>
-        <% } %>
-    </div>
-</div>
