@@ -2834,6 +2834,45 @@ textarea:focus {
   width: 100px;
   border-radius: 4px;
   overflow: hidden;
+  position: relative;
+}
+
+.order-details-wrapper .order-items .order-item-image .ftype {
+  display: inline-block;
+  height: 14px;
+  width: 14px;
+  background-color: #fff;
+  margin-right: 8px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  position: absolute;
+  margin: 4px;
+}
+
+.order-details-wrapper .order-items .order-item-image .ftype::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+}
+
+.order-details-wrapper .order-items .order-item-image .ftype.veg {
+  border-color: var(--green-alt);
+}
+
+.order-details-wrapper .order-items .order-item-image .ftype.veg::after {
+  background-color: var(--green-alt);
+}
+
+.order-details-wrapper .order-items .order-item-image .ftype.nonveg {
+  border-color: #ab0000;
+}
+
+.order-details-wrapper .order-items .order-item-image .ftype.nonveg::after {
+  background-color: #ab0000;
 }
 
 .order-details-wrapper .order-items .order-item-image img {
@@ -3085,7 +3124,7 @@ textarea:focus {
 
 .page.orders .orders-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
   gap: 2vw;
 }
 
@@ -3300,7 +3339,7 @@ textarea:focus {
   width: 100%;
   background-color: var(--page-background);
   display: grid;
-  grid-template-columns: 80px 160px 240px minmax(600px, 40vw) 200px 280px 140px;
+  grid-template-columns: 80px 160px 240px minmax(600px, 40vw) 200px 280px 160px;
 }
 
 .active-orders-table .table-header > div {
@@ -3311,7 +3350,7 @@ textarea:focus {
 
 .active-orders-table .table-body .tr {
   display: grid;
-  grid-template-columns: 80px 160px 240px minmax(600px, 40vw) 200px 280px 140px;
+  grid-template-columns: 80px 160px 240px minmax(600px, 40vw) 200px 280px 160px;
 }
 
 .active-orders-table .table-body .tr:first-of-type > div {
@@ -3337,8 +3376,33 @@ textarea:focus {
 }
 
 .active-orders-table .table-body .tr .status.order_placed span {
+  background-color: #f8b851;
+  color: #fff;
+}
+
+.active-orders-table .table-body .tr .status.confirmed span {
   background-color: var(--green);
   color: #fff;
+}
+
+.active-orders-table .table-body .tr .status.prepared span {
+  background-color: var(--green-alt);
+  color: #fff;
+}
+
+.active-orders-table .table-body .tr .status.dispatched span {
+  background-color: rgb(var(--primary-color-rgb));
+  color: #fff;
+}
+
+.active-orders-table .table-body .tr .status.delivered span {
+  background-color: var(--text-color);
+  color: #fff;
+}
+
+.active-orders-table .table-body .tr .status.completed span {
+  background-color: #ddd;
+  color: #555;
 }
 
 .active-orders-table .table-body .tr .order-items .order-item {
@@ -3376,11 +3440,11 @@ textarea:focus {
   background-color: var(--green-alt);
 }
 
-.active-orders-table .table-body .tr .order-items .order-item .food-type.non-veg {
+.active-orders-table .table-body .tr .order-items .order-item .food-type.nonveg {
   border-color: #ab0000;
 }
 
-.active-orders-table .table-body .tr .order-items .order-item .food-type.non-veg::after {
+.active-orders-table .table-body .tr .order-items .order-item .food-type.nonveg::after {
   background-color: #ab0000;
 }
 
@@ -3420,7 +3484,9 @@ textarea:focus {
   -webkit-appearance: none;
   -moz-appearance: none;
        appearance: none;
-  background-color: #555;
+  background: #555 url("/images/right-chevron.png") no-repeat;
+  background-size: 12px;
+  background-position: calc(100% - 10px) center;
   text-transform: uppercase;
   font-size: 14px;
   color: #fff;

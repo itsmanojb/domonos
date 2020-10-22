@@ -2400,6 +2400,43 @@
         width: 100px;
         border-radius: 4px;
         overflow: hidden;
+        position: relative;
+
+        .ftype {
+          display: inline-block;
+          height: 14px;
+          width: 14px;
+          background-color: #fff;
+          margin-right: 8px;
+          border-radius: 3px;
+          border: 1px solid transparent;
+          position: absolute;
+          margin: 4px;
+
+          &::after {
+            content: "";
+            position: absolute;
+            left: 2px;
+            top: 2px;
+            height: 8px;
+            width: 8px;
+            border-radius: 50%;
+          }
+
+          &.veg {
+            border-color: var(--green-alt);
+            &::after {
+              background-color: var(--green-alt);
+            }
+          }
+
+          &.nonveg {
+            border-color: rgb(171, 0, 0);
+            &::after {
+              background-color: rgb(171, 0, 0);
+            }
+          }
+        }
 
         img {
           height: 100%;

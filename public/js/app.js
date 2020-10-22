@@ -24110,7 +24110,7 @@ function initAdmin() {
   var orderTableBody = document.querySelector('#adminOrderTableBody');
   var orders = [];
   var markup = '';
-  axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/admin/orders', {
+  axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/admin/orders/current', {
     headers: {
       "X-Requested-With": "XMLHttpRequest"
     }
@@ -24140,10 +24140,26 @@ function initAdmin() {
     return markup;
   }
 
+  function getOrderOptions(status) {
+    if (status === 'order_placed') {
+      return "\n            <option value=\"order_placed\" selected>Placed</option>\n            <option value=\"confirmed\" >Confirmed</option>\n            <option value=\"prepared\" disabled>Prepared</option>\n            <option value=\"dispatched\" disabled>Dispatched</option>\n            <option value=\"delivered\" disabled>Delivered</option>\n            <option value=\"completed\" disabled>Completed</option>\n            ";
+    } else if (status === 'confirmed') {
+      return "\n            <option value=\"\" selected>Confirmed</option>\n            <option value=\"prepared\">Prepared</option>\n            <option value=\"dispatched\" disabled>Dispatched</option>\n            <option value=\"delivered\" disabled>Delivered</option>\n            <option value=\"completed\" disabled>Completed</option>\n            ";
+    } else if (status === 'prepared') {
+      return "\n            <option value=\"\" selected>Prepared</option>\n            <option value=\"dispatched\">Dispatched</option>\n            <option value=\"delivered\" disabled>Delivered</option>\n            <option value=\"completed\" disabled>Completed</option>\n            ";
+    } else if (status === 'dispatched') {
+      return "\n            <option value=\"\" selected>Dispatched</option>\n            <option value=\"delivered\">Delivered</option>\n            <option value=\"completed\" disabled>Completed</option>\n            ";
+    } else if (status === 'delivered') {
+      return "\n            <option value=\"\" selected>Delivered</option>\n            <option value=\"completed\">Completed</option>\n            ";
+    } else if (status === 'completed') {
+      return "<option value=\"\" selected disabled>Completed</option>";
+    }
+  }
+
   function generateMarkup(orders) {
     console.log(orders);
     return orders.map(function (order, i) {
-      return "\n                <div class=\"tr\">\n                    <div>".concat(i + 1, "</div>\n                    <div class=\"status ").concat(order.status, "\">\n                        <span>").concat(order.status === 'order_placed' ? 'New' : order_placed, "</span>\n                    </div>\n                    <div>\n                        ").concat(Object(date_fns__WEBPACK_IMPORTED_MODULE_1__["format"])(Object(date_fns__WEBPACK_IMPORTED_MODULE_1__["parseISO"])(order.createdAt), 'hh:mm aa'), "\n                    </div>\n                    <div class=\"order-items\">\n                        ").concat(getOrdersMarkup(order.items), "\n                    </div>\n                    <div class=\"u\">\n                        <p>").concat(order.customerId.name, "</p>\n                        <a href=\"tel:+").concat(order.customerId.contact, "\">").concat(order.customerId.contact, "</a>\n                    </div>\n                    <div class=\"address\">\n                        <p>").concat(order.address.address, "\n                        <small>").concat(order.address.locality, "</small>\n                        </p>\n                    </div>\n                    <div class=\"act\">\n                        <select name=\"\" id=\"\">\n                            <option value=\"confirm\">Confirm</option>\n                            <option value=\"prepared\">Prepared</option>\n                            <option value=\"dispatched\">Dispatched</option>\n                            <option value=\"delivered\">Delivered</option>\n                            <option value=\"completed\">Completed</option>\n                        </select>\n                    </div>\n                </div>\n            ");
+      return "\n                <div class=\"tr\">\n                    <div>".concat(i + 1, "</div>\n                    <div class=\"status ").concat(order.status, "\">\n                        <span>").concat(order.status === 'order_placed' ? 'New' : order.status, "</span>\n                    </div>\n                    <div>\n                        ").concat(Object(date_fns__WEBPACK_IMPORTED_MODULE_1__["format"])(Object(date_fns__WEBPACK_IMPORTED_MODULE_1__["parseISO"])(order.createdAt), 'hh:mm aa'), "\n                    </div>\n                    <div class=\"order-items\">\n                        ").concat(getOrdersMarkup(order.items), "\n                    </div>\n                    <div class=\"u\">\n                        <p>").concat(order.customerId.name, "</p>\n                        <a href=\"tel:+").concat(order.customerId.contact, "\">").concat(order.customerId.contact, "</a>\n                    </div>\n                    <div class=\"address\">\n                        <p>").concat(order.address.address, "\n                        <small>").concat(order.address.locality, "</small>\n                        </p>\n                    </div>\n                    <div class=\"act\">\n                    <form method=\"POST\" action=\"/admin/order/status\">\n                    <input type=\"hidden\" name=\"orderId\" value=\"").concat(order._id, "\" />\n                        <select name=\"status\" onchange=\"this.form.submit()\">\n                            ").concat(getOrderOptions(order.status), "\n                        </select>\n                    </form>\n                    </div>\n                </div>\n            ");
     }).join('');
   }
 }
@@ -24278,11 +24294,11 @@ orderDetailBtns.forEach(function (btn) {
       if (Array.isArray(cartitem)) {
         cartitem.map(function (items) {
           var item = items.item;
-          itemsHtml += "\n            <div class=\"order-item\">\n            <div class=\"order-item-image\">\n              <img src=\"".concat(item.image, "\" alt=\"\">\n              </div>\n              <div class=\"order-item-details\">\n              <h2>").concat(item.name, "</h2>\n              <p>").concat(item.description, "</p>\n              <div class=\"order-stats\">\n              <span>Qty. ").concat(items.qty, "</span>\n              <span>\u20B9 ").concat(item.price * items.qty, "</span>\n              </div>\n              </div>\n          </div>\n        ");
+          itemsHtml += "\n            <div class=\"order-item\">\n            <div class=\"order-item-image\">\n              <span class=\"ftype ".concat(item.foodType, "\"></span>\n              <img src=\"").concat(item.image, "\" alt=\"\">\n              </div>\n              <div class=\"order-item-details\">\n              <h2>").concat(item.name, "</h2>\n              <p>").concat(item.description, "</p>\n              <div class=\"order-stats\">\n              <span>Qty. ").concat(items.qty, "</span>\n              <span>\u20B9 ").concat(item.price * items.qty, "</span>\n              </div>\n              </div>\n          </div>\n        ");
         });
       } else {
         var item = cartitem.item;
-        itemsHtml += "\n        <div class=\"order-item\">\n        <div class=\"order-item-image\">\n          <img src=\"".concat(item.image, "\" alt=\"\">\n          </div>\n          <div class=\"order-item-details\">\n          <h2>").concat(item.name, "</h2>\n          <p>").concat(item.description, "</p>\n          <div class=\"order-stats\">\n          <span>Qty. ").concat(cartitem.qty, "</span>\n          <span>\u20B9 ").concat(item.price * cartitem.qty, "</span>\n          </div>\n          </div>\n      </div>\n      ");
+        itemsHtml += "\n        <div class=\"order-item\">\n        <div class=\"order-item-image\">\n          <span class=\"ftype ".concat(item.foodType, "\"></span>\n          <img src=\"").concat(item.image, "\" alt=\"\">\n          </div>\n          <div class=\"order-item-details\">\n          <h2>").concat(item.name, "</h2>\n          <p>").concat(item.description, "</p>\n          <div class=\"order-stats\">\n          <span>Qty. ").concat(cartitem.qty, "</span>\n          <span>\u20B9 ").concat(item.price * cartitem.qty, "</span>\n          </div>\n          </div>\n      </div>\n      ");
       }
     });
     orderItems.innerHTML = itemsHtml;

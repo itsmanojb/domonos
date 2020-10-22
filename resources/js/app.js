@@ -103,6 +103,7 @@ orderDetailBtns.forEach(btn => {
           itemsHtml += `
             <div class="order-item">
             <div class="order-item-image">
+              <span class="ftype ${item.foodType}"></span>
               <img src="${item.image}" alt="">
               </div>
               <div class="order-item-details">
@@ -121,6 +122,7 @@ orderDetailBtns.forEach(btn => {
         itemsHtml += `
         <div class="order-item">
         <div class="order-item-image">
+          <span class="ftype ${item.foodType}"></span>
           <img src="${item.image}" alt="">
           </div>
           <div class="order-item-details">

@@ -38,7 +38,7 @@
         </ul>
       </nav>
       <div class="header-menus" id="headerMenu">
-        <% if(user.role !== 'admin') { %>
+        <% if(user && user.role !== 'admin') { %>
         <div class="cart-menu">
           <a href="/cart">
             <span class="material-icons-outlined">
@@ -96,6 +96,7 @@
             <ul>
               <% if(user.role !== 'admin') {%>
               <li class="locationPickerBtn"><a> <span class="material-icons-outlined">map</span> My Addresses </a> </li>
+              <li><a href="/orders"> <span class="material-icons-outlined">receipt_long</span> My Orders </a>
               <li><a href="#"> <span class="material-icons">headset_mic</span> Support </a> </li>
               <% } else if(user.role === 'admin') {%>
               <li><a href="/admin/orders"> <span class="material-icons-outlined">receipt_long</span> Current Orders </a>

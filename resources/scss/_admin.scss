@@ -16,7 +16,7 @@
     width: 100%;
     background-color: var(--page-background);
     display: grid;
-    grid-template-columns: 80px 160px 240px minmax(600px, 40vw) 200px 280px 140px;
+    grid-template-columns: 80px 160px 240px minmax(600px, 40vw) 200px 280px 160px;
 
     > div {
       padding: 15px 10px;
@@ -28,7 +28,7 @@
   .table-body {
     .tr {
       display: grid;
-      grid-template-columns: 80px 160px 240px minmax(600px, 40vw) 200px 280px 140px;
+      grid-template-columns: 80px 160px 240px minmax(600px, 40vw) 200px 280px 160px;
 
       &:first-of-type {
         > div {
@@ -54,9 +54,35 @@
           font-size: 14px;
           font-weight: 600;
         }
+
         &.order_placed span {
+          background-color: rgb(248, 184, 81);
+          color: #fff;
+        }
+
+        &.confirmed span {
           background-color: var(--green);
           color: #fff;
+        }
+
+        &.prepared span {
+          background-color: var(--green-alt);
+          color: #fff;
+        }
+
+        &.dispatched span {
+          background-color: rgb(var(--primary-color-rgb));
+          color: #fff;
+        }
+
+        &.delivered span {
+          background-color: var(--text-color);
+          color: #fff;
+        }
+
+        &.completed span {
+          background-color: #ddd;
+          color: #555;
         }
       }
       .order-items {
@@ -92,7 +118,7 @@
               }
             }
 
-            &.non-veg {
+            &.nonveg {
               border-color: rgb(171, 0, 0);
               &::after {
                 background-color: rgb(171, 0, 0);
@@ -139,7 +165,9 @@
           border-radius: 3px;
           -webkit-appearance: none;
           appearance: none;
-          background-color: #555;
+          background: #555 url("/images/right-chevron.png") no-repeat;
+          background-size: 12px;
+          background-position: calc(100% - 10px) center;
           text-transform: uppercase;
           font-size: 14px;
           color: #fff;

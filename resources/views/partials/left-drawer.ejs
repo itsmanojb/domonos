@@ -1,5 +1,6 @@
 <aside class="site__drawer drawer_left" id="drawerLeft">
     <ul class="drawer-menu-list">
+        <% if(user && user.role !== 'admin') {%>
         <li>
             <a href="#">
 
@@ -10,6 +11,7 @@
                 Track Current Order
             </a>
         </li>
+        <% } %>
         <li>
             <a href="/orders">
                 <span class="material-icons">

@@ -10,7 +10,7 @@ export function initAdmin() {
     let orders = [];
     let markup = '';
 
-    axios.get('/admin/orders', {
+    axios.get('/admin/orders/current', {
         headers: {
             "X-Requested-With": "XMLHttpRequest"
         }
@@ -49,6 +49,47 @@ export function initAdmin() {
         return markup;
     }
 
+    function getOrderOptions(status) {
+        if (status === 'order_placed') {
+            return `
+            <option value="order_placed" selected>Placed</option>
+            <option value="confirmed" >Confirmed</option>
+            <option value="prepared" disabled>Prepared</option>
+            <option value="dispatched" disabled>Dispatched</option>
+            <option value="delivered" disabled>Delivered</option>
+            <option value="completed" disabled>Completed</option>
+            `
+        } else if (status === 'confirmed') {
+            return `
+            <option value="" selected>Confirmed</option>
+            <option value="prepared">Prepared</option>
+            <option value="dispatched" disabled>Dispatched</option>
+            <option value="delivered" disabled>Delivered</option>
+            <option value="completed" disabled>Completed</option>
+            `
+        } else if (status === 'prepared') {
+            return `
+            <option value="" selected>Prepared</option>
+            <option value="dispatched">Dispatched</option>
+            <option value="delivered" disabled>Delivered</option>
+            <option value="completed" disabled>Completed</option>
+            `
+        } else if (status === 'dispatched') {
+            return `
+            <option value="" selected>Dispatched</option>
+            <option value="delivered">Delivered</option>
+            <option value="completed" disabled>Completed</option>
+            `
+        } else if (status === 'delivered') {
+            return `
+            <option value="" selected>Delivered</option>
+            <option value="completed">Completed</option>
+            `
+        } else if (status === 'completed') {
+            return `<option value="" selected disabled>Completed</option>`
+        }
+    }
+
     function generateMarkup(orders) {
         console.log(orders);
         return orders.map((order, i) => {
@@ -56,7 +97,7 @@ export function initAdmin() {
                 <div class="tr">
                     <div>${i + 1}</div>
                     <div class="status ${order.status}">
-                        <span>${order.status === 'order_placed' ? 'New': order_placed}</span>
+                        <span>${order.status === 'order_placed' ? 'New': order.status}</span>
                     </div>
                     <div>
                         ${format(parseISO(order.createdAt),  'hh:mm aa')}
@@ -74,13 +115,12 @@ export function initAdmin() {
                         </p>
                     </div>
                     <div class="act">
-                        <select name="" id="">
-                            <option value="confirm">Confirm</option>
-                            <option value="prepared">Prepared</option>
-                            <option value="dispatched">Dispatched</option>
-                            <option value="delivered">Delivered</option>
-                            <option value="completed">Completed</option>
+                    <form method="POST" action="/admin/order/status">
+                    <input type="hidden" name="orderId" value="${order._id}" />
+                        <select name="status" onchange="this.form.submit()">
+                            ${getOrderOptions(order.status)}
                         </select>
+                    </form>
                     </div>
                 </div>
             `
