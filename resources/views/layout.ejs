@@ -95,9 +95,11 @@
             </ul>
             <ul>
               <% if(user.role !== 'admin') {%>
-              <li><a href="/orders"> <span class="material-icons-outlined">receipt_long</span> My Orders </a> </li>
               <li class="locationPickerBtn"><a> <span class="material-icons-outlined">map</span> My Addresses </a> </li>
               <li><a href="#"> <span class="material-icons">headset_mic</span> Support </a> </li>
+              <% } else if(user.role === 'admin') {%>
+              <li><a href="/admin/orders"> <span class="material-icons-outlined">receipt_long</span> Current Orders </a>
+              </li>
               <% } %>
               <li><a href="#" onclick="document.getElementById('logout').submit()"> <span
                     class="material-icons-outlined">login</span> Logout </a> </li>
@@ -121,7 +123,7 @@
   <%- include('partials/alert.ejs') %>
   <%- include('partials/footer-slim.ejs') %>
 
-  <script src="js/app.js"></script>
+  <script src="/js/app.js"></script>
 </body>
 
 </html>

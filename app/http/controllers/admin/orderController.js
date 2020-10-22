@@ -1,7 +1,6 @@
-const order = require('../../../models/order');
 const Order = require('../../../models/order');
 
-function orderController(params) {
+function adminOrderController() {
     return {
         index(req, res) {
             Order.find({
@@ -27,4 +26,4 @@ function orderController(params) {
     }
 }
 
-module.exports = orderController;
+module.exports = adminOrderController;

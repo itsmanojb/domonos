@@ -543,14 +543,18 @@ document.addEventListener('DOMContentLoaded', function () {
       if (document.querySelector('.location-menu')) {
         document.querySelector('.location-menu').classList.add('d-none');
       }
-      document.querySelector('.cart-menu').classList.add('d-none');
+      if (document.querySelector('.cart-menu')) {
+        document.querySelector('.cart-menu').classList.add('d-none');
+      }
       document.querySelector('.user-menu').classList.add('d-none');
       // document.querySelector('.hamburger').classList.add('d-none');
     } else {
       if (document.querySelector('.location-menu')) {
         document.querySelector('.location-menu').classList.remove('d-none');
       }
-      document.querySelector('.cart-menu').classList.remove('d-none');
+      if (document.querySelector('.cart-menu')) {
+        document.querySelector('.cart-menu').classList.remove('d-none');
+      }
       document.querySelector('.user-menu').classList.remove('d-none');
       // document.querySelector('.hamburger').classList.remove('d-none');
     }
@@ -824,6 +828,8 @@ function getFormattedDate(rawdate) {
   return formattedDate;
 }
 
+initAdmin();
+
 
 overlay.addEventListener('click', () => {
   if (rightDrawer.classList.contains('opened')) {
@@ -850,5 +856,3 @@ overlay.addEventListener('click', () => {
     headerMenu.classList.remove('inactive');
   }
 });
-
-initAdmin();

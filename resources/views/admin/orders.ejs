@@ -14,64 +14,7 @@
                 <div>Address</div>
                 <div></div>
             </div>
-            <div class="table-body">
-                <% orders.map((order, i) => { %>
-                <div class="tr">
-                    <div><%= (i + 1) %></div>
-                    <div class="status">
-                        <span>
-                            <%= order.status %>
-                        </span>
-                    </div>
-                    <div><%= order.createdAt %></div>
-                    <div class="order-items">
-                        <% for(let orderItem of Object.values(order.items) ){ %>
-                        <% if(Array.isArray(orderItem)) { %>
-                        <% orderItem.forEach(item => { %>
-                        <div class="order-item">
-                            <span class="food-type <%= item.item.foodType %>"></span>
-                            <span class="pizza">
-                                <%= item.item.name %> <em><%= item.item.size %></em> <em><%= item.item.crust %></em>
-                            </span>
-                            <!-- <%= JSON.stringify(item) %> -->
-                            <span class="qty"><%= item.qty %></span>
-                        </div>
-                        <%}) %>
-                        <%} else { %>
-                        <div class="order-item">
-                            <span class="food-type <%= orderItem.item.foodType %>"></span>
-                            <span class="item">
-                                <%= orderItem.item.name %>
-                            </span>
-                            <span class="qty"><%= orderItem.qty %></span>
-                        </div>
-                        <%} %>
-                        <%}%>
-                        </div>
-                    <div class="u">
-                        <p><%= order.customerId.name %></p>
-                        <a href="tel:+<%= order.customerId.contact %> "><%= order.customerId.contact %> </a>
-                    </div>
-                    <div class="address">
-                        <p>
-                            <%= order.address.address %>
-                            <% if(order.address.locality) { %>
-                            <small><%= order.address.locality%></small>
-                            <% } %>
-                        </p>
-                    </div>
-                    <div class="act">
-                        <select name="" id="">
-                            <option value="confirm">Confirm</option>
-                            <option value="prepared">Prepared</option>
-                            <option value="dispatched">Dispatched</option>
-                            <option value="delivered">Delivered</option>
-                            <option value="completed">Completed</option>
-                        </select>
-                    </div>
-                </div>
-                <% })%>
-            </div>
+            <div class="table-body" id="adminOrderTableBody"></div>
         </div>
         <% } %>
     </div>

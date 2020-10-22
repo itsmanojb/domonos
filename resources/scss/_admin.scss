@@ -46,7 +46,17 @@
 
       .status {
         span {
-          text-transform: uppercase;
+          text-transform: capitalize;
+          border-radius: 30px;
+          padding: 5px 15px;
+          background-color: #aaa;
+          text-align: center;
+          font-size: 14px;
+          font-weight: 600;
+        }
+        &.order_placed span {
+          background-color: var(--green);
+          color: #fff;
         }
       }
       .order-items {
@@ -142,7 +152,8 @@
           margin: 0 0 4px;
         }
         a {
-          color: var(--green-alt);
+          color: rgb(var(--primary-color-rgb));
+          font-size: 14px;
         }
       }
 
