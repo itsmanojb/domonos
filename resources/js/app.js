@@ -1,5 +1,8 @@
 import axios from 'axios';
 import Noty from 'noty';
+import {
+  initAdmin
+} from './admin';
 
 const overlay = document.getElementById('ovly');
 const hamburger = document.getElementById('hamMenu');
@@ -847,3 +850,5 @@ overlay.addEventListener('click', () => {
     headerMenu.classList.remove('inactive');
   }
 });
+
+initAdmin();

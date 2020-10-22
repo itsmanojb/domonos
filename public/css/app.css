@@ -3054,7 +3054,7 @@ textarea:focus {
 }
 
 .page.home {
-  background-color: #fff;
+  background-color: var(--page-background);
 }
 
 .page.home .container {
@@ -3065,6 +3065,10 @@ textarea:focus {
 .page.orders {
   padding-top: 56px;
   padding-bottom: 80px;
+}
+
+.page.orders.admin {
+  background-color: var(--page-background);
 }
 
 .page.orders .container {
@@ -3185,6 +3189,16 @@ textarea:focus {
   font-weight: 600;
 }
 
+.form-success {
+  padding: 1rem;
+  border: 1px solid rgba(var(--primary-color-rgb), 0.8);
+  background-color: rgba(var(--primary-color-rgb), 0.1);
+  color: rgba(var(--primary-color-rgb), 0.8);
+  margin: 24px 0 -6px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
 .form-body {
   padding: 1rem 0;
 }
@@ -3264,5 +3278,159 @@ textarea:focus {
 
 .e-login .btn span {
   margin-right: 10px;
+}
+
+.active-orders-table {
+  height: calc(100vh - 120px);
+  overflow: auto;
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.active-orders-table::-webkit-scrollbar {
+  width: 0 !important;
+}
+
+.active-orders-table .table-header {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: var(--page-background);
+  display: grid;
+  grid-template-columns: 80px 160px 240px minmax(600px, 40vw) 200px 280px 140px;
+}
+
+.active-orders-table .table-header > div {
+  padding: 15px 10px;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.active-orders-table .table-body .tr {
+  display: grid;
+  grid-template-columns: 80px 160px 240px minmax(600px, 40vw) 200px 280px 140px;
+}
+
+.active-orders-table .table-body .tr:first-of-type > div {
+  border-top: 2px solid #aaa;
+}
+
+.active-orders-table .table-body .tr > div {
+  padding: 15px 10px;
+}
+
+.active-orders-table .table-body .tr + .tr > div {
+  border-top: 1px solid #ddd;
+}
+
+.active-orders-table .table-body .tr .status span {
+  text-transform: uppercase;
+}
+
+.active-orders-table .table-body .tr .order-items .order-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.active-orders-table .table-body .tr .order-items .order-item .food-type {
+  display: inline-block;
+  height: 14px;
+  width: 14px;
+  background-color: #fff;
+  margin-right: 8px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  position: relative;
+}
+
+.active-orders-table .table-body .tr .order-items .order-item .food-type::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+}
+
+.active-orders-table .table-body .tr .order-items .order-item .food-type.veg {
+  border-color: var(--green-alt);
+}
+
+.active-orders-table .table-body .tr .order-items .order-item .food-type.veg::after {
+  background-color: var(--green-alt);
+}
+
+.active-orders-table .table-body .tr .order-items .order-item .food-type.non-veg {
+  border-color: #ab0000;
+}
+
+.active-orders-table .table-body .tr .order-items .order-item .food-type.non-veg::after {
+  background-color: #ab0000;
+}
+
+.active-orders-table .table-body .tr .order-items .order-item .pizza {
+  font-weight: 600;
+}
+
+.active-orders-table .table-body .tr .order-items .order-item .pizza em {
+  margin-left: 10px;
+  font-weight: 400;
+  font-style: normal;
+  text-transform: capitalize;
+  font-size: 80%;
+  color: var(--text-color);
+}
+
+.active-orders-table .table-body .tr .order-items .order-item .pizza em + em::before {
+  content: "|";
+  margin-right: 10px;
+  opacity: 0.6;
+}
+
+.active-orders-table .table-body .tr .order-items .order-item .item {
+  font-weight: 600;
+}
+
+.active-orders-table .table-body .tr .order-items .order-item .qty::before {
+  content: " - ";
+  margin: 0 8px;
+}
+
+.active-orders-table .table-body .tr .act select {
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 3px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+  background-color: #555;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.active-orders-table .table-body .tr .u p {
+  margin: 0 0 4px;
+}
+
+.active-orders-table .table-body .tr .u a {
+  color: var(--green-alt);
+}
+
+.active-orders-table .table-body .tr .address p {
+  margin: 0;
+}
+
+.active-orders-table .table-body .tr .address p small {
+  display: block;
+  font-size: 12px;
+  margin-top: 4px;
 }
 

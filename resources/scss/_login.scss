@@ -107,6 +107,16 @@
     font-weight: 600;
   }
 
+  &-success {
+    padding: 1rem;
+    border: 1px solid rgba(var(--primary-color-rgb), 0.8);
+    background-color: rgba(var(--primary-color-rgb), 0.1);
+    color: rgba(var(--primary-color-rgb), 0.8);
+    margin: 24px 0 -6px;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+
   &-body {
     padding: 1rem 0;
 

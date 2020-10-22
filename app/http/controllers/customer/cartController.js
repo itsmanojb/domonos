@@ -124,7 +124,7 @@ function cartController() {
     deleteItem(req, res) {
 
       let cart = req.session.cart;
-      console.log(cart, req.body);
+      // console.log(cart, req.body);
       if (Array.isArray(cart.items[req.body.item._id])) {
 
         if (cart.items[req.body.item._id].length === 1) {

@@ -3,6 +3,11 @@ const passport = require('passport');
 const User = require('../../models/user');
 
 function authController() {
+
+  const _getRedirectUrl = (req) => {
+    return req.user.role === 'admin' ? '/admin/orders' : '/menus';
+  }
+
   return {
     login(req, res) {
       res.render('auth/login');
@@ -22,7 +27,7 @@ function authController() {
             req.flash('error', info.message);
             return next(err);
           }
-          return res.redirect('/menus')
+          return res.redirect(_getRedirectUrl(req))
         })
       })(req, res, next);
     },
@@ -63,7 +68,8 @@ function authController() {
       });
       user.save().then(() => {
         // login
-        return res.redirect('/menus');
+        req.flash('success', 'Account created. Login to continue.');
+        return res.redirect('/login');
       }).catch((err) => {
         req.flash('error', 'Something went wrong');
         return res.redirect('/register');

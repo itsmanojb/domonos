@@ -27,6 +27,11 @@
             <h2>Welcome!</h2>
             <p>Sign in to continue to Domono's</p>
           </div>
+          <% if(messages.success) { %>
+          <div class="form-success">
+            <span><%= messages.success %></span>
+          </div>
+          <% } %>
           <div class="form-body">
             <div class="input-row">
               <div class="input-box">

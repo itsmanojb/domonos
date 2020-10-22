@@ -171,7 +171,7 @@
 }
 
 .page.home {
-  background-color: #fff;
+  background-color: var(--page-background);
   .container {
     padding-left: 100px;
     padding-right: 100px;
@@ -181,6 +181,10 @@
 .page.orders {
   padding-top: 56px;
   padding-bottom: 80px;
+
+  &.admin {
+    background-color: var(--page-background);
+  }
 
   .container {
     padding-left: 60px;

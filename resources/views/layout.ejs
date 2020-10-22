@@ -38,6 +38,7 @@
         </ul>
       </nav>
       <div class="header-menus" id="headerMenu">
+        <% if(user.role !== 'admin') { %>
         <div class="cart-menu">
           <a href="/cart">
             <span class="material-icons-outlined">
@@ -46,7 +47,8 @@
             <span id="cartCounter"><%= session.cart ? session.cart.totalQty : '' %></span>
           </a>
         </div>
-        <% if(user && user.addresses.length === 0) { %>
+        <% } %>
+        <% if(user && user.role !== 'admin' && user.addresses.length === 0) { %>
         <div class="location-menu locationPickerBtn" id="locationPickerBtn" role="button">
           <span class="material-icons-outlined">
             location_on
@@ -71,6 +73,7 @@
           <div class="user-menu-dropdown">
             <ul>
               <li><a href="#"> <span class="material-icons-outlined">account_circle</span> <%= user.name %> </a> </li>
+              <% if(user.role !== 'admin') {%>
               <% if(user.contact) { %>
               <li id="liContact"><a href="javascript:void(0)"> <span
                     class="material-icons-outlined">local_phone</span><%= user.contact %> <button class="edit-btn"
@@ -87,12 +90,15 @@
                 <input type="text" id="contactAddInput"> <button class="edit-btn" type="button"
                   id="contactDoneBtn">Done</button> </li>
               <% } %>
+              <% } %>
               <li><a href="#"> <span class="material-icons-outlined">mail</span> <%= user.email %> </a> </li>
             </ul>
             <ul>
+              <% if(user.role !== 'admin') {%>
               <li><a href="/orders"> <span class="material-icons-outlined">receipt_long</span> My Orders </a> </li>
               <li class="locationPickerBtn"><a> <span class="material-icons-outlined">map</span> My Addresses </a> </li>
               <li><a href="#"> <span class="material-icons">headset_mic</span> Support </a> </li>
+              <% } %>
               <li><a href="#" onclick="document.getElementById('logout').submit()"> <span
                     class="material-icons-outlined">login</span> Logout </a> </li>
             </ul>
