@@ -3,7 +3,7 @@ import Noty from 'noty';
 import {
   initAdmin
 } from './admin';
-let socket = io();
+const socket = io();
 
 /**
  * FUNCITONALITY: Header menu activities
@@ -1148,8 +1148,12 @@ function getOrderMessage(status) {
  * FUNCITONALITY: Admin functionality
  */
 
-initAdmin();
+initAdmin(socket);
 
+const adminArea = window.location.pathname.startsWith('/admin') ? true : false;
+if (adminArea) {
+  socket.emit('join', 'adminRoom');
+}
 
 /**
  * FUNCITONALITY: Socket

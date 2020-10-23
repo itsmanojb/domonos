@@ -24103,10 +24103,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initAdmin", function() { return initAdmin; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/index.js");
+/* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! noty */ "./node_modules/noty/lib/noty.js");
+/* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(noty__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/index.js");
 
 
-function initAdmin() {
+
+function initAdmin(socket) {
   var orderTableBody = document.querySelector('#adminOrderTableBody');
   var orders = [];
   var markup = '';
@@ -24117,7 +24120,8 @@ function initAdmin() {
         "X-Requested-With": "XMLHttpRequest"
       }
     }).then(function (res) {
-      orders = res.data.orders;
+      orders = res.data.orders; // console.log(orders);
+
       markup = generateMarkup(orders);
       orderTableBody.innerHTML = markup;
     })["catch"](function (err) {
@@ -24161,9 +24165,23 @@ function initAdmin() {
 
   function generateMarkup(orders) {
     return orders.map(function (order, i) {
-      return "\n                <div class=\"tr\">\n                    <div>".concat(i + 1, "</div>\n                    <div class=\"status ").concat(order.status, "\">\n                        <span>").concat(order.status === 'order_placed' ? 'New' : order.status, "</span>\n                    </div>\n                    <div>\n                        ").concat(Object(date_fns__WEBPACK_IMPORTED_MODULE_1__["format"])(Object(date_fns__WEBPACK_IMPORTED_MODULE_1__["parseISO"])(order.createdAt), 'hh:mm aa'), "\n                    </div>\n                    <div class=\"order-items\">\n                        ").concat(getOrdersMarkup(order.items), "\n                    </div>\n                    <div class=\"u\">\n                        <p>").concat(order.customerId.name, "</p>\n                        <a href=\"tel:+").concat(order.customerId.contact, "\">").concat(order.customerId.contact, "</a>\n                    </div>\n                    <div class=\"address\">\n                        <p>").concat(order.address.address, "\n                        <small>").concat(order.address.locality, "</small>\n                        </p>\n                    </div>\n                    <div class=\"act\">\n                    <form method=\"POST\" action=\"/admin/order/status\">\n                    <input type=\"hidden\" name=\"orderId\" value=\"").concat(order._id, "\" />\n                        <select name=\"status\" onchange=\"this.form.submit()\">\n                            ").concat(getOrderOptions(order.status), "\n                        </select>\n                    </form>\n                    </div>\n                </div>\n            ");
+      return "\n                <div class=\"tr\">\n                    <div>".concat(i + 1, "</div>\n                    <div class=\"status ").concat(order.status, "\">\n                        <span>").concat(order.status === 'order_placed' ? 'New' : order.status, "</span>\n                    </div>\n                    <div>\n                        ").concat(Object(date_fns__WEBPACK_IMPORTED_MODULE_2__["format"])(Object(date_fns__WEBPACK_IMPORTED_MODULE_2__["parseISO"])(order.createdAt), 'hh:mm aa'), "\n                    </div>\n                    <div class=\"order-items\">\n                        ").concat(getOrdersMarkup(order.items), "\n                    </div>\n                    <div class=\"u\">\n                        <p>").concat(order.customerId.name, "</p>\n                        <a href=\"tel:+").concat(order.customerId.contact, "\">").concat(order.customerId.contact, "</a>\n                    </div>\n                    <div class=\"address\">\n                        <p>").concat(order.address.address, "\n                        <small>").concat(order.address.locality, "</small>\n                        </p>\n                    </div>\n                    <div class=\"act\">\n                    <form method=\"POST\" action=\"/admin/order/status\">\n                    <input type=\"hidden\" name=\"orderId\" value=\"").concat(order._id, "\" />\n                        <select name=\"status\" onchange=\"this.form.submit()\">\n                            ").concat(getOrderOptions(order.status), "\n                        </select>\n                    </form>\n                    </div>\n                </div>\n            ");
     }).join('');
   }
+
+  socket.on('new_order', function (order) {
+    var totalItems = Object.values(order.data.items).length;
+    orders.unshift(order.data);
+    markup = generateMarkup(orders);
+    orderTableBody.innerHTML = markup;
+    new noty__WEBPACK_IMPORTED_MODULE_1___default.a({
+      type: 'success',
+      text: "NEW! Order of ".concat(totalItems, " item(s) received."),
+      timeout: 3000,
+      layout: 'bottomRight',
+      progressBar: false
+    }).show();
+  });
 }
 
 /***/ }),
@@ -25263,10 +25281,16 @@ function getOrderMessage(status) {
  */
 
 
-Object(_admin__WEBPACK_IMPORTED_MODULE_3__["initAdmin"])();
+Object(_admin__WEBPACK_IMPORTED_MODULE_3__["initAdmin"])(socket);
+var adminArea = window.location.pathname.startsWith('/admin') ? true : false;
+
+if (adminArea) {
+  socket.emit('join', 'adminRoom');
+}
 /**
  * FUNCITONALITY: Socket
  */
+
 
 socket.on('order_updated', function (data) {
   updateOrderStatus(data.status);

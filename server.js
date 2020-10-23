@@ -56,6 +56,9 @@ app.use(session({
 
 // Passport config
 const passportInit = require('./app/config/passport');
+const {
+  log
+} = require('console');
 passportInit(passport);
 app.use(passport.initialize());
 app.use(passport.session());
@@ -91,11 +94,14 @@ const io = require('socket.io')(server);
 io.on('connection', (socket) => {
   // join
   socket.on('join', (roomId) => {
-    console.log(roomId);
     socket.join(roomId)
   })
 });
 
 eventEmitter.on('order_update', (data) => {
   io.to(`order_${data.id}`).emit('order_updated', data)
+});
+
+eventEmitter.on('order_place', (data) => {
+  io.to(`adminRoom`).emit('new_order', data)
 });
