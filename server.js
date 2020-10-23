@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000;
 
 
 // DB Connection
-const connectionString = 'mongodb://localhost/pizza';
+const connectionString = process.env.MONGODB_CONNECTION_URL;
 mongoose.connect(
   connectionString, {
     useNewUrlParser: true,
@@ -82,6 +82,9 @@ app.set('views', path.join(__dirname, 'resources/views'));
 app.set('view engine', 'ejs');
 
 require('./routes/web')(app);
+app.use((req, res) => {
+  res.status(404).render('errors/404');
+})
 
 const server = app.listen(PORT, () => {
   console.log(`Listening to port ${PORT}`);

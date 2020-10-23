@@ -3446,6 +3446,25 @@ textarea:focus {
   margin: 0 auto;
 }
 
+.error404 {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1rem 2rem;
+}
+
+.error404 h1 {
+  font-size: 24px;
+  margin: 10px 0;
+  color: var(--text-color);
+}
+
+.error404 a {
+  color: var(--green-alt);
+}
+
 .page.auth {
   padding-top: 120px;
   padding-bottom: 100px;
