@@ -1148,10 +1148,10 @@ function getOrderMessage(status) {
  * FUNCITONALITY: Admin functionality
  */
 
-initAdmin(socket);
 
 const adminArea = window.location.pathname.startsWith('/admin') ? true : false;
 if (adminArea) {
+  initAdmin(socket);
   socket.emit('join', 'adminRoom');
 }
 

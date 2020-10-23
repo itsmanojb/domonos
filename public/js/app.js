@@ -25281,10 +25281,10 @@ function getOrderMessage(status) {
  */
 
 
-Object(_admin__WEBPACK_IMPORTED_MODULE_3__["initAdmin"])(socket);
 var adminArea = window.location.pathname.startsWith('/admin') ? true : false;
 
 if (adminArea) {
+  Object(_admin__WEBPACK_IMPORTED_MODULE_3__["initAdmin"])(socket);
   socket.emit('join', 'adminRoom');
 }
 /**
