@@ -24209,6 +24209,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+var socket = io();
 /**
  * FUNCITONALITY: Header menu activities
  * Toggle side-drawer (left/right)
@@ -24261,12 +24262,55 @@ locationBtns.forEach(function (locationBtn) {
   });
 });
 /**
+ * FUNCITONALITY: Show/ Hide Alert Popup
+ */
+
+var alertUI = document.querySelector('#alertUI');
+var okBtn = document.getElementById('alertOKBtn');
+
+function showAlert(text) {
+  var btnText = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'OK';
+  var title = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'Oops...';
+  document.getElementById('alertTitle').innerText = title;
+  document.getElementById('alertText').innerText = text;
+  document.getElementById('alertOKBtn').innerText = btnText;
+  alertUI.classList.add('shown');
+}
+
+function closeAlert() {
+  document.getElementById('alertTitle').innerText = '';
+  document.getElementById('alertText').innerText = '';
+  alertUI.classList.remove('shown');
+}
+
+okBtn.addEventListener('click', function (e) {
+  closeAlert();
+});
+/**
+ * FUNCITONALITY: Show Toast Message
+ */
+
+function showToast(type, text) {
+  var timeout = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2000;
+  var layout = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'bottomRight';
+  new noty__WEBPACK_IMPORTED_MODULE_2___default.a({
+    type: type,
+    text: text,
+    timeout: timeout,
+    layout: layout,
+    progressBar: false
+  }).show();
+}
+/**
  * FUNCITONALITY: Show Order Tracking
  * Finds all the buttons with .track-btn, and adds click event-listener
  * Shows tracking details and fetches order details by API call
  * Calls populateOrderDetails() for order rendering
  */
 
+
+var currentOrderId = '';
+var currentOrder = null;
 var orderTrackingUI = document.getElementById('orderTracking');
 var trackBtns = document.querySelectorAll('.track-btn');
 var currentOrderDetailsUI = document.getElementById('currentOrderDetailsUI');
@@ -24277,8 +24321,11 @@ trackBtns.forEach(function (trackBtn) {
     orderTrackingUI.classList.add('opened');
     headerMenu.classList.add('inactive');
     var orderId = trackBtn.dataset.id;
+    currentOrderId = orderId;
+    socket.emit('join', "order_".concat(currentOrderId));
     axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/order/".concat(orderId)).then(function (res) {
       var order = res.data.order;
+      currentOrder = order;
       var wrapper = populateOrderDetails(order, true);
       currentOrderDetailsUI.appendChild(wrapper); // setTimeout(() => {
 
@@ -24363,53 +24410,68 @@ function populateOrderDetails(order, trackView) {
   if (trackView) {
     document.getElementById('trackOrderTitle').innerHTML = orderItemsTitle.join(', ');
     document.getElementById('trackOrderMeta').innerHTML = "".concat(totalItems, " Items <strong>\u20B9").concat(order.amount, "</strong> ");
-    var step2 = document.getElementById('step2');
-    var step3 = document.getElementById('step3');
-    var step4 = document.getElementById('step4');
-    var step5 = document.getElementById('step5');
-    var delivered = document.querySelector('#trackOrderDetails .delivered');
-    var tracker = document.querySelector('#trackOrderDetails .location-tracking');
-
-    if (order.status === 'confirmed' || order.status === 'order_placed') {
-      delivered.classList.add('d-none');
-      tracker.classList.remove('d-none');
-    }
-
-    if (order.status === 'preparing') {
-      step2.classList.add('completed');
-      delivered.classList.add('d-none');
-      tracker.classList.remove('d-none');
-    }
-
-    if (order.status === 'dispatched') {
-      step2.classList.add('completed');
-      step3.classList.add('completed');
-      delivered.classList.add('d-none');
-      tracker.classList.remove('d-none');
-    }
-
-    if (order.status === 'delivered') {
-      step2.classList.add('completed');
-      step3.classList.add('completed');
-      step4.classList.add('completed');
-      delivered.classList.remove('d-none');
-      tracker.classList.add('d-none');
-    }
-
-    if (order.status === 'completed') {
-      step2.classList.add('completed');
-      step3.classList.add('completed');
-      step4.classList.add('completed');
-      step5.classList.add('completed');
-      delivered.classList.remove('d-none');
-      tracker.classList.add('d-none');
-    }
+    updateOrderStatus(order.status);
   }
 
   wrapper.append(orderInfo);
   wrapper.append(orderAddress);
   wrapper.append(orderItems);
   return wrapper;
+}
+
+function updateOrderStatus(status) {
+  var delivered = document.querySelector('#trackOrderDetails .delivered');
+  var tracker = document.querySelector('#trackOrderDetails .location-tracking');
+  delivered.classList.add('d-none');
+  tracker.classList.add('d-none');
+  var steps = document.querySelectorAll('.step');
+  steps.forEach(function (step, i) {
+    if (i !== 0) {
+      step.classList.remove('completed');
+    }
+  });
+  var step2 = document.getElementById('step2');
+  var step3 = document.getElementById('step3');
+  var step4 = document.getElementById('step4'); // const step5 = document.getElementById('step5');
+
+  if (status === 'order_placed') {
+    delivered.classList.add('d-none');
+    tracker.classList.remove('d-none');
+  }
+
+  if (status === 'confirmed') {
+    delivered.classList.add('d-none');
+    tracker.classList.remove('d-none');
+  }
+
+  if (status === 'preparing') {
+    delivered.classList.add('d-none');
+    tracker.classList.remove('d-none');
+    step2.classList.add('completed');
+  }
+
+  if (status === 'dispatched') {
+    delivered.classList.add('d-none');
+    tracker.classList.remove('d-none');
+    step2.classList.add('completed');
+    step3.classList.add('completed');
+  }
+
+  if (status === 'delivered') {
+    delivered.classList.remove('d-none');
+    tracker.classList.add('d-none');
+    step2.classList.add('completed');
+    step3.classList.add('completed');
+    step4.classList.add('completed');
+  }
+
+  if (status === 'completed') {
+    delivered.classList.remove('d-none');
+    tracker.classList.add('d-none');
+    step2.classList.add('completed');
+    step3.classList.add('completed');
+    step4.classList.add('completed'); // step5.classList.add('completed');
+  }
 }
 /**
  * FUNCITONALITY: Toggle Order Details
@@ -24435,31 +24497,6 @@ toggles.forEach(function (toggle) {
   });
 });
 /**
- * FUNCITONALITY: Show/ Hide Alert Popup
- */
-
-var alertUI = document.querySelector('#alertUI');
-var okBtn = document.getElementById('alertOKBtn');
-
-function showAlert(text) {
-  var btnText = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'OK';
-  var title = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'Oops...';
-  document.getElementById('alertTitle').innerText = title;
-  document.getElementById('alertText').innerText = text;
-  document.getElementById('alertOKBtn').innerText = btnText;
-  alertUI.classList.add('shown');
-}
-
-function closeAlert() {
-  document.getElementById('alertTitle').innerText = '';
-  document.getElementById('alertText').innerText = '';
-  alertUI.classList.remove('shown');
-}
-
-okBtn.addEventListener('click', function (e) {
-  closeAlert();
-});
-/**
  * FUNCTIONALITY: API Calls for cart update
  * Update cart items by API call
  * Add to cart @param  {} item: add an item (1 qty)
@@ -24471,22 +24508,10 @@ function addToCart(item) {
   axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/add-item', item).then(function (res) {
     cartCounter.innerText = res.data.cart.totalQty;
     populateCart(res.data.cart);
-    new noty__WEBPACK_IMPORTED_MODULE_2___default.a({
-      type: 'success',
-      text: "".concat(item.name, " added to cart"),
-      timeout: 2000,
-      progressBar: false,
-      layout: 'bottomRight'
-    }).show();
+    showToast('success', "".concat(item.name, " added to cart"));
   })["catch"](function (err) {
     console.log(err);
-    new noty__WEBPACK_IMPORTED_MODULE_2___default.a({
-      type: 'error',
-      text: 'Something went wrong',
-      timeout: 2000,
-      progressBar: false,
-      layout: 'bottomRight'
-    }).show();
+    showToast('error', 'Something went wrong');
   });
 }
 
@@ -25158,12 +25183,12 @@ function getFormattedDate(rawdate) {
   return formattedDate;
 }
 /**
- * FUNCITONALITY: Overlay close
+ * FUNCITONALITY: Close Drawer by overlay clicking
  */
 
 
 overlay.addEventListener('click', function () {
-  // toggle right drawer
+  // hide right drawer
   if (rightDrawer.classList.contains('opened')) {
     document.body.classList.remove('noscroll');
     overlay.classList.remove('shown');
@@ -25176,7 +25201,7 @@ overlay.addEventListener('click', function () {
     document.getElementById('editAddressForm').classList.add('d-none');
     orderDetailsUI.innerHTML = null;
     orderDetailsUI.classList.add('d-none');
-  } // toggle left drawer
+  } // hide left drawer
 
 
   if (leftDrawer.classList.contains('opened')) {
@@ -25184,7 +25209,7 @@ overlay.addEventListener('click', function () {
     overlay.classList.remove('shown');
     leftDrawer.classList.remove("opened");
     headerMenu.classList.remove('inactive');
-  } // toggle oder-tracking drawer
+  } // hide oder-tracking drawer
 
 
   if (orderTrackingUI.classList.contains('opened')) {
@@ -25195,15 +25220,58 @@ overlay.addEventListener('click', function () {
     document.getElementById('trackOrderLoader').classList.remove('d-none');
     document.getElementById('trackOrderDetails').classList.add('d-none');
     currentOrderDetailsUI.innerHTML = null;
+    currentOrderId = '';
+    currentOrder = null;
     document.getElementById('toggleOrderDetailsBtn').innerText = 'Show Details';
     currentOrderDetailsUI.classList.add('d-none');
   }
 });
 /**
+ * FUNCITONALITY: Get Order Status Message
+ * Get formatted message for order updates
+ * @param  {} status
+ */
+
+function getOrderMessage(status) {
+  var msg = '';
+
+  switch (status) {
+    case 'confirmed':
+      msg = 'Order has been confirmed';
+      break;
+
+    case 'preparing':
+      msg = 'Update! Order is now being baked';
+      break;
+
+    case 'dispatched':
+      msg = 'Order dispatched! Food is on your way';
+      break;
+
+    case 'delivered':
+      msg = 'Order delivered! Enjoy your food';
+      break;
+
+    default:
+      break;
+  }
+
+  return msg;
+}
+/**
  * FUNCITONALITY: Admin functionality
  */
 
+
 Object(_admin__WEBPACK_IMPORTED_MODULE_3__["initAdmin"])();
+/**
+ * FUNCITONALITY: Socket
+ */
+
+socket.on('order_updated', function (data) {
+  updateOrderStatus(data.status);
+  showToast('success', getOrderMessage(data.status));
+});
 
 /***/ }),
 

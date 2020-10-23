@@ -1,7 +1,8 @@
 require('dotenv').config()
 const express = require('express');
 const app = express();
-const ejs = require('ejs');
+const EventEmitter = require('events');
+// const ejs = require('ejs');
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -37,6 +38,10 @@ const mongoStore = new MongoDBStore({
   mongooseConnection: connection,
   collection: 'sessions'
 })
+
+// Event emitter
+const eventEmitter = new EventEmitter();
+app.set('eventEmitter', eventEmitter);
 
 // Session Config
 app.use(session({
@@ -75,6 +80,22 @@ app.set('view engine', 'ejs');
 
 require('./routes/web')(app);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Listening to port ${PORT}`);
+});
+
+
+// Socket
+
+const io = require('socket.io')(server);
+io.on('connection', (socket) => {
+  // join
+  socket.on('join', (roomId) => {
+    console.log(roomId);
+    socket.join(roomId)
+  })
+});
+
+eventEmitter.on('order_update', (data) => {
+  io.to(`order_${data.id}`).emit('order_updated', data)
 });

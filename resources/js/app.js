@@ -3,6 +3,7 @@ import Noty from 'noty';
 import {
   initAdmin
 } from './admin';
+let socket = io();
 
 /**
  * FUNCITONALITY: Header menu activities
@@ -62,11 +63,52 @@ locationBtns.forEach(locationBtn => {
 
 
 /**
+ * FUNCITONALITY: Show/ Hide Alert Popup
+ */
+
+const alertUI = document.querySelector('#alertUI');
+const okBtn = document.getElementById('alertOKBtn');
+
+function showAlert(text, btnText = 'OK', title = 'Oops...') {
+  document.getElementById('alertTitle').innerText = title;
+  document.getElementById('alertText').innerText = text;
+  document.getElementById('alertOKBtn').innerText = btnText;
+  alertUI.classList.add('shown')
+}
+
+function closeAlert() {
+  document.getElementById('alertTitle').innerText = '';
+  document.getElementById('alertText').innerText = '';
+  alertUI.classList.remove('shown');
+}
+
+okBtn.addEventListener('click', (e) => {
+  closeAlert()
+})
+
+/**
+ * FUNCITONALITY: Show Toast Message
+ */
+
+function showToast(type, text, timeout = 2000, layout = 'bottomRight') {
+  new Noty({
+    type,
+    text,
+    timeout,
+    layout,
+    progressBar: false,
+  }).show()
+}
+
+/**
  * FUNCITONALITY: Show Order Tracking
  * Finds all the buttons with .track-btn, and adds click event-listener
  * Shows tracking details and fetches order details by API call
  * Calls populateOrderDetails() for order rendering
  */
+
+let currentOrderId = '';
+let currentOrder = null;
 
 const orderTrackingUI = document.getElementById('orderTracking');
 const trackBtns = document.querySelectorAll('.track-btn');
@@ -81,9 +123,12 @@ trackBtns.forEach(trackBtn => {
     headerMenu.classList.add('inactive');
 
     const orderId = trackBtn.dataset.id;
+    currentOrderId = orderId;
+    socket.emit('join', `order_${currentOrderId}`)
     axios.get(`/order/${orderId}`).then(res => {
 
       const order = res.data.order;
+      currentOrder = order;
       const wrapper = populateOrderDetails(order, true);
       currentOrderDetailsUI.appendChild(wrapper);
 
@@ -212,44 +257,8 @@ function populateOrderDetails(order, trackView) {
   if (trackView) {
     document.getElementById('trackOrderTitle').innerHTML = orderItemsTitle.join(', ');
     document.getElementById('trackOrderMeta').innerHTML = `${totalItems} Items <strong>₹${order.amount}</strong> `;
-    const step2 = document.getElementById('step2');
-    const step3 = document.getElementById('step3');
-    const step4 = document.getElementById('step4');
-    const step5 = document.getElementById('step5');
-    const delivered = document.querySelector('#trackOrderDetails .delivered');
-    const tracker = document.querySelector('#trackOrderDetails .location-tracking');
 
-    if (order.status === 'confirmed' || order.status === 'order_placed') {
-      delivered.classList.add('d-none');
-      tracker.classList.remove('d-none');
-    }
-    if (order.status === 'preparing') {
-      step2.classList.add('completed');
-      delivered.classList.add('d-none');
-      tracker.classList.remove('d-none');
-    }
-    if (order.status === 'dispatched') {
-      step2.classList.add('completed');
-      step3.classList.add('completed');
-      delivered.classList.add('d-none');
-      tracker.classList.remove('d-none');
-    }
-    if (order.status === 'delivered') {
-      step2.classList.add('completed');
-      step3.classList.add('completed');
-      step4.classList.add('completed');
-      delivered.classList.remove('d-none');
-      tracker.classList.add('d-none');
-    }
-    if (order.status === 'completed') {
-      step2.classList.add('completed');
-      step3.classList.add('completed');
-      step4.classList.add('completed');
-      step5.classList.add('completed');
-      delivered.classList.remove('d-none');
-      tracker.classList.add('d-none');
-    }
-
+    updateOrderStatus(order.status);
   }
 
   wrapper.append(orderInfo)
@@ -259,6 +268,63 @@ function populateOrderDetails(order, trackView) {
   return wrapper;
 }
 
+function updateOrderStatus(status) {
+
+  const delivered = document.querySelector('#trackOrderDetails .delivered');
+  const tracker = document.querySelector('#trackOrderDetails .location-tracking');
+
+  delivered.classList.add('d-none');
+  tracker.classList.add('d-none');
+
+  const steps = document.querySelectorAll('.step');
+  steps.forEach((step, i) => {
+    if (i !== 0) {
+      step.classList.remove('completed');
+    }
+  })
+
+  const step2 = document.getElementById('step2');
+  const step3 = document.getElementById('step3');
+  const step4 = document.getElementById('step4');
+  // const step5 = document.getElementById('step5');
+
+
+  if (status === 'order_placed') {
+    delivered.classList.add('d-none');
+    tracker.classList.remove('d-none');
+  }
+  if (status === 'confirmed') {
+    delivered.classList.add('d-none');
+    tracker.classList.remove('d-none');
+  }
+  if (status === 'preparing') {
+    delivered.classList.add('d-none');
+    tracker.classList.remove('d-none');
+    step2.classList.add('completed');
+  }
+  if (status === 'dispatched') {
+    delivered.classList.add('d-none');
+    tracker.classList.remove('d-none');
+    step2.classList.add('completed');
+    step3.classList.add('completed');
+  }
+  if (status === 'delivered') {
+    delivered.classList.remove('d-none');
+    tracker.classList.add('d-none');
+    step2.classList.add('completed');
+    step3.classList.add('completed');
+    step4.classList.add('completed');
+  }
+  if (status === 'completed') {
+    delivered.classList.remove('d-none');
+    tracker.classList.add('d-none');
+    step2.classList.add('completed');
+    step3.classList.add('completed');
+    step4.classList.add('completed');
+    // step5.classList.add('completed');
+  }
+
+}
 
 /**
  * FUNCITONALITY: Toggle Order Details
@@ -286,30 +352,6 @@ toggles.forEach(toggle => {
 
 
 /**
- * FUNCITONALITY: Show/ Hide Alert Popup
- */
-
-const alertUI = document.querySelector('#alertUI');
-const okBtn = document.getElementById('alertOKBtn');
-
-function showAlert(text, btnText = 'OK', title = 'Oops...') {
-  document.getElementById('alertTitle').innerText = title;
-  document.getElementById('alertText').innerText = text;
-  document.getElementById('alertOKBtn').innerText = btnText;
-  alertUI.classList.add('shown')
-}
-
-function closeAlert() {
-  document.getElementById('alertTitle').innerText = '';
-  document.getElementById('alertText').innerText = '';
-  alertUI.classList.remove('shown');
-}
-
-okBtn.addEventListener('click', (e) => {
-  closeAlert()
-})
-
-/**
  * FUNCTIONALITY: API Calls for cart update
  * Update cart items by API call
  * Add to cart @param  {} item: add an item (1 qty)
@@ -323,25 +365,11 @@ function addToCart(item) {
 
       cartCounter.innerText = res.data.cart.totalQty;
       populateCart(res.data.cart);
+      showToast('success', `${item.name} added to cart`);
 
-      new Noty({
-        type: 'success',
-        text: `${item.name} added to cart`,
-        timeout: 2000,
-        progressBar: false,
-        layout: 'bottomRight',
-
-      }).show()
     }).catch((err) => {
       console.log(err);
-      new Noty({
-        type: 'error',
-        text: 'Something went wrong',
-        timeout: 2000,
-        progressBar: false,
-        layout: 'bottomRight',
-
-      }).show()
+      showToast('error', 'Something went wrong');
     })
 }
 
@@ -410,7 +438,6 @@ async function deleteCartItem(item) {
   }
 
 }
-
 
 /**
  * FUNCTIONALITY: Update Side Cart
@@ -1038,12 +1065,12 @@ function getFormattedDate(rawdate) {
 }
 
 /**
- * FUNCITONALITY: Overlay close
+ * FUNCITONALITY: Close Drawer by overlay clicking
  */
 
 overlay.addEventListener('click', () => {
 
-  // toggle right drawer
+  // hide right drawer
   if (rightDrawer.classList.contains('opened')) {
 
     document.body.classList.remove('noscroll');
@@ -1062,7 +1089,7 @@ overlay.addEventListener('click', () => {
 
   }
 
-  // toggle left drawer
+  // hide left drawer
   if (leftDrawer.classList.contains('opened')) {
     document.body.classList.remove('noscroll');
     overlay.classList.remove('shown');
@@ -1070,7 +1097,7 @@ overlay.addEventListener('click', () => {
     headerMenu.classList.remove('inactive');
   }
 
-  // toggle oder-tracking drawer
+  // hide oder-tracking drawer
   if (orderTrackingUI.classList.contains('opened')) {
     document.body.classList.remove('noscroll');
     overlay.classList.remove('shown');
@@ -1080,6 +1107,8 @@ overlay.addEventListener('click', () => {
     document.getElementById('trackOrderDetails').classList.add('d-none');
 
     currentOrderDetailsUI.innerHTML = null;
+    currentOrderId = '';
+    currentOrder = null;
     document.getElementById('toggleOrderDetailsBtn').innerText = 'Show Details';
     currentOrderDetailsUI.classList.add('d-none');
   }
@@ -1088,7 +1117,45 @@ overlay.addEventListener('click', () => {
 
 
 /**
+ * FUNCITONALITY: Get Order Status Message
+ * Get formatted message for order updates
+ * @param  {} status
+ */
+
+function getOrderMessage(status) {
+
+  let msg = '';
+  switch (status) {
+    case 'confirmed':
+      msg = 'Order has been confirmed'
+      break;
+    case 'preparing':
+      msg = 'Update! Order is now being baked'
+      break;
+    case 'dispatched':
+      msg = 'Order dispatched! Food is on your way'
+      break;
+    case 'delivered':
+      msg = 'Order delivered! Enjoy your food'
+      break;
+    default:
+      break;
+  }
+  return msg;
+}
+
+/**
  * FUNCITONALITY: Admin functionality
  */
 
 initAdmin();
+
+
+/**
+ * FUNCITONALITY: Socket
+ */
+
+socket.on('order_updated', (data) => {
+  updateOrderStatus(data.status);
+  showToast('success', getOrderMessage(data.status));
+})
