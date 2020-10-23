@@ -1052,7 +1052,12 @@ const dates = document.querySelectorAll('.datetime');
 dates.forEach(date => {
   const rawdate = date.innerText;
   const formattedDate = getFormattedDate(rawdate);
-  date.innerHTML = `&nbsp;${formattedDate}&nbsp;`;
+  let fdate = `&nbsp;${formattedDate}&nbsp;`
+  if (date.classList.contains('full')) {
+    fdate += `, ${getFormattedTime(rawdate)}`
+  }
+  date.innerHTML = fdate;
+
 })
 
 function getFormattedDate(rawdate) {
@@ -1062,6 +1067,20 @@ function getFormattedDate(rawdate) {
   }) + " " + d.getDate();
 
   return formattedDate;
+}
+
+function getFormattedTime(rawdate) {
+  const d = new Date(rawdate);
+  let options = {
+    // weekday: "long", 
+    // year: "numeric", 
+    // month: "short",  
+    // day: "numeric", 
+    hour: "2-digit",
+    minute: "2-digit"
+  };
+
+  return d.toLocaleTimeString("default", options)
 }
 
 /**

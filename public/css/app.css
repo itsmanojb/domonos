@@ -3894,6 +3894,18 @@ textarea:focus {
   margin-right: 10px;
 }
 
+.admin.orders .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin.orders .header a {
+  font-weight: normal;
+  color: var(--green);
+  font-size: 16px;
+}
+
 .active-orders-table {
   height: calc(100vh - 120px);
   overflow: auto;
@@ -4083,5 +4095,10 @@ textarea:focus {
   display: block;
   font-size: 12px;
   margin-top: 4px;
+}
+
+.active-orders-table.completed .table-header,
+.active-orders-table.completed .table-body .tr {
+  grid-template-columns: 60px 250px 240px minmax(540px, 40vw) 100px 200px 320px;
 }
 

@@ -1,0 +1,69 @@
+<div class="page orders admin">
+    <div class="container">
+        <div class="header">
+            All Orders
+            <a href="/admin/orders">View Current Orders</a>
+        </div>
+        <% if(orders.length > 0) { %>
+        <div class="active-orders-table completed">
+            <div class="table-header">
+                <div>#</div>
+                <div>Order Id</div>
+                <div>Placed At</div>
+                <div>Order Items</div>
+                <div>Amount</div>
+                <div>Customer Details</div>
+                <div>Address</div>
+            </div>
+            <div class="table-body">
+                <% orders.map((order, i) => { %>
+                <div class="tr">
+                    <div><%=i + 1%></div>
+                    <div class="status <%=order.status%>">
+                        <span><%=order._id%></span>
+                    </div>
+                    <div>
+                        <span class="datetime full"><%= order.createdAt %></span>
+                    </div>
+                    <div class="order-items">
+                        <%
+                        for (let orderItem of Object.values(order.items)) {
+                            if (Array.isArray(orderItem)) {
+                                orderItem.forEach(item => { %>
+                        <div class="order-item">
+                            <span class="food-type <%=item.item.foodType%>"></span>
+                            <span class="pizza">
+                                <%=item.item.name%>
+                                <em><%=item.item.size%></em> <em><%=item.item.crust%></em>
+                            </span>
+                            <span class="qty"><%=item.qty%></span>
+                        </div>
+                        <% }) %>
+                        <% } else { %>
+                        <div class="order-item">
+                            <span class="food-type <%=orderItem.item.foodType%>"></span>
+                            <span class="item"><%=orderItem.item.name%></span>
+                            <span class="qty"><%=orderItem.qty%></span>
+                        </div>
+                        <% } %>
+                        <% } %>
+                    </div>
+                    <div class="amount">
+                        &#8377; <%= order.amount %>
+                    </div>
+                    <div class="u">
+                        <p><%=order.customerId.name%></p>
+                        <a href="tel:+<%=order.customerId.contact%>"><%=order.customerId.contact%></a>
+                    </div>
+                    <div class="address">
+                        <p><%=order.address.address%>
+                            <small><%=order.address.locality%></small>
+                        </p>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+        <% } %>
+    </div>
+</div>

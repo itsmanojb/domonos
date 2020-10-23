@@ -37,6 +37,22 @@ function adminOrderController() {
 
                 });
         },
+        getCompletedOrders(req, res) {
+            Order.find({
+                    status: 'completed'
+                }, null, {
+                    sort: {
+                        'createdAt': -1
+                    }
+                }).populate('customerId', '-password -addresses -createdAt -updatedAt')
+                .exec((err, orders) => {
+
+                    return res.render('admin/all-orders', {
+                        orders
+                    });
+
+                });
+        },
         async update(req, res) {
             const {
                 orderId,

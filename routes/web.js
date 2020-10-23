@@ -41,6 +41,7 @@ function initRoutes(app) {
   // Admin Routes
   app.get('/admin/orders', admin, adminOrderController().index);
   app.get('/admin/orders/current', admin, adminOrderController().getCurrentOrders);
+  app.get('/admin/orders/all', admin, adminOrderController().getCompletedOrders);
   app.post('/admin/order/status', admin, adminOrderController().update);
 }
 

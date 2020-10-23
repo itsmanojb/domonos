@@ -25190,7 +25190,13 @@ var dates = document.querySelectorAll('.datetime');
 dates.forEach(function (date) {
   var rawdate = date.innerText;
   var formattedDate = getFormattedDate(rawdate);
-  date.innerHTML = "&nbsp;".concat(formattedDate, "&nbsp;");
+  var fdate = "&nbsp;".concat(formattedDate, "&nbsp;");
+
+  if (date.classList.contains('full')) {
+    fdate += ", ".concat(getFormattedTime(rawdate));
+  }
+
+  date.innerHTML = fdate;
 });
 
 function getFormattedDate(rawdate) {
@@ -25199,6 +25205,19 @@ function getFormattedDate(rawdate) {
     month: 'short'
   }) + " " + d.getDate();
   return formattedDate;
+}
+
+function getFormattedTime(rawdate) {
+  var d = new Date(rawdate);
+  var options = {
+    // weekday: "long", 
+    // year: "numeric", 
+    // month: "short",  
+    // day: "numeric", 
+    hour: "2-digit",
+    minute: "2-digit"
+  };
+  return d.toLocaleTimeString("default", options);
 }
 /**
  * FUNCITONALITY: Close Drawer by overlay clicking
