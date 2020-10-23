@@ -4,6 +4,11 @@ import {
   initAdmin
 } from './admin';
 
+/**
+ * FUNCITONALITY: Header menu activities
+ * Toggle side-drawer (left/right)
+ */
+
 const overlay = document.getElementById('ovly');
 const hamburger = document.getElementById('hamMenu');
 const leftDrawer = document.getElementById('drawerLeft');
@@ -14,10 +19,6 @@ const headerMenu = document.getElementById('headerMenu');
 const addNewAddressBtn = document.getElementById('addNewAddressBtn');
 const addressListView = document.getElementById('locationListUI');
 const newAddressView = document.getElementById('addnewAddressUI');
-
-const orderDetailBtns = document.querySelectorAll('.order-detail-btn');
-const orderDetailsUI = document.getElementById('orderDetailsUI');
-const currentOrderDetailsUI = document.getElementById('currentOrderDetailsUI');
 
 if (addNewAddressBtn) {
   addNewAddressBtn.addEventListener('click', (e) => {
@@ -59,8 +60,17 @@ locationBtns.forEach(locationBtn => {
   });
 });
 
+
+/**
+ * FUNCITONALITY: Show Order Tracking
+ * Finds all the buttons with .track-btn, and adds click event-listener
+ * Shows tracking details and fetches order details by API call
+ * Calls populateOrderDetails() for order rendering
+ */
+
 const orderTrackingUI = document.getElementById('orderTracking');
 const trackBtns = document.querySelectorAll('.track-btn');
+const currentOrderDetailsUI = document.getElementById('currentOrderDetailsUI');
 
 trackBtns.forEach(trackBtn => {
   trackBtn.addEventListener('click', () => {
@@ -77,35 +87,25 @@ trackBtns.forEach(trackBtn => {
       const wrapper = populateOrderDetails(order, true);
       currentOrderDetailsUI.appendChild(wrapper);
 
-
       // setTimeout(() => {
       document.getElementById('trackOrderLoader').classList.add('d-none');
       document.getElementById('trackOrderDetails').classList.remove('d-none');
       // }, 500);
-
 
     });
 
   });
 });
 
-const toggles = document.querySelectorAll('.toggle-btn');
-toggles.forEach(toggle => {
-  toggle.addEventListener('click', (e) => {
-    if (currentOrderDetailsUI.classList.contains('d-none')) {
-      currentOrderDetailsUI.classList.remove('d-none');
-      toggle.innerText = 'Hide Detail';
-      const iList = document.getElementById('trackOrderItemsList');
-      iList.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    } else {
-      currentOrderDetailsUI.classList.add('d-none')
-      toggle.innerText = 'Show Detail'
-    }
-  })
-});
+
+/**
+ * FUNCTIONALITY: Show Order Details
+ * Finds all the buttons with .order-detail-btn, and adds click event-listener
+ * Show order details in right drawer
+ */
+
+const orderDetailBtns = document.querySelectorAll('.order-detail-btn');
+const orderDetailsUI = document.getElementById('orderDetailsUI');
 
 orderDetailBtns.forEach(btn => {
   btn.addEventListener('click', () => {
@@ -125,6 +125,13 @@ orderDetailBtns.forEach(btn => {
   });
 });
 
+/**
+ * FUNCTIONALITY: Generate Order Details
+ * Populates order details markup for both Orders details page (right drawer) and
+ * Order tracking page (left drawer)
+ * @param  {} order: the whole order 
+ * @param  {} trackView: true for order-tracking view
+ */
 
 function populateOrderDetails(order, trackView) {
 
@@ -252,6 +259,36 @@ function populateOrderDetails(order, trackView) {
   return wrapper;
 }
 
+
+/**
+ * FUNCITONALITY: Toggle Order Details
+ * Shows/ hides order details in order-tracking view
+ */
+
+const toggles = document.querySelectorAll('.toggle-btn');
+
+toggles.forEach(toggle => {
+  toggle.addEventListener('click', (e) => {
+    if (currentOrderDetailsUI.classList.contains('d-none')) {
+      currentOrderDetailsUI.classList.remove('d-none');
+      toggle.innerText = 'Hide Detail';
+      const iList = document.getElementById('trackOrderItemsList');
+      iList.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    } else {
+      currentOrderDetailsUI.classList.add('d-none')
+      toggle.innerText = 'Show Detail'
+    }
+  })
+});
+
+
+/**
+ * FUNCITONALITY: Show/ Hide Alert Popup
+ */
+
 const alertUI = document.querySelector('#alertUI');
 const okBtn = document.getElementById('alertOKBtn');
 
@@ -262,53 +299,23 @@ function showAlert(text, btnText = 'OK', title = 'Oops...') {
   alertUI.classList.add('shown')
 }
 
-okBtn.addEventListener('click', (e) => {
-  closeAlert()
-})
-
 function closeAlert() {
   document.getElementById('alertTitle').innerText = '';
   document.getElementById('alertText').innerText = '';
   alertUI.classList.remove('shown');
 }
 
-const sizeSelect = document.querySelectorAll('.size-select');
-const crustSelect = document.querySelectorAll('.crust-select');
+okBtn.addEventListener('click', (e) => {
+  closeAlert()
+})
 
-sizeSelect.forEach(select => {
-  select.addEventListener('change', (e) => {
-    const size = e.target.value;
-    const item = JSON.parse(select.closest(".menu-card-data").dataset.item);
-    const crusts = item.options.prices.filter(p => p.size === size)[0].crusts;
-    const crust = select.closest(".menu-selector").getElementsByClassName('crust-select')[0];
-    const crustOptions = crust.getElementsByTagName("option");
-    for (let i = 0; i < crustOptions.length; i++) {
-      crustOptions[i].disabled = crusts[i] === 0 ? true : false
-    }
-    crust.selectedIndex = 0;
-    const prices = item.options.prices.filter(p => p.size === size)[0].crusts;
-    const price = prices[0];
-    const priceSpan = select.closest(".menu-card").querySelector('.menu-price span');
-    priceSpan.innerText = price ? `₹ ${price}` : ''
-  })
-});
-
-crustSelect.forEach(select => {
-  select.addEventListener('change', (e) => {
-    const crust = e.target.value;
-    const item = JSON.parse(select.closest(".menu-card-data").dataset.item);
-    const sizeSelector = select.closest(".menu-selector").getElementsByClassName('size-select')[0];
-    const size = sizeSelector.options[sizeSelector.selectedIndex].value;
-    const prices = item.options.prices.filter(p => p.size === size)[0].crusts;
-    const crustIndex = item.options.crusts.indexOf(crust);
-    const price = prices[crustIndex];
-    const priceSpan = select.closest(".menu-card").querySelector('.menu-price span');
-    priceSpan.innerText = price ? `₹ ${price}` : ''
-  })
-});
-
-const addtoCartBtn = document.querySelectorAll('.addToCart');
-const cartCounter = document.querySelector('#cartCounter')
+/**
+ * FUNCTIONALITY: API Calls for cart update
+ * Update cart items by API call
+ * Add to cart @param  {} item: add an item (1 qty)
+ * Remove from cart @param  {} item: remove 1 qty from cart
+ * Delee cart item @param  {} item: remove item
+ */
 
 function addToCart(item) {
   axios.post('/add-item', item)
@@ -404,10 +411,16 @@ async function deleteCartItem(item) {
 
 }
 
+
+/**
+ * FUNCTIONALITY: Update Side Cart
+ * Re-render cart list items when items of cart updated
+ * @param  {} data: cart items
+ */
+
 function populateCart(data) {
 
   let items = '';
-
   for (let cartItem of Object.values(data.items)) {
     if (Array.isArray(cartItem)) {
       cartItem.forEach(pizza => {
@@ -504,10 +517,20 @@ function populateCart(data) {
   }
 }
 
+/**
+ * FUNCITONALITY: Add/Remove cart items
+ * Add items to cart from menu page item-cards
+ * Update cart counter text
+ */
+
+const addtoCartBtn = document.querySelectorAll('.addToCart');
+const cartCounter = document.querySelector('#cartCounter');
 
 addtoCartBtn.forEach(btn => {
   btn.addEventListener('click', (e) => {
+
     const item = JSON.parse(btn.closest(".menu-card-data").dataset.item);
+
     if (item.menuType === 'pizza' || item.menuType === 'pizzamania') {
       const size = btn.closest(".menu-details").getElementsByClassName('size-select')[0];
       const selectedSize = size.options[size.selectedIndex].value;
@@ -641,7 +664,57 @@ deleteCartItemBtn.forEach(btn => {
   })
 })
 
+/**
+ * FUNCITONALITY: Pizza Options picker
+ * Select pizza size and crust type for items to be added in cart
+ */
+
+const sizeSelect = document.querySelectorAll('.size-select');
+const crustSelect = document.querySelectorAll('.crust-select');
+
+sizeSelect.forEach(select => {
+  select.addEventListener('change', (e) => {
+    const size = e.target.value;
+    const item = JSON.parse(select.closest(".menu-card-data").dataset.item);
+    const crusts = item.options.prices.filter(p => p.size === size)[0].crusts;
+    const crust = select.closest(".menu-selector").getElementsByClassName('crust-select')[0];
+    const crustOptions = crust.getElementsByTagName("option");
+    for (let i = 0; i < crustOptions.length; i++) {
+      crustOptions[i].disabled = crusts[i] === 0 ? true : false
+    }
+    crust.selectedIndex = 0;
+    const prices = item.options.prices.filter(p => p.size === size)[0].crusts;
+    const price = prices[0];
+    const priceSpan = select.closest(".menu-card").querySelector('.menu-price span');
+    priceSpan.innerText = price ? `₹ ${price}` : ''
+  })
+});
+
+crustSelect.forEach(select => {
+  select.addEventListener('change', (e) => {
+    const crust = e.target.value;
+    const item = JSON.parse(select.closest(".menu-card-data").dataset.item);
+    const sizeSelector = select.closest(".menu-selector").getElementsByClassName('size-select')[0];
+    const size = sizeSelector.options[sizeSelector.selectedIndex].value;
+    const prices = item.options.prices.filter(p => p.size === size)[0].crusts;
+    const crustIndex = item.options.crusts.indexOf(crust);
+    const price = prices[crustIndex];
+    const priceSpan = select.closest(".menu-card").querySelector('.menu-price span');
+    priceSpan.innerText = price ? `₹ ${price}` : ''
+  })
+});
+
+
+/**
+ * FUNCITONALITY: Misc events
+ * Scroll and header-style related functions
+ * Exectued after DOM-loaded
+ */
+
 document.addEventListener('DOMContentLoaded', function () {
+
+  // Header style switch
+
   const pageurl = window.location.href.split('/').pop();
   if (pageurl !== '') {
     document.querySelector('.site__header').classList.remove('light');
@@ -667,6 +740,8 @@ document.addEventListener('DOMContentLoaded', function () {
   } else {
     document.querySelector('.site__header').classList.add('light');
   }
+
+  // Scrollspy
 
   const sections = document.querySelectorAll(".scrollspy-section");
   const menu_links = document.querySelectorAll(".scrollspy-link a");
@@ -704,6 +779,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   });
 
+
+  // Smooth-scroll to hash
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       e.preventDefault();
@@ -713,9 +790,13 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
   });
+
 }, false);
 
 
+/**
+ * FUNCITONALITY: Add, edit or remove user addresses
+ */
 
 const addressDeleteBtns = document.querySelectorAll('.deleteAddressBtn');
 addressDeleteBtns.forEach(btn => {
@@ -871,9 +952,9 @@ if (addMoreAddressBtn) {
   })
 }
 
-const addressEditForm = document.getElementById('addNewAddressForm');
-
-// Contact add/edit
+/**
+ * FUNCITONALITY: Add or edit user contact number
+ */
 
 const liContactNone = document.getElementById('liContactNone');
 const liContactAdd = document.getElementById('liContactAdd');
@@ -918,8 +999,6 @@ if (doneContactBtn) {
   });
 }
 
-// Edit Contact
-
 if (doneEditContactBtn) {
   doneEditContactBtn.addEventListener('click', (e) => {
     const input = document.getElementById('contactEditInput');
@@ -937,6 +1016,11 @@ if (doneEditContactBtn) {
   });
 }
 
+
+/**
+ * FUNCITONALITY: Format mongoDB dates w/o library
+ */
+
 const dates = document.querySelectorAll('.datetime');
 dates.forEach(date => {
   const rawdate = date.innerText;
@@ -953,10 +1037,13 @@ function getFormattedDate(rawdate) {
   return formattedDate;
 }
 
-initAdmin();
-
+/**
+ * FUNCITONALITY: Overlay close
+ */
 
 overlay.addEventListener('click', () => {
+
+  // toggle right drawer
   if (rightDrawer.classList.contains('opened')) {
 
     document.body.classList.remove('noscroll');
@@ -975,6 +1062,7 @@ overlay.addEventListener('click', () => {
 
   }
 
+  // toggle left drawer
   if (leftDrawer.classList.contains('opened')) {
     document.body.classList.remove('noscroll');
     overlay.classList.remove('shown');
@@ -982,6 +1070,7 @@ overlay.addEventListener('click', () => {
     headerMenu.classList.remove('inactive');
   }
 
+  // toggle oder-tracking drawer
   if (orderTrackingUI.classList.contains('opened')) {
     document.body.classList.remove('noscroll');
     overlay.classList.remove('shown');
@@ -994,4 +1083,12 @@ overlay.addEventListener('click', () => {
     document.getElementById('toggleOrderDetailsBtn').innerText = 'Show Details';
     currentOrderDetailsUI.classList.add('d-none');
   }
+
 });
+
+
+/**
+ * FUNCITONALITY: Admin functionality
+ */
+
+initAdmin();
