@@ -24209,6 +24209,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+/**
+ * FUNCITONALITY: Header menu activities
+ * Toggle side-drawer (left/right)
+ */
+
 var overlay = document.getElementById('ovly');
 var hamburger = document.getElementById('hamMenu');
 var leftDrawer = document.getElementById('drawerLeft');
@@ -24218,9 +24223,6 @@ var headerMenu = document.getElementById('headerMenu');
 var addNewAddressBtn = document.getElementById('addNewAddressBtn');
 var addressListView = document.getElementById('locationListUI');
 var newAddressView = document.getElementById('addnewAddressUI');
-var orderDetailBtns = document.querySelectorAll('.order-detail-btn');
-var orderDetailsUI = document.getElementById('orderDetailsUI');
-var currentOrderDetailsUI = document.getElementById('currentOrderDetailsUI');
 
 if (addNewAddressBtn) {
   addNewAddressBtn.addEventListener('click', function (e) {
@@ -24258,8 +24260,16 @@ locationBtns.forEach(function (locationBtn) {
     }
   });
 });
+/**
+ * FUNCITONALITY: Show Order Tracking
+ * Finds all the buttons with .track-btn, and adds click event-listener
+ * Shows tracking details and fetches order details by API call
+ * Calls populateOrderDetails() for order rendering
+ */
+
 var orderTrackingUI = document.getElementById('orderTracking');
 var trackBtns = document.querySelectorAll('.track-btn');
+var currentOrderDetailsUI = document.getElementById('currentOrderDetailsUI');
 trackBtns.forEach(function (trackBtn) {
   trackBtn.addEventListener('click', function () {
     document.body.classList.add('noscroll');
@@ -24277,23 +24287,14 @@ trackBtns.forEach(function (trackBtn) {
     });
   });
 });
-var toggles = document.querySelectorAll('.toggle-btn');
-toggles.forEach(function (toggle) {
-  toggle.addEventListener('click', function (e) {
-    if (currentOrderDetailsUI.classList.contains('d-none')) {
-      currentOrderDetailsUI.classList.remove('d-none');
-      toggle.innerText = 'Hide Detail';
-      var iList = document.getElementById('trackOrderItemsList');
-      iList.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    } else {
-      currentOrderDetailsUI.classList.add('d-none');
-      toggle.innerText = 'Show Detail';
-    }
-  });
-});
+/**
+ * FUNCTIONALITY: Show Order Details
+ * Finds all the buttons with .order-detail-btn, and adds click event-listener
+ * Show order details in right drawer
+ */
+
+var orderDetailBtns = document.querySelectorAll('.order-detail-btn');
+var orderDetailsUI = document.getElementById('orderDetailsUI');
 orderDetailBtns.forEach(function (btn) {
   btn.addEventListener('click', function () {
     document.body.classList.add('noscroll');
@@ -24309,6 +24310,13 @@ orderDetailBtns.forEach(function (btn) {
     orderDetailsUI.classList.remove('d-none');
   });
 });
+/**
+ * FUNCTIONALITY: Generate Order Details
+ * Populates order details markup for both Orders details page (right drawer) and
+ * Order tracking page (left drawer)
+ * @param  {} order: the whole order 
+ * @param  {} trackView: true for order-tracking view
+ */
 
 function populateOrderDetails(order, trackView) {
   // console.log(order);
@@ -24403,6 +24411,32 @@ function populateOrderDetails(order, trackView) {
   wrapper.append(orderItems);
   return wrapper;
 }
+/**
+ * FUNCITONALITY: Toggle Order Details
+ * Shows/ hides order details in order-tracking view
+ */
+
+
+var toggles = document.querySelectorAll('.toggle-btn');
+toggles.forEach(function (toggle) {
+  toggle.addEventListener('click', function (e) {
+    if (currentOrderDetailsUI.classList.contains('d-none')) {
+      currentOrderDetailsUI.classList.remove('d-none');
+      toggle.innerText = 'Hide Detail';
+      var iList = document.getElementById('trackOrderItemsList');
+      iList.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    } else {
+      currentOrderDetailsUI.classList.add('d-none');
+      toggle.innerText = 'Show Detail';
+    }
+  });
+});
+/**
+ * FUNCITONALITY: Show/ Hide Alert Popup
+ */
 
 var alertUI = document.querySelector('#alertUI');
 var okBtn = document.getElementById('alertOKBtn');
@@ -24416,58 +24450,22 @@ function showAlert(text) {
   alertUI.classList.add('shown');
 }
 
-okBtn.addEventListener('click', function (e) {
-  closeAlert();
-});
-
 function closeAlert() {
   document.getElementById('alertTitle').innerText = '';
   document.getElementById('alertText').innerText = '';
   alertUI.classList.remove('shown');
 }
 
-var sizeSelect = document.querySelectorAll('.size-select');
-var crustSelect = document.querySelectorAll('.crust-select');
-sizeSelect.forEach(function (select) {
-  select.addEventListener('change', function (e) {
-    var size = e.target.value;
-    var item = JSON.parse(select.closest(".menu-card-data").dataset.item);
-    var crusts = item.options.prices.filter(function (p) {
-      return p.size === size;
-    })[0].crusts;
-    var crust = select.closest(".menu-selector").getElementsByClassName('crust-select')[0];
-    var crustOptions = crust.getElementsByTagName("option");
-
-    for (var i = 0; i < crustOptions.length; i++) {
-      crustOptions[i].disabled = crusts[i] === 0 ? true : false;
-    }
-
-    crust.selectedIndex = 0;
-    var prices = item.options.prices.filter(function (p) {
-      return p.size === size;
-    })[0].crusts;
-    var price = prices[0];
-    var priceSpan = select.closest(".menu-card").querySelector('.menu-price span');
-    priceSpan.innerText = price ? "\u20B9 ".concat(price) : '';
-  });
+okBtn.addEventListener('click', function (e) {
+  closeAlert();
 });
-crustSelect.forEach(function (select) {
-  select.addEventListener('change', function (e) {
-    var crust = e.target.value;
-    var item = JSON.parse(select.closest(".menu-card-data").dataset.item);
-    var sizeSelector = select.closest(".menu-selector").getElementsByClassName('size-select')[0];
-    var size = sizeSelector.options[sizeSelector.selectedIndex].value;
-    var prices = item.options.prices.filter(function (p) {
-      return p.size === size;
-    })[0].crusts;
-    var crustIndex = item.options.crusts.indexOf(crust);
-    var price = prices[crustIndex];
-    var priceSpan = select.closest(".menu-card").querySelector('.menu-price span');
-    priceSpan.innerText = price ? "\u20B9 ".concat(price) : '';
-  });
-});
-var addtoCartBtn = document.querySelectorAll('.addToCart');
-var cartCounter = document.querySelector('#cartCounter');
+/**
+ * FUNCTIONALITY: API Calls for cart update
+ * Update cart items by API call
+ * Add to cart @param  {} item: add an item (1 qty)
+ * Remove from cart @param  {} item: remove 1 qty from cart
+ * Delee cart item @param  {} item: remove item
+ */
 
 function addToCart(item) {
   axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/add-item', item).then(function (res) {
@@ -24553,6 +24551,12 @@ function _removeItem() {
 function deleteCartItem(_x2) {
   return _deleteCartItem.apply(this, arguments);
 }
+/**
+ * FUNCTIONALITY: Update Side Cart
+ * Re-render cart list items when items of cart updated
+ * @param  {} data: cart items
+ */
+
 
 function _deleteCartItem() {
   _deleteCartItem = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(item) {
@@ -24658,7 +24662,15 @@ function populateCart(data) {
     document.getElementById('sideCartSubtotal').innerHTML = "\u20B9 ".concat(data.totalPrice);
   }
 }
+/**
+ * FUNCITONALITY: Add/Remove cart items
+ * Add items to cart from menu page item-cards
+ * Update cart counter text
+ */
 
+
+var addtoCartBtn = document.querySelectorAll('.addToCart');
+var cartCounter = document.querySelector('#cartCounter');
 addtoCartBtn.forEach(function (btn) {
   btn.addEventListener('click', function (e) {
     var item = JSON.parse(btn.closest(".menu-card-data").dataset.item);
@@ -24775,7 +24787,59 @@ deleteCartItemBtn.forEach(function (btn) {
     }
   });
 });
+/**
+ * FUNCITONALITY: Pizza Options picker
+ * Select pizza size and crust type for items to be added in cart
+ */
+
+var sizeSelect = document.querySelectorAll('.size-select');
+var crustSelect = document.querySelectorAll('.crust-select');
+sizeSelect.forEach(function (select) {
+  select.addEventListener('change', function (e) {
+    var size = e.target.value;
+    var item = JSON.parse(select.closest(".menu-card-data").dataset.item);
+    var crusts = item.options.prices.filter(function (p) {
+      return p.size === size;
+    })[0].crusts;
+    var crust = select.closest(".menu-selector").getElementsByClassName('crust-select')[0];
+    var crustOptions = crust.getElementsByTagName("option");
+
+    for (var i = 0; i < crustOptions.length; i++) {
+      crustOptions[i].disabled = crusts[i] === 0 ? true : false;
+    }
+
+    crust.selectedIndex = 0;
+    var prices = item.options.prices.filter(function (p) {
+      return p.size === size;
+    })[0].crusts;
+    var price = prices[0];
+    var priceSpan = select.closest(".menu-card").querySelector('.menu-price span');
+    priceSpan.innerText = price ? "\u20B9 ".concat(price) : '';
+  });
+});
+crustSelect.forEach(function (select) {
+  select.addEventListener('change', function (e) {
+    var crust = e.target.value;
+    var item = JSON.parse(select.closest(".menu-card-data").dataset.item);
+    var sizeSelector = select.closest(".menu-selector").getElementsByClassName('size-select')[0];
+    var size = sizeSelector.options[sizeSelector.selectedIndex].value;
+    var prices = item.options.prices.filter(function (p) {
+      return p.size === size;
+    })[0].crusts;
+    var crustIndex = item.options.crusts.indexOf(crust);
+    var price = prices[crustIndex];
+    var priceSpan = select.closest(".menu-card").querySelector('.menu-price span');
+    priceSpan.innerText = price ? "\u20B9 ".concat(price) : '';
+  });
+});
+/**
+ * FUNCITONALITY: Misc events
+ * Scroll and header-style related functions
+ * Exectued after DOM-loaded
+ */
+
 document.addEventListener('DOMContentLoaded', function () {
+  // Header style switch
   var pageurl = window.location.href.split('/').pop();
 
   if (pageurl !== '') {
@@ -24804,7 +24868,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   } else {
     document.querySelector('.site__header').classList.add('light');
-  }
+  } // Scrollspy
+
 
   var sections = document.querySelectorAll(".scrollspy-section");
   var menu_links = document.querySelectorAll(".scrollspy-link a");
@@ -24852,7 +24917,8 @@ document.addEventListener('DOMContentLoaded', function () {
         affix.classList.remove("fixed");
       }
     }
-  });
+  }); // Smooth-scroll to hash
+
   document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
       e.preventDefault();
@@ -24862,6 +24928,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 }, false);
+/**
+ * FUNCITONALITY: Add, edit or remove user addresses
+ */
+
 var addressDeleteBtns = document.querySelectorAll('.deleteAddressBtn');
 addressDeleteBtns.forEach(function (btn) {
   var address = btn.closest('.address');
@@ -25005,8 +25075,10 @@ if (addMoreAddressBtn) {
     newAddressView.classList.remove('d-none');
   });
 }
+/**
+ * FUNCITONALITY: Add or edit user contact number
+ */
 
-var addressEditForm = document.getElementById('addNewAddressForm'); // Contact add/edit
 
 var liContactNone = document.getElementById('liContactNone');
 var liContactAdd = document.getElementById('liContactAdd');
@@ -25047,8 +25119,7 @@ if (doneContactBtn) {
       showAlert('Failed to update');
     });
   });
-} // Edit Contact
-
+}
 
 if (doneEditContactBtn) {
   doneEditContactBtn.addEventListener('click', function (e) {
@@ -25067,6 +25138,10 @@ if (doneEditContactBtn) {
     });
   });
 }
+/**
+ * FUNCITONALITY: Format mongoDB dates w/o library
+ */
+
 
 var dates = document.querySelectorAll('.datetime');
 dates.forEach(function (date) {
@@ -25082,9 +25157,13 @@ function getFormattedDate(rawdate) {
   }) + " " + d.getDate();
   return formattedDate;
 }
+/**
+ * FUNCITONALITY: Overlay close
+ */
 
-Object(_admin__WEBPACK_IMPORTED_MODULE_3__["initAdmin"])();
+
 overlay.addEventListener('click', function () {
+  // toggle right drawer
   if (rightDrawer.classList.contains('opened')) {
     document.body.classList.remove('noscroll');
     overlay.classList.remove('shown');
@@ -25097,14 +25176,16 @@ overlay.addEventListener('click', function () {
     document.getElementById('editAddressForm').classList.add('d-none');
     orderDetailsUI.innerHTML = null;
     orderDetailsUI.classList.add('d-none');
-  }
+  } // toggle left drawer
+
 
   if (leftDrawer.classList.contains('opened')) {
     document.body.classList.remove('noscroll');
     overlay.classList.remove('shown');
     leftDrawer.classList.remove("opened");
     headerMenu.classList.remove('inactive');
-  }
+  } // toggle oder-tracking drawer
+
 
   if (orderTrackingUI.classList.contains('opened')) {
     document.body.classList.remove('noscroll');
@@ -25118,6 +25199,11 @@ overlay.addEventListener('click', function () {
     currentOrderDetailsUI.classList.add('d-none');
   }
 });
+/**
+ * FUNCITONALITY: Admin functionality
+ */
+
+Object(_admin__WEBPACK_IMPORTED_MODULE_3__["initAdmin"])();
 
 /***/ }),
 

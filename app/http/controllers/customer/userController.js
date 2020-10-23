@@ -110,7 +110,7 @@ function userController() {
 
             const addresses = req.user.addresses;
             addresses[index] = address;
-            console.log(addresses);
+            // console.log(addresses);
 
             User.findByIdAndUpdate(
                 req.user.id, {
