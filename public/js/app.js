@@ -24103,10 +24103,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initAdmin", function() { return initAdmin; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/index.js");
+/* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! noty */ "./node_modules/noty/lib/noty.js");
+/* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(noty__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/index.js");
 
 
-function initAdmin() {
+
+function initAdmin(socket) {
   var orderTableBody = document.querySelector('#adminOrderTableBody');
   var orders = [];
   var markup = '';
@@ -24117,7 +24120,8 @@ function initAdmin() {
         "X-Requested-With": "XMLHttpRequest"
       }
     }).then(function (res) {
-      orders = res.data.orders;
+      orders = res.data.orders; // console.log(orders);
+
       markup = generateMarkup(orders);
       orderTableBody.innerHTML = markup;
     })["catch"](function (err) {
@@ -24161,9 +24165,23 @@ function initAdmin() {
 
   function generateMarkup(orders) {
     return orders.map(function (order, i) {
-      return "\n                <div class=\"tr\">\n                    <div>".concat(i + 1, "</div>\n                    <div class=\"status ").concat(order.status, "\">\n                        <span>").concat(order.status === 'order_placed' ? 'New' : order.status, "</span>\n                    </div>\n                    <div>\n                        ").concat(Object(date_fns__WEBPACK_IMPORTED_MODULE_1__["format"])(Object(date_fns__WEBPACK_IMPORTED_MODULE_1__["parseISO"])(order.createdAt), 'hh:mm aa'), "\n                    </div>\n                    <div class=\"order-items\">\n                        ").concat(getOrdersMarkup(order.items), "\n                    </div>\n                    <div class=\"u\">\n                        <p>").concat(order.customerId.name, "</p>\n                        <a href=\"tel:+").concat(order.customerId.contact, "\">").concat(order.customerId.contact, "</a>\n                    </div>\n                    <div class=\"address\">\n                        <p>").concat(order.address.address, "\n                        <small>").concat(order.address.locality, "</small>\n                        </p>\n                    </div>\n                    <div class=\"act\">\n                    <form method=\"POST\" action=\"/admin/order/status\">\n                    <input type=\"hidden\" name=\"orderId\" value=\"").concat(order._id, "\" />\n                        <select name=\"status\" onchange=\"this.form.submit()\">\n                            ").concat(getOrderOptions(order.status), "\n                        </select>\n                    </form>\n                    </div>\n                </div>\n            ");
+      return "\n                <div class=\"tr\">\n                    <div>".concat(i + 1, "</div>\n                    <div class=\"status ").concat(order.status, "\">\n                        <span>").concat(order.status === 'order_placed' ? 'New' : order.status, "</span>\n                    </div>\n                    <div>\n                        ").concat(Object(date_fns__WEBPACK_IMPORTED_MODULE_2__["format"])(Object(date_fns__WEBPACK_IMPORTED_MODULE_2__["parseISO"])(order.createdAt), 'hh:mm aa'), "\n                    </div>\n                    <div class=\"order-items\">\n                        ").concat(getOrdersMarkup(order.items), "\n                    </div>\n                    <div class=\"u\">\n                        <p>").concat(order.customerId.name, "</p>\n                        <a href=\"tel:+").concat(order.customerId.contact, "\">").concat(order.customerId.contact, "</a>\n                    </div>\n                    <div class=\"address\">\n                        <p>").concat(order.address.address, "\n                        <small>").concat(order.address.locality, "</small>\n                        </p>\n                    </div>\n                    <div class=\"act\">\n                    <form method=\"POST\" action=\"/admin/order/status\">\n                    <input type=\"hidden\" name=\"orderId\" value=\"").concat(order._id, "\" />\n                        <select name=\"status\" onchange=\"this.form.submit()\">\n                            ").concat(getOrderOptions(order.status), "\n                        </select>\n                    </form>\n                    </div>\n                </div>\n            ");
     }).join('');
   }
+
+  socket.on('new_order', function (order) {
+    var totalItems = Object.values(order.data.items).length;
+    orders.unshift(order.data);
+    markup = generateMarkup(orders);
+    orderTableBody.innerHTML = markup;
+    new noty__WEBPACK_IMPORTED_MODULE_1___default.a({
+      type: 'success',
+      text: "NEW! Order of ".concat(totalItems, " item(s) received."),
+      timeout: 3000,
+      layout: 'bottomRight',
+      progressBar: false
+    }).show();
+  });
 }
 
 /***/ }),
@@ -24209,6 +24227,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+var socket = io();
 /**
  * FUNCITONALITY: Header menu activities
  * Toggle side-drawer (left/right)
@@ -24261,12 +24280,55 @@ locationBtns.forEach(function (locationBtn) {
   });
 });
 /**
+ * FUNCITONALITY: Show/ Hide Alert Popup
+ */
+
+var alertUI = document.querySelector('#alertUI');
+var okBtn = document.getElementById('alertOKBtn');
+
+function showAlert(text) {
+  var btnText = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'OK';
+  var title = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'Oops...';
+  document.getElementById('alertTitle').innerText = title;
+  document.getElementById('alertText').innerText = text;
+  document.getElementById('alertOKBtn').innerText = btnText;
+  alertUI.classList.add('shown');
+}
+
+function closeAlert() {
+  document.getElementById('alertTitle').innerText = '';
+  document.getElementById('alertText').innerText = '';
+  alertUI.classList.remove('shown');
+}
+
+okBtn.addEventListener('click', function (e) {
+  closeAlert();
+});
+/**
+ * FUNCITONALITY: Show Toast Message
+ */
+
+function showToast(type, text) {
+  var timeout = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2000;
+  var layout = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'bottomRight';
+  new noty__WEBPACK_IMPORTED_MODULE_2___default.a({
+    type: type,
+    text: text,
+    timeout: timeout,
+    layout: layout,
+    progressBar: false
+  }).show();
+}
+/**
  * FUNCITONALITY: Show Order Tracking
  * Finds all the buttons with .track-btn, and adds click event-listener
  * Shows tracking details and fetches order details by API call
  * Calls populateOrderDetails() for order rendering
  */
 
+
+var currentOrderId = '';
+var currentOrder = null;
 var orderTrackingUI = document.getElementById('orderTracking');
 var trackBtns = document.querySelectorAll('.track-btn');
 var currentOrderDetailsUI = document.getElementById('currentOrderDetailsUI');
@@ -24277,8 +24339,11 @@ trackBtns.forEach(function (trackBtn) {
     orderTrackingUI.classList.add('opened');
     headerMenu.classList.add('inactive');
     var orderId = trackBtn.dataset.id;
+    currentOrderId = orderId;
+    socket.emit('join', "order_".concat(currentOrderId));
     axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/order/".concat(orderId)).then(function (res) {
       var order = res.data.order;
+      currentOrder = order;
       var wrapper = populateOrderDetails(order, true);
       currentOrderDetailsUI.appendChild(wrapper); // setTimeout(() => {
 
@@ -24363,53 +24428,68 @@ function populateOrderDetails(order, trackView) {
   if (trackView) {
     document.getElementById('trackOrderTitle').innerHTML = orderItemsTitle.join(', ');
     document.getElementById('trackOrderMeta').innerHTML = "".concat(totalItems, " Items <strong>\u20B9").concat(order.amount, "</strong> ");
-    var step2 = document.getElementById('step2');
-    var step3 = document.getElementById('step3');
-    var step4 = document.getElementById('step4');
-    var step5 = document.getElementById('step5');
-    var delivered = document.querySelector('#trackOrderDetails .delivered');
-    var tracker = document.querySelector('#trackOrderDetails .location-tracking');
-
-    if (order.status === 'confirmed' || order.status === 'order_placed') {
-      delivered.classList.add('d-none');
-      tracker.classList.remove('d-none');
-    }
-
-    if (order.status === 'preparing') {
-      step2.classList.add('completed');
-      delivered.classList.add('d-none');
-      tracker.classList.remove('d-none');
-    }
-
-    if (order.status === 'dispatched') {
-      step2.classList.add('completed');
-      step3.classList.add('completed');
-      delivered.classList.add('d-none');
-      tracker.classList.remove('d-none');
-    }
-
-    if (order.status === 'delivered') {
-      step2.classList.add('completed');
-      step3.classList.add('completed');
-      step4.classList.add('completed');
-      delivered.classList.remove('d-none');
-      tracker.classList.add('d-none');
-    }
-
-    if (order.status === 'completed') {
-      step2.classList.add('completed');
-      step3.classList.add('completed');
-      step4.classList.add('completed');
-      step5.classList.add('completed');
-      delivered.classList.remove('d-none');
-      tracker.classList.add('d-none');
-    }
+    updateOrderStatus(order.status);
   }
 
   wrapper.append(orderInfo);
   wrapper.append(orderAddress);
   wrapper.append(orderItems);
   return wrapper;
+}
+
+function updateOrderStatus(status) {
+  var delivered = document.querySelector('#trackOrderDetails .delivered');
+  var tracker = document.querySelector('#trackOrderDetails .location-tracking');
+  delivered.classList.add('d-none');
+  tracker.classList.add('d-none');
+  var steps = document.querySelectorAll('.step');
+  steps.forEach(function (step, i) {
+    if (i !== 0) {
+      step.classList.remove('completed');
+    }
+  });
+  var step2 = document.getElementById('step2');
+  var step3 = document.getElementById('step3');
+  var step4 = document.getElementById('step4'); // const step5 = document.getElementById('step5');
+
+  if (status === 'order_placed') {
+    delivered.classList.add('d-none');
+    tracker.classList.remove('d-none');
+  }
+
+  if (status === 'confirmed') {
+    delivered.classList.add('d-none');
+    tracker.classList.remove('d-none');
+  }
+
+  if (status === 'preparing') {
+    delivered.classList.add('d-none');
+    tracker.classList.remove('d-none');
+    step2.classList.add('completed');
+  }
+
+  if (status === 'dispatched') {
+    delivered.classList.add('d-none');
+    tracker.classList.remove('d-none');
+    step2.classList.add('completed');
+    step3.classList.add('completed');
+  }
+
+  if (status === 'delivered') {
+    delivered.classList.remove('d-none');
+    tracker.classList.add('d-none');
+    step2.classList.add('completed');
+    step3.classList.add('completed');
+    step4.classList.add('completed');
+  }
+
+  if (status === 'completed') {
+    delivered.classList.remove('d-none');
+    tracker.classList.add('d-none');
+    step2.classList.add('completed');
+    step3.classList.add('completed');
+    step4.classList.add('completed'); // step5.classList.add('completed');
+  }
 }
 /**
  * FUNCITONALITY: Toggle Order Details
@@ -24435,31 +24515,6 @@ toggles.forEach(function (toggle) {
   });
 });
 /**
- * FUNCITONALITY: Show/ Hide Alert Popup
- */
-
-var alertUI = document.querySelector('#alertUI');
-var okBtn = document.getElementById('alertOKBtn');
-
-function showAlert(text) {
-  var btnText = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'OK';
-  var title = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'Oops...';
-  document.getElementById('alertTitle').innerText = title;
-  document.getElementById('alertText').innerText = text;
-  document.getElementById('alertOKBtn').innerText = btnText;
-  alertUI.classList.add('shown');
-}
-
-function closeAlert() {
-  document.getElementById('alertTitle').innerText = '';
-  document.getElementById('alertText').innerText = '';
-  alertUI.classList.remove('shown');
-}
-
-okBtn.addEventListener('click', function (e) {
-  closeAlert();
-});
-/**
  * FUNCTIONALITY: API Calls for cart update
  * Update cart items by API call
  * Add to cart @param  {} item: add an item (1 qty)
@@ -24471,22 +24526,10 @@ function addToCart(item) {
   axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/add-item', item).then(function (res) {
     cartCounter.innerText = res.data.cart.totalQty;
     populateCart(res.data.cart);
-    new noty__WEBPACK_IMPORTED_MODULE_2___default.a({
-      type: 'success',
-      text: "".concat(item.name, " added to cart"),
-      timeout: 2000,
-      progressBar: false,
-      layout: 'bottomRight'
-    }).show();
+    showToast('success', "".concat(item.name, " added to cart"));
   })["catch"](function (err) {
     console.log(err);
-    new noty__WEBPACK_IMPORTED_MODULE_2___default.a({
-      type: 'error',
-      text: 'Something went wrong',
-      timeout: 2000,
-      progressBar: false,
-      layout: 'bottomRight'
-    }).show();
+    showToast('error', 'Something went wrong');
   });
 }
 
@@ -25158,12 +25201,12 @@ function getFormattedDate(rawdate) {
   return formattedDate;
 }
 /**
- * FUNCITONALITY: Overlay close
+ * FUNCITONALITY: Close Drawer by overlay clicking
  */
 
 
 overlay.addEventListener('click', function () {
-  // toggle right drawer
+  // hide right drawer
   if (rightDrawer.classList.contains('opened')) {
     document.body.classList.remove('noscroll');
     overlay.classList.remove('shown');
@@ -25176,7 +25219,7 @@ overlay.addEventListener('click', function () {
     document.getElementById('editAddressForm').classList.add('d-none');
     orderDetailsUI.innerHTML = null;
     orderDetailsUI.classList.add('d-none');
-  } // toggle left drawer
+  } // hide left drawer
 
 
   if (leftDrawer.classList.contains('opened')) {
@@ -25184,7 +25227,7 @@ overlay.addEventListener('click', function () {
     overlay.classList.remove('shown');
     leftDrawer.classList.remove("opened");
     headerMenu.classList.remove('inactive');
-  } // toggle oder-tracking drawer
+  } // hide oder-tracking drawer
 
 
   if (orderTrackingUI.classList.contains('opened')) {
@@ -25195,15 +25238,64 @@ overlay.addEventListener('click', function () {
     document.getElementById('trackOrderLoader').classList.remove('d-none');
     document.getElementById('trackOrderDetails').classList.add('d-none');
     currentOrderDetailsUI.innerHTML = null;
+    currentOrderId = '';
+    currentOrder = null;
     document.getElementById('toggleOrderDetailsBtn').innerText = 'Show Details';
     currentOrderDetailsUI.classList.add('d-none');
   }
 });
 /**
+ * FUNCITONALITY: Get Order Status Message
+ * Get formatted message for order updates
+ * @param  {} status
+ */
+
+function getOrderMessage(status) {
+  var msg = '';
+
+  switch (status) {
+    case 'confirmed':
+      msg = 'Order has been confirmed';
+      break;
+
+    case 'preparing':
+      msg = 'Update! Order is now being baked';
+      break;
+
+    case 'dispatched':
+      msg = 'Order dispatched! Food is on your way';
+      break;
+
+    case 'delivered':
+      msg = 'Order delivered! Enjoy your food';
+      break;
+
+    default:
+      break;
+  }
+
+  return msg;
+}
+/**
  * FUNCITONALITY: Admin functionality
  */
 
-Object(_admin__WEBPACK_IMPORTED_MODULE_3__["initAdmin"])();
+
+var adminArea = window.location.pathname.startsWith('/admin') ? true : false;
+
+if (adminArea) {
+  Object(_admin__WEBPACK_IMPORTED_MODULE_3__["initAdmin"])(socket);
+  socket.emit('join', 'adminRoom');
+}
+/**
+ * FUNCITONALITY: Socket
+ */
+
+
+socket.on('order_updated', function (data) {
+  updateOrderStatus(data.status);
+  showToast('success', getOrderMessage(data.status));
+});
 
 /***/ }),
 

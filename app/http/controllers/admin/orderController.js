@@ -63,6 +63,12 @@ function adminOrderController() {
                 if (err) {
                     req.flash('error', 'Something went wrong');
                 }
+                // Emit event
+                const eventEmitter = req.app.get('eventEmitter');
+                eventEmitter.emit('order_update', {
+                    id: orderId,
+                    status
+                });
                 return res.redirect('/admin/orders')
             })
         }

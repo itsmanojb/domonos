@@ -10,6 +10,7 @@ function orderController(params) {
                     'createdAt': -1
                 }
             });
+            console.log(orders);
             res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
             res.render('customer/orders', {
                 orders
@@ -61,9 +62,23 @@ function orderController(params) {
 
             // console.log(order);
             order.save().then(result => {
-                delete req.session.cart;
-                req.flash('success', 'Order placed successfully');
-                return res.redirect('/orders')
+
+                Order.populate(result, {
+                    path: 'customerId'
+                }, (err, data) => {
+
+                    req.flash('success', 'Order placed successfully');
+                    delete req.session.cart;
+
+                    // Emit event
+                    const eventEmitter = req.app.get('eventEmitter');
+                    eventEmitter.emit('order_place', {
+                        data
+                    });
+
+                    return res.redirect('/orders')
+
+                })
 
             }).catch(err => {
                 req.flash('error', 'Something went wrong');

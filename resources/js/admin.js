@@ -1,10 +1,11 @@
 import axios from 'axios';
+import Noty from 'noty';
 import {
     format,
     parseISO
 } from 'date-fns';
 
-export function initAdmin() {
+export function initAdmin(socket) {
     const orderTableBody = document.querySelector('#adminOrderTableBody');
 
     let orders = [];
@@ -18,6 +19,7 @@ export function initAdmin() {
             }
         }).then(res => {
             orders = res.data.orders;
+            // console.log(orders);
             markup = generateMarkup(orders);
             orderTableBody.innerHTML = markup
         }).catch(err => {
@@ -128,4 +130,18 @@ export function initAdmin() {
             `
         }).join('')
     }
+
+    socket.on('new_order', (order) => {
+        const totalItems = Object.values(order.data.items).length;
+        orders.unshift(order.data);
+        markup = generateMarkup(orders);
+        orderTableBody.innerHTML = markup;
+        new Noty({
+            type: 'success',
+            text: `NEW! Order of ${totalItems} item(s) received.`,
+            timeout: 3000,
+            layout: 'bottomRight',
+            progressBar: false,
+        }).show()
+    })
 }

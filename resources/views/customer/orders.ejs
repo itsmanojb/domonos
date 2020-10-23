@@ -24,16 +24,17 @@
                         <dl>
                             <dt> <%= totalItems %> <% if(totalItems > 1) {%> Items <% } else { %> Item <% } %></dt>
                             <dd>
-                                <% if(totalItems === 1) { %>
-                                <span> <%= items[0].item.name %></span>
-                                <% } else { items.map((cartitem) => {%>
+
+
+                                <% items.map((cartitem) => {%>
                                 <% if(Array.isArray(cartitem)) { %>
                                 <span><% if(cartitem.length > 1) { %> <%= cartitem[0].item.name %>
                                     - <%=cartitem.length%> <% } else { %> <%= cartitem[0].item.name %> <% } %> </span>
                                 <% } else { %>
                                 <span><%= cartitem.item.name %></span>
                                 <% } %>
-                                <% })}%>
+                                <% })%>
+
                             </dd>
                         </dl>
                     </div>

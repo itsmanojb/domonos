@@ -14,14 +14,16 @@
     position: sticky;
     top: 0;
     width: 100%;
-    background-color: var(--page-background);
     display: grid;
     grid-template-columns: 80px 160px 240px minmax(600px, 40vw) 200px 280px 160px;
+    z-index: 2;
 
     > div {
       padding: 15px 10px;
       font-weight: 600;
       font-size: 15px;
+      border-bottom: 2px solid #aaa;
+      background-color: var(--page-background);
     }
   }
 
@@ -29,12 +31,6 @@
     .tr {
       display: grid;
       grid-template-columns: 80px 160px 240px minmax(600px, 40vw) 200px 280px 160px;
-
-      &:first-of-type {
-        > div {
-          border-top: 2px solid #aaa;
-        }
-      }
 
       > div {
         padding: 15px 10px;
