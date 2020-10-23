@@ -121,6 +121,11 @@
           & + li {
             margin-left: 25px;
           }
+
+          &.inactive {
+            opacity: 0.85;
+            pointer-events: none;
+          }
         }
       }
 
@@ -402,7 +407,7 @@
   }
 
   &.drawer__big {
-    width: 640px;
+    width: 600px;
   }
 
   &.opened {
@@ -441,6 +446,11 @@
 
     &:hover {
       background-color: #fafafa;
+    }
+
+    &.inactive {
+      pointer-events: none;
+      opacity: 0.7;
     }
   }
 }
@@ -2491,11 +2501,73 @@
 .order-tracking {
   padding: 20px 10px;
 
+  .delivered {
+    background: #284aa8;
+    padding: 30px;
+    height: 400px;
+    margin: -20px -10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+
+    img {
+      height: 170px;
+      filter: drop-shadow(2px 7px 7px rgba(0, 0, 0, 0.7));
+    }
+
+    h2 {
+      margin: 20px 0 0;
+      color: #fff;
+      font-size: 25px;
+    }
+  }
+
+  .location-tracking {
+    margin: -20px -10px;
+    .header {
+      height: 60px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      h4 {
+        text-transform: uppercase;
+        font-size: 17px;
+        margin: 0;
+        color: #767983;
+        font-weight: 600;
+      }
+
+      button {
+        text-transform: uppercase;
+        font-size: 12px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        padding: 7px 12px;
+        cursor: pointer;
+
+        &:disabled {
+          opacity: 0.6;
+          pointer-events: none;
+        }
+      }
+    }
+    .map {
+      height: 370px;
+      background: url("/images/map.jpg") no-repeat center;
+      background-size: cover;
+    }
+  }
+
   .order-status-steps {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     margin-top: 30px;
-    padding: 40px 0;
+    padding: 40px 60px;
 
     .step {
       display: flex;
@@ -2535,10 +2607,12 @@
       .text {
         padding: 10px;
         text-align: center;
+        line-height: 1;
 
         span {
           font-size: 14px;
           font-weight: 600;
+          line-height: 1;
         }
       }
 

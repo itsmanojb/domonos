@@ -15,6 +15,10 @@ const addNewAddressBtn = document.getElementById('addNewAddressBtn');
 const addressListView = document.getElementById('locationListUI');
 const newAddressView = document.getElementById('addnewAddressUI');
 
+const orderDetailBtns = document.querySelectorAll('.order-detail-btn');
+const orderDetailsUI = document.getElementById('orderDetailsUI');
+const currentOrderDetailsUI = document.getElementById('currentOrderDetailsUI');
+
 if (addNewAddressBtn) {
   addNewAddressBtn.addEventListener('click', (e) => {
     addressListView.classList.add('d-none');
@@ -73,6 +77,7 @@ trackBtns.forEach(trackBtn => {
       const wrapper = populateOrderDetails(order, true);
       currentOrderDetailsUI.appendChild(wrapper);
 
+
       // setTimeout(() => {
       document.getElementById('trackOrderLoader').classList.add('d-none');
       document.getElementById('trackOrderDetails').classList.remove('d-none');
@@ -81,23 +86,26 @@ trackBtns.forEach(trackBtn => {
 
     });
 
-    const toggle = document.getElementById('toggleOrderDetailsBtn')
-    toggle.addEventListener('click', (e) => {
-
-      toggle.innerText = toggle.innerText === 'Hide Details' ? 'Show Details' : 'Hide Details';
-      if (currentOrderDetailsUI.classList.contains('d-none')) {
-        currentOrderDetailsUI.classList.remove('d-none')
-      } else {
-        currentOrderDetailsUI.classList.add('d-none')
-      }
-    })
-
   });
 });
 
-const orderDetailBtns = document.querySelectorAll('.order-detail-btn');
-const orderDetailsUI = document.getElementById('orderDetailsUI');
-const currentOrderDetailsUI = document.getElementById('currentOrderDetailsUI');
+const toggles = document.querySelectorAll('.toggle-btn');
+toggles.forEach(toggle => {
+  toggle.addEventListener('click', (e) => {
+    if (currentOrderDetailsUI.classList.contains('d-none')) {
+      currentOrderDetailsUI.classList.remove('d-none');
+      toggle.innerText = 'Hide Detail';
+      const iList = document.getElementById('trackOrderItemsList');
+      iList.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    } else {
+      currentOrderDetailsUI.classList.add('d-none')
+      toggle.innerText = 'Show Detail'
+    }
+  })
+});
 
 orderDetailBtns.forEach(btn => {
   btn.addEventListener('click', () => {
@@ -145,6 +153,7 @@ function populateOrderDetails(order, trackView) {
   orderAddress.appendChild(address);
   const orderItems = document.createElement('div')
   orderItems.className = 'order-items';
+  orderItems.setAttribute('id', 'trackOrderItemsList')
 
   let itemsHtml = '';
   items.map(cartitem => {
@@ -200,24 +209,38 @@ function populateOrderDetails(order, trackView) {
     const step3 = document.getElementById('step3');
     const step4 = document.getElementById('step4');
     const step5 = document.getElementById('step5');
+    const delivered = document.querySelector('#trackOrderDetails .delivered');
+    const tracker = document.querySelector('#trackOrderDetails .location-tracking');
 
+    if (order.status === 'confirmed' || order.status === 'order_placed') {
+      delivered.classList.add('d-none');
+      tracker.classList.remove('d-none');
+    }
     if (order.status === 'preparing') {
       step2.classList.add('completed');
+      delivered.classList.add('d-none');
+      tracker.classList.remove('d-none');
     }
     if (order.status === 'dispatched') {
       step2.classList.add('completed');
       step3.classList.add('completed');
+      delivered.classList.add('d-none');
+      tracker.classList.remove('d-none');
     }
     if (order.status === 'delivered') {
       step2.classList.add('completed');
       step3.classList.add('completed');
       step4.classList.add('completed');
+      delivered.classList.remove('d-none');
+      tracker.classList.add('d-none');
     }
     if (order.status === 'completed') {
       step2.classList.add('completed');
       step3.classList.add('completed');
       step4.classList.add('completed');
       step5.classList.add('completed');
+      delivered.classList.remove('d-none');
+      tracker.classList.add('d-none');
     }
 
   }
@@ -681,7 +704,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
   });
 
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      document.querySelector(this.getAttribute('href')).scrollIntoView({
+        behavior: 'smooth'
+      });
+    });
+  });
 }, false);
+
+
 
 const addressDeleteBtns = document.querySelectorAll('.deleteAddressBtn');
 addressDeleteBtns.forEach(btn => {

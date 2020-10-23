@@ -3,6 +3,17 @@
         <div class="loader">Loading...</div>
     </div>
     <div class="order-tracking d-none" id="trackOrderDetails">
+        <div class="delivered d-none">
+            <img src="/images/pizza.png" alt="">
+            <h2>Delivered</h2>
+        </div>
+        <div class="location-tracking">
+            <div class="header">
+                <h4>Track order</h4>
+                <button disabled>Track other orders</button>
+            </div>
+            <div class="map"></div>
+        </div>
         <div class="status-wrapper">
             <div class="order-status-steps">
                 <div class="step completed">
@@ -29,19 +40,19 @@
                         <span>Delivered</span>
                     </div>
                 </div>
-                <div class="step" id="step5">
+                <!-- <div class="step" id="step5">
                     <div class="icon"></div>
                     <div class="text">
                         <span>Completed</span>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="order-details">
             <div class="short">
                 <h3 id="trackOrderTitle"></h3>
                 <div class="meta">
-                    <button type="button" id="toggleOrderDetailsBtn">Show Details</button>
+                    <button type="button" class="toggle-btn" id="toggleOrderDetailsBtn">Show Detail</button>
                     <span id="trackOrderMeta"></span>
                 </div>
             </div>

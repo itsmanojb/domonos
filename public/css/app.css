@@ -532,6 +532,11 @@ textarea:focus {
   margin-left: 25px;
 }
 
+.site__header.light nav ul li.inactive {
+  opacity: 0.85;
+  pointer-events: none;
+}
+
 @media (min-width: 1900px) {
   .site__header.light nav {
     transform: translateX(-20%);
@@ -814,7 +819,7 @@ textarea:focus {
 }
 
 .site__drawer.drawer__big {
-  width: 640px;
+  width: 600px;
 }
 
 .site__drawer.opened {
@@ -853,6 +858,11 @@ textarea:focus {
 
 .drawer-menu-list li:hover {
   background-color: #fafafa;
+}
+
+.drawer-menu-list li.inactive {
+  pointer-events: none;
+  opacity: 0.7;
 }
 
 .location-wrapper {
@@ -2927,11 +2937,78 @@ textarea:focus {
   padding: 20px 10px;
 }
 
+.order-tracking .delivered {
+  background: #284aa8;
+  padding: 30px;
+  height: 400px;
+  margin: -20px -10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.order-tracking .delivered img {
+  height: 170px;
+  filter: drop-shadow(2px 7px 7px rgba(0, 0, 0, 0.7));
+}
+
+.order-tracking .delivered h2 {
+  margin: 20px 0 0;
+  color: #fff;
+  font-size: 25px;
+}
+
+.order-tracking .location-tracking {
+  margin: -20px -10px;
+}
+
+.order-tracking .location-tracking .header {
+  height: 60px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.order-tracking .location-tracking .header h4 {
+  text-transform: uppercase;
+  font-size: 17px;
+  margin: 0;
+  color: #767983;
+  font-weight: 600;
+}
+
+.order-tracking .location-tracking .header button {
+  text-transform: uppercase;
+  font-size: 12px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 7px 12px;
+  cursor: pointer;
+}
+
+.order-tracking .location-tracking .header button:disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.order-tracking .location-tracking .map {
+  height: 370px;
+  background: url("/images/map.jpg") no-repeat center;
+  background-size: cover;
+}
+
 .order-tracking .order-status-steps {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   margin-top: 30px;
-  padding: 40px 0;
+  padding: 40px 60px;
 }
 
 .order-tracking .order-status-steps .step {
@@ -2974,11 +3051,13 @@ textarea:focus {
 .order-tracking .order-status-steps .step .text {
   padding: 10px;
   text-align: center;
+  line-height: 1;
 }
 
 .order-tracking .order-status-steps .step .text span {
   font-size: 14px;
   font-weight: 600;
+  line-height: 1;
 }
 
 .order-tracking .order-status-steps .step.completed .icon {

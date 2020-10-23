@@ -1,7 +1,7 @@
 <aside class="site__drawer drawer_left" id="drawerLeft">
     <ul class="drawer-menu-list">
         <% if(user && user.role !== 'admin') {%>
-        <li>
+        <li class="inactive">
             <a href="#">
 
                 <span class="material-icons">
@@ -26,7 +26,7 @@
                 </span>
                 Home</a>
         </li>
-        <li>
+        <li class="inactive">
             <a href="#">
                 <span class="material-icons">
                     card_giftcard
@@ -40,21 +40,21 @@
                 </span>
                 Menu</a>
         </li>
-        <li>
+        <li class="inactive">
             <a href="#">
                 <span class="material-icons">
                     today
                 </span>
                 Everyday Value offers</a>
         </li>
-        <li>
+        <li class="inactive">
             <a href="#">
                 <span class="material-icons-outlined">
                     receipt_long
                 </span>
                 Terms & Conditions</a>
         </li>
-        <li>
+        <li class="inactive">
             <a href="#">
                 <span class="material-icons-outlined">
                     feedback

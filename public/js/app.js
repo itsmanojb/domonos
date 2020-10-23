@@ -24218,6 +24218,9 @@ var headerMenu = document.getElementById('headerMenu');
 var addNewAddressBtn = document.getElementById('addNewAddressBtn');
 var addressListView = document.getElementById('locationListUI');
 var newAddressView = document.getElementById('addnewAddressUI');
+var orderDetailBtns = document.querySelectorAll('.order-detail-btn');
+var orderDetailsUI = document.getElementById('orderDetailsUI');
+var currentOrderDetailsUI = document.getElementById('currentOrderDetailsUI');
 
 if (addNewAddressBtn) {
   addNewAddressBtn.addEventListener('click', function (e) {
@@ -24272,21 +24275,25 @@ trackBtns.forEach(function (trackBtn) {
       document.getElementById('trackOrderLoader').classList.add('d-none');
       document.getElementById('trackOrderDetails').classList.remove('d-none'); // }, 500);
     });
-    var toggle = document.getElementById('toggleOrderDetailsBtn');
-    toggle.addEventListener('click', function (e) {
-      toggle.innerText = toggle.innerText === 'Hide Details' ? 'Show Details' : 'Hide Details';
-
-      if (currentOrderDetailsUI.classList.contains('d-none')) {
-        currentOrderDetailsUI.classList.remove('d-none');
-      } else {
-        currentOrderDetailsUI.classList.add('d-none');
-      }
-    });
   });
 });
-var orderDetailBtns = document.querySelectorAll('.order-detail-btn');
-var orderDetailsUI = document.getElementById('orderDetailsUI');
-var currentOrderDetailsUI = document.getElementById('currentOrderDetailsUI');
+var toggles = document.querySelectorAll('.toggle-btn');
+toggles.forEach(function (toggle) {
+  toggle.addEventListener('click', function (e) {
+    if (currentOrderDetailsUI.classList.contains('d-none')) {
+      currentOrderDetailsUI.classList.remove('d-none');
+      toggle.innerText = 'Hide Detail';
+      var iList = document.getElementById('trackOrderItemsList');
+      iList.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    } else {
+      currentOrderDetailsUI.classList.add('d-none');
+      toggle.innerText = 'Show Detail';
+    }
+  });
+});
 orderDetailBtns.forEach(function (btn) {
   btn.addEventListener('click', function () {
     document.body.classList.add('noscroll');
@@ -24328,6 +24335,7 @@ function populateOrderDetails(order, trackView) {
   orderAddress.appendChild(address);
   var orderItems = document.createElement('div');
   orderItems.className = 'order-items';
+  orderItems.setAttribute('id', 'trackOrderItemsList');
   var itemsHtml = '';
   items.map(function (cartitem) {
     if (Array.isArray(cartitem)) {
@@ -24351,20 +24359,33 @@ function populateOrderDetails(order, trackView) {
     var step3 = document.getElementById('step3');
     var step4 = document.getElementById('step4');
     var step5 = document.getElementById('step5');
+    var delivered = document.querySelector('#trackOrderDetails .delivered');
+    var tracker = document.querySelector('#trackOrderDetails .location-tracking');
+
+    if (order.status === 'confirmed' || order.status === 'order_placed') {
+      delivered.classList.add('d-none');
+      tracker.classList.remove('d-none');
+    }
 
     if (order.status === 'preparing') {
       step2.classList.add('completed');
+      delivered.classList.add('d-none');
+      tracker.classList.remove('d-none');
     }
 
     if (order.status === 'dispatched') {
       step2.classList.add('completed');
       step3.classList.add('completed');
+      delivered.classList.add('d-none');
+      tracker.classList.remove('d-none');
     }
 
     if (order.status === 'delivered') {
       step2.classList.add('completed');
       step3.classList.add('completed');
       step4.classList.add('completed');
+      delivered.classList.remove('d-none');
+      tracker.classList.add('d-none');
     }
 
     if (order.status === 'completed') {
@@ -24372,6 +24393,8 @@ function populateOrderDetails(order, trackView) {
       step3.classList.add('completed');
       step4.classList.add('completed');
       step5.classList.add('completed');
+      delivered.classList.remove('d-none');
+      tracker.classList.add('d-none');
     }
   }
 
@@ -24829,6 +24852,14 @@ document.addEventListener('DOMContentLoaded', function () {
         affix.classList.remove("fixed");
       }
     }
+  });
+  document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.querySelector(this.getAttribute('href')).scrollIntoView({
+        behavior: 'smooth'
+      });
+    });
   });
 }, false);
 var addressDeleteBtns = document.querySelectorAll('.deleteAddressBtn');
