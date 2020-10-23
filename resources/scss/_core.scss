@@ -36,12 +36,24 @@ textarea {
 .container {
   width: 100%;
   padding: 0 50px;
+  margin-left: auto;
+  margin-right: auto;
 
   @include desktop-lg {
     &.padded {
       padding-left: 100px;
       padding-right: 100px;
     }
+  }
+
+  @include tablet {
+    padding: 0 25px;
+    max-width: 800px;
+  }
+
+  @include mobile {
+    padding: 0 25px;
+    max-width: 560px;
   }
 }
 

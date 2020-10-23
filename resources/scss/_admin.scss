@@ -15,7 +15,7 @@
     top: 0;
     width: 100%;
     display: grid;
-    grid-template-columns: 80px 160px 240px minmax(600px, 40vw) 200px 280px 160px;
+    grid-template-columns: 80px 160px 240px minmax(540px, 40vw) 200px 320px 160px;
     z-index: 2;
 
     > div {
@@ -30,7 +30,7 @@
   .table-body {
     .tr {
       display: grid;
-      grid-template-columns: 80px 160px 240px minmax(600px, 40vw) 200px 280px 160px;
+      grid-template-columns: 80px 160px 240px minmax(540px, 40vw) 200px 320px 160px;
 
       > div {
         padding: 15px 10px;

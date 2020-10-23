@@ -88,6 +88,10 @@
         padding-left: 200px;
         padding-right: 200px;
       }
+
+      @include tablet {
+        padding: 0 16px;
+      }
     }
 
     .brand a {
@@ -132,6 +136,10 @@
       @include desktop-lg {
         transform: translateX(-20%);
       }
+
+      @include tablet {
+        display: none;
+      }
     }
 
     .download-menu {
@@ -161,6 +169,10 @@
         pointer-events: none;
         opacity: 0.6;
       }
+
+      @include mobile {
+        width: 40px;
+      }
     }
 
     .brand {
@@ -184,8 +196,16 @@
           line-height: 1;
           letter-spacing: -0.025ch;
           margin-top: 6px;
+
+          @include mobile {
+            font-size: 20px;
+          }
         }
       }
+    }
+
+    @include tablet {
+      padding: 0 16px;
     }
   }
 
@@ -372,6 +392,10 @@
       a {
         color: inherit;
       }
+
+      @include mobile {
+        display: none;
+      }
     }
   }
 
@@ -379,6 +403,15 @@
     nav,
     .download-menu {
       display: none;
+    }
+  }
+
+  @include mobile {
+    padding: 0;
+
+    .user-menu {
+      padding: 0;
+      column-gap: 0;
     }
   }
 }
@@ -412,6 +445,10 @@
 
   &.opened {
     transform: translateX(0);
+  }
+
+  @include mobile {
+    width: 100% !important;
   }
 }
 
@@ -578,6 +615,11 @@
       }
     }
   }
+
+  @include mobile {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
 
 .site__footer {
@@ -621,11 +663,17 @@
 
       .links {
         display: flex;
+        flex-wrap: wrap;
 
         a {
           margin-right: 30px;
           color: rgb(131, 154, 177);
           font-size: 15px;
+        }
+        @include mobile {
+          a {
+            margin-bottom: 5px;
+          }
         }
       }
     }
@@ -662,6 +710,12 @@
             background-size: contain;
           }
         }
+      }
+    }
+
+    @include tablet {
+      .app-links {
+        display: none;
       }
     }
   }
@@ -705,9 +759,19 @@
   .menu-tabs {
     display: flex;
     justify-content: space-between;
+    overflow: auto;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      width: 0 !important;
+      height: 0 !important;
+    }
 
     .menu-tab {
       text-align: center;
+      padding-left: 10px;
+      padding-right: 10px;
     }
 
     a {
@@ -718,10 +782,18 @@
       font-size: 12px;
       color: #aaa;
       font-weight: 600;
+      white-space: nowrap;
 
       &.active {
         border-bottom-color: green;
       }
+    }
+  }
+
+  @include tablet {
+    .menu-tabs .menu-tab {
+      padding-left: 20px;
+      padding-right: 20px;
     }
   }
 }
@@ -1251,7 +1323,18 @@
           color: rgb(44, 101, 128);
         }
       }
+
+      @include mobile {
+        grid-template-columns: 1fr;
+        row-gap: 20px;
+
+        .price-q {
+          justify-self: start;
+          text-align: left;
+        }
+      }
     }
+
     .custom {
       border-top: 1px dashed #ccc;
       padding: 0.85rem 0 0;
@@ -1334,6 +1417,10 @@
     margin: 0 -4px;
     overflow-x: auto;
     width: calc(100% + 4px);
+  }
+
+  @include tablet {
+    display: none;
   }
 }
 
@@ -1886,6 +1973,20 @@
       height: 56px;
     }
   }
+
+  @include tablet {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: 0;
+
+    .col {
+      margin-bottom: 10px;
+    }
+  }
 }
 
 .app-promo {
@@ -1932,6 +2033,10 @@
         background-position-y: 100px;
         position: absolute;
         transform: translateX(-120px);
+      }
+
+      @include mobile {
+        display: none;
       }
     }
 
@@ -2061,6 +2166,10 @@
             text-overflow: ellipsis;
             margin-top: 4px;
           }
+        }
+
+        @include mobile {
+          width: calc(100% - 3rem);
         }
       }
 
@@ -2194,6 +2303,10 @@
               font-weight: 400;
             }
           }
+
+          @include mobile {
+            width: 100%;
+          }
         }
 
         .delete {
@@ -2210,6 +2323,10 @@
           .picker {
             background-color: rgb(233, 248, 255);
           }
+        }
+
+        @include mobile {
+          grid-template-columns: 40px calc(100% - 90px) 50px;
         }
       }
     }
@@ -2232,6 +2349,15 @@
       &:hover {
         background-color: var(--green-hover);
       }
+    }
+  }
+
+  @include mobile {
+    .header {
+      padding: 0px 2rem;
+    }
+    .content-body {
+      padding: 2rem;
     }
   }
 }
