@@ -417,7 +417,7 @@ async function deleteCartItem(item) {
             </small>
           </h2>
           <p>
-            <a href="/" class="btn">explore Menu</a>
+            <a href="/menus" class="btn">explore Menu</a>
           </p>
         </div>
       </div>`;

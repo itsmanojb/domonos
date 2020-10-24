@@ -67,7 +67,7 @@
         </ul>
       </nav>
       <div class="header-menus" id="headerMenu">
-        <% if(user && user.role !== 'admin') { %>
+        <% if(!user || (user && user.role !== 'admin')) { %>
         <div class="cart-menu">
           <a href="/cart">
             <span class="material-icons-outlined">

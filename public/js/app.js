@@ -24626,7 +24626,7 @@ function _deleteCartItem() {
             document.querySelector('#cartItemsCounter').innerText = res.data.cart.totalQty;
 
             if (res.data.cart.totalQty === 0) {
-              emptyCartHtml = "<div class=\"empty-cart\">\n        <div class=\"content\">\n          <h2>YOUR CART IS EMPTY\n            <small>\n              Please add some items from the menu.\n            </small>\n          </h2>\n          <p>\n            <a href=\"/\" class=\"btn\">explore Menu</a>\n          </p>\n        </div>\n      </div>";
+              emptyCartHtml = "<div class=\"empty-cart\">\n        <div class=\"content\">\n          <h2>YOUR CART IS EMPTY\n            <small>\n              Please add some items from the menu.\n            </small>\n          </h2>\n          <p>\n            <a href=\"/menus\" class=\"btn\">explore Menu</a>\n          </p>\n        </div>\n      </div>";
               document.querySelector('#cartPlaceholder').innerHTML = emptyCartHtml;
               document.querySelectorAll('.coPriceBox').forEach(function (div) {
                 return div.remove();
