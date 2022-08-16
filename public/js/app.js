@@ -24117,7 +24117,7 @@ function initAdmin(socket) {
   if (orderTableBody) {
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/admin/orders/current', {
       headers: {
-        "X-Requested-With": "XMLHttpRequest"
+        'X-Requested-With': 'XMLHttpRequest'
       }
     }).then(function (res) {
       orders = res.data.orders; // console.log(orders);
@@ -24165,7 +24165,7 @@ function initAdmin(socket) {
 
   function generateMarkup(orders) {
     return orders.map(function (order, i) {
-      return "\n                <div class=\"tr\">\n                    <div>".concat(i + 1, "</div>\n                    <div class=\"status ").concat(order.status, "\">\n                        <span>").concat(order.status === 'order_placed' ? 'New' : order.status, "</span>\n                    </div>\n                    <div>\n                        ").concat(Object(date_fns__WEBPACK_IMPORTED_MODULE_2__["format"])(Object(date_fns__WEBPACK_IMPORTED_MODULE_2__["parseISO"])(order.createdAt), 'hh:mm aa'), "\n                    </div>\n                    <div class=\"order-items\">\n                        ").concat(getOrdersMarkup(order.items), "\n                    </div>\n                    <div class=\"u\">\n                        <p>").concat(order.customerId.name, "</p>\n                        <a href=\"tel:+").concat(order.customerId.contact, "\">").concat(order.customerId.contact, "</a>\n                    </div>\n                    <div class=\"address\">\n                        <p>").concat(order.address.address, "\n                        <small>").concat(order.address.locality, "</small>\n                        </p>\n                    </div>\n                    <div class=\"act\">\n                    <form method=\"POST\" action=\"/admin/order/status\">\n                    <input type=\"hidden\" name=\"orderId\" value=\"").concat(order._id, "\" />\n                        <select name=\"status\" onchange=\"this.form.submit()\">\n                            ").concat(getOrderOptions(order.status), "\n                        </select>\n                    </form>\n                    </div>\n                </div>\n            ");
+      return "\n                <div class=\"tr\">\n                    <div>".concat(i + 1, "</div>\n                    <div class=\"status ").concat(order.status, "\">\n                        <span>").concat(order.status === 'order_placed' ? 'New' : order.status, "</span>\n                    </div>\n                    <div>\n                        ").concat(Object(date_fns__WEBPACK_IMPORTED_MODULE_2__["format"])(Object(date_fns__WEBPACK_IMPORTED_MODULE_2__["parseISO"])(order.createdAt), 'd LLL yy, h:mm aa'), "\n                    </div>\n                    <div class=\"order-items\">\n                        ").concat(getOrdersMarkup(order.items), "\n                    </div>\n                    <div class=\"u\">\n                        <p>").concat(order.customerId.name, "</p>\n                        <small>").concat(order.customerId.contact || order.customerId.email, "</small>\n                    </div>\n                    <div class=\"address\">\n                        <p>").concat(order.address.address, "\n                        <small>").concat(order.address.locality, "</small>\n                        </p>\n                    </div>\n                    <div class=\"act\">\n                    <form method=\"POST\" action=\"/admin/order/status\">\n                    <input type=\"hidden\" name=\"orderId\" value=\"").concat(order._id, "\" />\n                        <select name=\"status\" onchange=\"this.form.submit()\">\n                            ").concat(getOrderOptions(order.status), "\n                        </select>\n                    </form>\n                    </div>\n                </div>\n            ");
     }).join('');
   }
 
@@ -25336,8 +25336,8 @@ socket.on('order_updated', function (data) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/moriarty/Work/Node/domonos/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/moriarty/Work/Node/domonos/resources/scss/app.scss */"./resources/scss/app.scss");
+__webpack_require__(/*! /Users/innostratconsulting/Work/node/domonos/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/innostratconsulting/Work/node/domonos/resources/scss/app.scss */"./resources/scss/app.scss");
 
 
 /***/ })

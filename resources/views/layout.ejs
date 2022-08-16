@@ -17,7 +17,7 @@
   <meta property="og:title" content="Domono’s Pizza – Order Online | Get Real-time Order Updates">
   <meta property="og:description"
     content="Order Pizza online from Domono’s, clone of Domino's website built with NEEM (Node.js, Express, Ejs, MongoDB) stack and Socket.io for Realtime order tracking.">
-  <!-- <meta property="og:image" content=""> -->
+  <meta property="og:image" content="https://domonos-pizza.herokuapp.com/domonos.png">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
@@ -25,7 +25,7 @@
   <meta property="twitter:title" content="Domono’s Pizza – Order Online | Get Real-time Order Updates">
   <meta property="twitter:description"
     content="Order Pizza online from Domono’s, clone of Domino's website built with NEEM (Node.js, Express, Ejs, MongoDB) stack and Socket.io for Realtime order tracking.">
-  <!-- <meta property="twitter:image" content=""> -->
+  <meta property="twitter:image" content="https://domonos-pizza.herokuapp.com/domonos.png">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
     integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
@@ -67,95 +67,109 @@
         </ul>
       </nav>
       <div class="header-menus" id="headerMenu">
-        <% if(!user || (user && user.role !== 'admin')) { %>
-        <div class="cart-menu">
-          <a href="/cart">
-            <span class="material-icons-outlined">
-              local_mall
-            </span>
-            <span id="cartCounter"><%= session.cart ? session.cart.totalQty : '' %></span>
-          </a>
-        </div>
-        <% } %>
-        <% if(user && user.role !== 'admin' && user.addresses.length === 0) { %>
-        <div class="location-menu locationPickerBtn" id="locationPickerBtn" role="button">
-          <span class="material-icons-outlined">
-            location_on
-          </span>
-          <p>Select Location <small>Select location for accurate menu listings</small> </p>
-          <span class="material-icons-outlined">
-            create
-          </span>
-        </div>
-        <% } %>
-        <div class="user-menu">
-          <div class="user-icon">
-            <span class="material-icons">
-              account_circle
-            </span>
+        <% if(!user || (user && user.role !=='admin' )) { %>
+          <div class="cart-menu">
+            <a href="/cart">
+              <span class="material-icons-outlined">
+                local_mall
+              </span>
+              <span id="cartCounter">
+                <%= session.cart ? session.cart.totalQty : '' %>
+              </span>
+            </a>
           </div>
-          <% if(user) {%>
-          <div class="user-info" id="userMenuBtn">
-            <p><%= user.name.split(' ')[0] %></p>
+          <% } %>
+            <% if(user && user.role !=='admin' && user.addresses.length===0) { %>
+              <div class="location-menu locationPickerBtn" id="locationPickerBtn" role="button">
+                <span class="material-icons-outlined">
+                  location_on
+                </span>
+                <p>Select Location <small>Select location for accurate menu listings</small> </p>
+                <span class="material-icons-outlined">
+                  create
+                </span>
+              </div>
+              <% } %>
+                <div class="user-menu">
+                  <div class="user-icon">
+                    <span class="material-icons">
+                      account_circle
+                    </span>
+                  </div>
+                  <% if(user) {%>
+                    <div class="user-info" id="userMenuBtn">
+                      <p>
+                        <%= user.name.split(' ')[0] %></p>
             <small class="con"><span><a href="#"><%= user.contact %></a></span></small>
           </div>
           <div class="user-menu-dropdown">
             <ul>
               <li><a href="#"> <span class="material-icons-outlined">account_circle</span> <%= user.name %> </a> </li>
-              <% if(user.role !== 'admin') {%>
-              <% if(user.contact) { %>
-              <li id="liContact"><a href="javascript:void(0)"> <span
-                    class="material-icons-outlined">local_phone</span><%= user.contact %> <button class="edit-btn"
-                    id="contactEditBtn">Edit</button> </a> </li>
-              <li class="d-none inline-form" id="liContactEdit"><span class="material-icons-outlined">local_phone</span>
-                <input type="text" id="contactEditInput" value="<%= user.contact %>"> <button type="button"
-                  class="edit-btn" id="contactEditDoneBtn">Done</button>
-              </li>
-              <% } else { %>
-              <li id="liContactNone"><a href="javascript:void(0)"> <span
-                    class="material-icons-outlined">local_phone</span>Add Number</a>
-              </li>
-              <li class="d-none inline-form" id="liContactAdd"><span class="material-icons-outlined">local_phone</span>
-                <input type="text" id="contactAddInput"> <button class="edit-btn" type="button"
-                  id="contactDoneBtn">Done</button> </li>
-              <% } %>
-              <% } %>
-              <li><a href="#"> <span class="material-icons-outlined">mail</span> <%= user.email %> </a> </li>
-            </ul>
-            <ul>
-              <% if(user.role !== 'admin') {%>
-              <li class="locationPickerBtn"><a> <span class="material-icons-outlined">map</span> My Addresses </a> </li>
-              <li><a href="/orders"> <span class="material-icons-outlined">receipt_long</span> My Orders </a>
-              <li><a href="#"> <span class="material-icons">headset_mic</span> Support </a> </li>
-              <% } else if(user.role === 'admin') {%>
-              <li><a href="/admin/orders"> <span class="material-icons-outlined">receipt_long</span> Current Orders </a>
-              </li>
-              <% } %>
-              <li><a onclick="document.getElementById('logout').submit()"> <span
-                    class="material-icons-outlined">login</span> Logout </a> </li>
-            </ul>
-            <form id="logout" action="/logout" method="POST"> </form>
-          </div>
-          <%} else { %>
-          <div class="user-info">
-            <p>Hello Guest!</p>
-            <small><span><a href="/login">Login</a></span><span><a href="/register">Register</a></span></small>
-          </div>
-          <% } %>
-        </div>
-        <div class="download-menu">Download App</div>
+              <% if(user.role !== ' admin') {%>
+                          <% if(user.contact) { %>
+                            <li id="liContact"><a href="javascript:void(0)"> <span
+                                  class="material-icons-outlined">local_phone</span>
+                                <%= user.contact %> <button class="edit-btn" id="contactEditBtn">Edit</button>
+                              </a> </li>
+                            <li class="d-none inline-form" id="liContactEdit"><span
+                                class="material-icons-outlined">local_phone</span>
+                              <input type="text" id="contactEditInput" value="<%= user.contact %>"> <button
+                                type="button" class="edit-btn" id="contactEditDoneBtn">Done</button>
+                            </li>
+                            <% } else { %>
+                              <li id="liContactNone"><a href="javascript:void(0)"> <span
+                                    class="material-icons-outlined">local_phone</span>Add Number</a>
+                              </li>
+                              <li class="d-none inline-form" id="liContactAdd"><span
+                                  class="material-icons-outlined">local_phone</span>
+                                <input type="text" id="contactAddInput"> <button class="edit-btn" type="button"
+                                  id="contactDoneBtn">Done</button>
+                              </li>
+                              <% } %>
+                                <% } %>
+                                  <li><a href="#"> <span class="material-icons-outlined">mail</span>
+                                      <%= user.email %>
+                                    </a> </li>
+                                  </ul>
+                                  <ul>
+                                    <% if(user.role !=='admin' ) {%>
+                                      <li class="locationPickerBtn"><a> <span class="material-icons-outlined">map</span>
+                                          My Addresses </a> </li>
+                                      <li><a href="/orders"> <span class="material-icons-outlined">receipt_long</span>
+                                          My Orders </a>
+                                      <li><a href="#"> <span class="material-icons">headset_mic</span> Support </a>
+                                      </li>
+                                      <% } else if(user.role==='admin' ) {%>
+                                        <li><a href="/admin/orders"> <span
+                                              class="material-icons-outlined">receipt_long</span> Current Orders </a>
+                                        </li>
+                                        <% } %>
+                                          <li><a onclick="document.getElementById('logout').submit()"> <span
+                                                class="material-icons-outlined">login</span> Logout </a> </li>
+                                  </ul>
+                                  <form id="logout" action="/logout" method="POST"> </form>
+                    </div>
+                    <%} else { %>
+                      <div class="user-info">
+                        <p>Hello Guest!</p>
+                        <small><span><a href="/login">Login</a></span><span><a
+                              href="/register">Register</a></span></small>
+                      </div>
+                      <% } %>
+                </div>
+                <div class="download-menu">Download App</div>
       </div>
     </div>
   </header>
   <%- include('partials/left-drawer.ejs') %>
-  <%- include('partials/order-tracking.ejs') %>
-  <%- body %>
-  <%- include('partials/right-drawer.ejs') %>
-  <%- include('partials/alert.ejs') %>
-  <%- include('partials/footer-slim.ejs') %>
+    <%- include('partials/order-tracking.ejs') %>
+      <%- body %>
+        <%- include('partials/right-drawer.ejs') %>
+          <%- include('partials/alert.ejs') %>
+            <%- include('partials/footer-slim.ejs') %>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/app.js"></script>
+              <script src="/socket.io/socket.io.js"></script>
+              <script src="/js/app.js"></script>
 </body>
 
 </html>

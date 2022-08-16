@@ -3925,7 +3925,7 @@ textarea:focus {
   top: 0;
   width: 100%;
   display: grid;
-  grid-template-columns: 80px 160px 240px minmax(540px, 40vw) 200px 320px 160px;
+  grid-template-columns: 60px 140px 240px minmax(540px, 40vw) 200px 320px 160px;
   z-index: 2;
 }
 
@@ -3939,7 +3939,7 @@ textarea:focus {
 
 .active-orders-table .table-body .tr {
   display: grid;
-  grid-template-columns: 80px 160px 240px minmax(540px, 40vw) 200px 320px 160px;
+  grid-template-columns: 60px 140px 240px minmax(540px, 40vw) 200px 320px 160px;
 }
 
 .active-orders-table .table-body .tr > div {
@@ -4080,6 +4080,11 @@ textarea:focus {
 
 .active-orders-table .table-body .tr .u p {
   margin: 0 0 4px;
+}
+
+.active-orders-table .table-body .tr .u small {
+  word-break: break-all;
+  font-size: 14px;
 }
 
 .active-orders-table .table-body .tr .u a {
